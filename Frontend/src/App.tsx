@@ -2,7 +2,7 @@
 // メインコンポーネント: App
 // ==========================================
 import { useState } from 'react';
-import { IntroScreen } from './WorkSpace/Pages/Introduction';
+import { Introduction } from './WorkSpace/Pages/Introduction/Introduction';
 import { RegistrationScreen } from './WorkSpace/Pages/Registration';
 import { CyberBackground } from './WorkSpace/Animation/CyberBackground';
 import { TapRipple } from './WorkSpace/Effects/TapEffect';
@@ -51,7 +51,7 @@ export default function App() {
         
         {!showRegistration ? (
           // 画面1: イントロ
-          <IntroScreen onStart={handleStart} isExiting={started} />
+          <Introduction onStart={handleStart} isExiting={started} />
         ) : (
           // 画面2: 登録フォーム
           <RegistrationScreen />

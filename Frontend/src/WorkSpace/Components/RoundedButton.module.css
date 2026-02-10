@@ -1,0 +1,56 @@
+.startButtonWrapper {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.startButton {
+  position: relative;
+  z-index: 1;
+  padding: 1.25rem 4rem;
+  border-radius: 9999px;
+  background: transparent;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s;
+  font-family: 'Anonymous Pro', monospace;
+  font-weight: bold;
+  font-size: 1.125rem;
+  letter-spacing: 0.25em;
+  color: #06ffff;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border: 1px solid rgba(6, 255, 255, 0.5);
+}
+
+
+.startButton:hover {
+  transform: scale(1.05);
+  color: #fff;
+}
+
+.startButton:active {
+  transform: scale(0.95);
+}
+
+.startButtonBg {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(6, 255, 255, 0.5);
+  border-radius: 9999px;
+  transition: all 0.3s;
+}
+
+.startButtonBg:hover {
+  border-color: #00c0ff;
+  box-shadow: 0 0 30px #00f3ff;
+}
+
+.startButtonOverlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 20, 40, 0.25);
+  backdrop-filter: blur(4px);
+  border-radius: 9999px;
+  pointer-events: none;
+}

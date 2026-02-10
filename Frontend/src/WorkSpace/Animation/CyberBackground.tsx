@@ -44,7 +44,7 @@ export const CyberBackground = () => {
       ctx.clearRect(0, 0, width, height);
       
       // ========== グリッド線の描画設定（薄い背景のメッシュ）==========
-      ctx.strokeStyle = 'rgba(0, 243, 255, 0.03)';
+      ctx.strokeStyle = COLORS.grid;
       ctx.lineWidth = 1;
       const gridSize = 50;
 
@@ -97,7 +97,7 @@ export const CyberBackground = () => {
 
           if (distance < 150) {
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(0, 243, 255, ${0.15 - distance / 1000})`;
+            ctx.strokeStyle = COLORS.cyan;
             ctx.lineWidth = 0.5;
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);

@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Anonymous+Pro&display=swap');
 
 /* Tailwind前提の最低限リセット */
 html,
@@ -40,9 +41,9 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
-button:hover {
-  border-color: #646cff;
-}
+/* button:hover {
+  border-color: #fff;
+} */
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -59,4 +60,10 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+
+/* Ensure Anonymous Pro is applied when Tailwind class exists */
+.font-anonymous {
+  font-family: 'Anonymous Pro', monospace !important;
 }
