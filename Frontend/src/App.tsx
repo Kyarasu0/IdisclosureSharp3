@@ -3,7 +3,7 @@
 // ==========================================
 import { useState } from 'react';
 import { Introduction } from './WorkSpace/Pages/Introduction/Introduction';
-import { RegistrationScreen } from './WorkSpace/Pages/Registration';
+import { Registration } from './WorkSpace/Pages/Registration/Registration';
 import { CyberBackground } from './WorkSpace/Animation/CyberBackground';
 import { TapRipple } from './WorkSpace/Effects/TapEffect';
 
@@ -54,7 +54,7 @@ export default function App() {
           <Introduction onStart={handleStart} isExiting={started} />
         ) : (
           // 画面2: 登録フォーム
-          <RegistrationScreen />
+          <Registration />
         )}
 
       </main>

@@ -1,0 +1,20 @@
+.forbiddenMessageBox {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  align-items: flex-start;
+}
+
+.forbiddenMessageIcon {
+  color: #ef4444;
+  margin-top: 2px;
+}
+
+.forbiddenMessageText {
+  font-size: 0.75rem;
+  color: #fecaca;
+  line-height: 1.4;
+}

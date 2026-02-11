@@ -1,0 +1,20 @@
+.warningMessageBox {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: rgba(250, 204, 21, 0.1); /* yellow-400 */
+  border: 1px solid rgba(250, 204, 21, 0.5);
+  align-items: flex-start;
+}
+
+.warningMessageIcon {
+  color: #f1ce43; /* yellow-400 */
+  margin-top: 2px;
+}
+
+.warningMessageText {
+  font-size: 0.75rem;
+  color: #fcf1c7; /* yellow-200 */
+  line-height: 1.4;
+}

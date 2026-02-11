@@ -1,7 +1,6 @@
-import { Zap } from 'lucide-react';
 import ICON_PATH from '../../Images/IdisclosureIcon.png';
 import styles from './Introduction.module.css';
-import { RoundedButton } from '../../Components/RoundedButton';
+import { RoundedButton } from '../../Components/Buttons/RoundedButton/RoundedButton';
 
 // Introduction(STARTボタンを押したときに呼び出される関数, 画面がフェードアウト中かどうかを判定するフラグ)
 export const Introduction = ({ onStart, isExiting,}: { onStart: () => void; isExiting: boolean; }) => {
