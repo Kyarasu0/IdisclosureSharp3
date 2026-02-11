@@ -12,9 +12,17 @@ export const Registration = () => {
   const [formData, setFormData] = useState({ userId: '', birthDate: '' });
   const [isLoading, setIsLoading] = useState(false);
 
+  // ローカルストレージ保存関数
+  const saveToLocalStorage = (data: typeof formData) => {
+    localStorage.setItem('registrationData', JSON.stringify(data));
+  };
+  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    // ローディング開始
     setIsLoading(true);
+    // データをローカルストレージに保存
+    saveToLocalStorage(formData);
 
     setTimeout(() => {
       setIsLoading(false);
@@ -45,6 +53,7 @@ export const Registration = () => {
             label="USER ID"
             icon={<User size={12} />}
             value={formData.userId}
+            required = {true}
             onChange={(value) => setFormData({ ...formData, userId: value })}
             placeholder="ENTER USER ID"
             showStatusDot={true}
@@ -58,6 +67,7 @@ export const Registration = () => {
             icon={<Calendar size={12} />}
             type="date"
             value={formData.birthDate}
+            required = {true}
             onChange={(value) => setFormData({ ...formData, birthDate: value })}
             placeholder="YYYY-MM-DD"
           />

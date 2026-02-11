@@ -1,0 +1,165 @@
+/* ==========================================
+   RulesPanel.module.css
+========================================== */
+
+.panel {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem;
+
+  backdrop-filter: blur(4px);
+  background-color: rgba(0, 0, 0, 0.2);
+
+  border-right: 1px solid rgba(0, 240, 255, 0.2);
+
+  position: relative;
+  overflow: hidden;
+}
+
+/* =========================
+   Header
+========================= */
+
+.header {
+  position: absolute;
+  top: 2.5rem;
+  left: 2rem;
+}
+
+.protocol {
+  font-size: 0.875rem;
+  font-family: "Courier New", monospace;
+  color: #00f0ff;
+  letter-spacing: 0.2em;
+  margin-bottom: 0.5rem;
+
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.title {
+  font-size: 1.875rem;
+  font-weight: bold;
+  color: white;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.titleAccent {
+  background: linear-gradient(to right, #00f0ff, #ffffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* =========================
+   Rule List
+========================= */
+
+.ruleList {
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  position: relative;
+  z-index: 10;
+}
+
+.alert {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #09b600;
+  font-size: 0.75rem;
+  font-family: "Courier New", monospace;
+  letter-spacing: 0.15em;
+
+  animation: pulse 1.5s infinite;
+}
+
+/* ルール共通 */
+.ruleItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 1rem;
+  border-left: 2px solid;
+  transition: all 0.5s ease;
+}
+
+.ruleLabel {
+  font-family: "Courier New", monospace;
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+}
+
+/* 未達成 */
+.ruleInvalid {
+  border-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #9ca3af;
+}
+
+/* 達成 */
+.ruleValid {
+  border-color: #00f0ff;
+  background-color: rgba(0, 240, 255, 0.1);
+  transform: translateX(8px);
+  color: white;
+}
+
+/* チェックアイコン */
+.checkIcon {
+  color: #00f0ff;
+  filter: drop-shadow(0 0 8px rgba(0, 240, 255, 0.8));
+}
+
+/* ドット */
+.dot {
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* =========================
+   Footer
+========================= */
+
+.footer {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+
+  font-size: 0.625rem;
+  font-family: "Courier New", monospace;
+  color: rgba(255, 255, 255, 0.3);
+  line-height: 1.5;
+}
+
+/* =========================
+   Background texture
+========================= */
+
+.textureOverlay {
+  position: absolute;
+  inset: 0;
+  background-image: url("https://transparenttextures.com/patterns/black-scales.png");
+  opacity: 0.2;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+/* =========================
+   Animation
+========================= */
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}

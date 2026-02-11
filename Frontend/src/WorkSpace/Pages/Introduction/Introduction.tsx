@@ -1,13 +1,25 @@
-import ICON_PATH from '../../Images/IdisclosureIcon.png';
-import styles from './Introduction.module.css';
-import { RoundedButton } from '../../Components/Buttons/RoundedButton/RoundedButton';
+// ==========================================
+// ページ1: イントロダクション画面
+// ==========================================
+import { useNavigate } from "react-router-dom";
+import ICON_PATH from "../../Images/IdisclosureIcon.png";
+import styles from "./Introduction.module.css";
+import { RoundedButton } from "../../Components/Buttons/RoundedButton/RoundedButton";
 
-// Introduction(STARTボタンを押したときに呼び出される関数, 画面がフェードアウト中かどうかを判定するフラグ)
-export const Introduction = ({ onStart, isExiting,}: { onStart: () => void; isExiting: boolean; }) => {
+// Introduction (STARTボタン押下時に /register へ遷移するページ)
+export const Introduction = () => {
+  const navigate = useNavigate();
+
+  // STARTボタン押下時の処理
+  const handleStart = () => {
+    navigate("/register");
+  };
+
   return (
-    // container + isExitingによってはcontainerExitingも追加
-    <div className={`${styles.container} ${isExiting ? styles.containerExiting : ''}`}>
-      {/* アイコン画像とロゴとサブタイトル */}
+    // container
+    <div className={styles.container}>
+      
+      {/* アイコン画像・ロゴ・サブタイトル */}
       <div className={styles.logoArea}>
 
         {/* アイコン画像 */}
@@ -18,11 +30,10 @@ export const Introduction = ({ onStart, isExiting,}: { onStart: () => void; isEx
             alt="Lock Icon"
             className={styles.iconImage}
             onError={(e) => {
-              e.currentTarget.style.display = 'none';
-              e.currentTarget.nextElementSibling?.classList.remove('hidden');
+              // 画像読み込み失敗時のフォールバック処理
+              e.currentTarget.style.display = "none";
             }}
           />
-          {/* <div className={styles.iconFallback}>NO IMAGE</div> */}
         </div>
 
         {/* タイトルテキスト */}
@@ -33,16 +44,19 @@ export const Introduction = ({ onStart, isExiting,}: { onStart: () => void; isEx
         </h1>
 
         {/* サブタイトル */}
-        <p className={styles.subTitle}>SYSTEM BREACH PROTOCOL</p>
-
+        <p className={styles.subTitle}>
+          SYSTEM BREACH PROTOCOL
+        </p>
       </div>
 
-      {/* STRATボタン */}
-      <RoundedButton onClick={onStart} >
+      {/* STARTボタン */}
+      <RoundedButton onClick={handleStart}>
         PRESS TO START
       </RoundedButton>
 
-        <div className={styles.bounceArrow}>▼</div>
-      </div>
+      {/* 下部バウンス矢印 */}
+      <div className={styles.bounceArrow}>▼</div>
+
+    </div>
   );
 };
