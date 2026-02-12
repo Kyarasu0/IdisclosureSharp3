@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import styles from './UserHud.module.css';
 import { Activity, Terminal, Shield, Gem, Cake } from 'lucide-react';
 import { GlitchText } from '../../Texts/GlitchText/GlitchText';
@@ -14,6 +15,46 @@ type Props = {
 };
 
 export const UserHud = ({ userData }: Props) => {
+  const [latency, setLatency] = useState<number | null>(null);
+
+  useEffect(() => {
+    const measurePing = async () => {
+      try {
+        const start = performance.now();
+        await fetch("/ping.txt", { cache: "no-store" });
+        const ms = performance.now() - start;
+        setLatency(Math.round(ms));
+      } catch {
+        setLatency(null);
+      }
+    };
+
+    measurePing();
+    const interval = setInterval(measurePing, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // 0〜300msを100%にマッピング
+  const getWidth = () => {
+    if (latency === null) return 0;
+    const clamped = Math.min(latency, 300);
+    return 100 - (clamped / 300) * 100;
+  };
+
+  const getColor = () => {
+    if (latency === null) return "#334155";
+    if (latency < 80) return "#22d3ee";     // 良好
+    if (latency < 180) return "#facc15";    // 注意
+    return "#ef4444";                       // 危険
+  };
+
+  const getStatusText = () => {
+    if (latency === null) return "SYNCING...";
+    if (latency < 80) return "STABLE";
+    if (latency < 180) return "UNSTABLE";
+    return "CRITICAL";
+  };
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.card}>
@@ -49,7 +90,6 @@ export const UserHud = ({ userData }: Props) => {
                 <Cake size={14} />
                 BIRTH_DATE
               </span>
-
               <span className={styles.dateValue}>
                 {userData.birthDate}
               </span>
@@ -60,7 +100,6 @@ export const UserHud = ({ userData }: Props) => {
                 <Shield size={14} />
                 SECRET_ID
               </span>
-
               <span className={styles.secretValue}>
                 {userData.secretId}
               </span>
@@ -71,7 +110,6 @@ export const UserHud = ({ userData }: Props) => {
                 <Gem size={14} />
                 BLUE_SHARD
               </span>
-
               <span className={styles.scoreValue}>
                 {userData.score.toLocaleString()}
               </span>
@@ -79,15 +117,21 @@ export const UserHud = ({ userData }: Props) => {
 
           </div>
 
-          {/* Footer */}
+          {/* 🔥 Network Footer */}
           <div className={styles.footer}>
             <div className={styles.progressBar}>
-              <div className={styles.progressFill} />
+              <div
+                className={styles.progressFill}
+                style={{
+                  width: `${getWidth()}%`,
+                  background: getColor(),
+                }}
+              />
             </div>
 
             <div className={styles.footerMeta}>
-              <span>Sync: Stable</span>
-              <span>Encryption: AES-256</span>
+              <span>Network: {getStatusText()}</span>
+              <span>{latency !== null ? `${latency}ms` : "..."}</span>
             </div>
           </div>
 

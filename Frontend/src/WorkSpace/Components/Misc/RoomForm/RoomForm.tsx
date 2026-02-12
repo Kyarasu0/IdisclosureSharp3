@@ -144,16 +144,14 @@ const CardContent = ({
           </>
         ) : (
           <>
-            {mode === 'create' ? "INITIALIZE SYSTEM" : "BREACH SYSTEM"}
+            START
             <ArrowRight size={18} />
           </>
         )}
       </button>
 
       <div className={styles.notice}>
-        {mode === 'create'
-          ? `REQUIRES ${cost} SHARDS`
-          : "UNAUTHORIZED ACCESS LOGGED"}
+        CONNECT TO A ROOM TO PLAY IDISCLOSURE#3
       </div>
     </div>
   );

@@ -158,6 +158,11 @@
   cursor: pointer;
   transition: all 0.3s;
   background: transparent;
+
+  display: flex;              /* ★ 追加 */
+  align-items: center;        /* ★ 縦中央 */
+  justify-content: center;    /* ★ 横中央 */
+  gap: 8px;                   /* ★ 文字とアイコンの間隔 */
 }
 
 .createTheme {
