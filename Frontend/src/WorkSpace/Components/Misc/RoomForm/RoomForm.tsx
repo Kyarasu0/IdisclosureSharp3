@@ -81,7 +81,6 @@ const CardContent = ({
   setRoomName,
   handleAction,
   isLoading,
-  cost
 }: CardProps) => {
   return (
     <div className={styles.card}>

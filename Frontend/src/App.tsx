@@ -7,6 +7,7 @@ import { Introduction } from "./WorkSpace/Pages/Introduction/Introduction";
 import { Registration } from "./WorkSpace/Pages/Registration/Registration";
 import { SecretEntry } from "./WorkSpace/Pages/SecretEntry/SecretEntry";
 import { CreateJoin } from "./WorkSpace/Pages/CreateJoin/CreateJoin";
+import { Waiting } from "./WorkSpace/Pages/Waiting/Waiting";
 import { CyberBackground } from "./WorkSpace/Animation/CyberBackground";
 import { TapRipple } from "./WorkSpace/Effects/TapEffect";
 import styles from "./App.module.css";
@@ -46,6 +47,14 @@ function AnimatedRoutes() {
         element={
             <PageWrapper>
                 <CreateJoin />
+            </PageWrapper>
+        }
+        />
+        <Route
+        path="/waiting"
+        element={
+            <PageWrapper>
+                <Waiting />
             </PageWrapper>
         }
         />

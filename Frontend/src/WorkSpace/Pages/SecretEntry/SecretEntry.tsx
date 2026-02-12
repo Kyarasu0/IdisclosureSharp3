@@ -12,10 +12,14 @@ import { ScoreDisplay } from "../../Components/Misc/ScoreDisplay/ScoreDisplay";
 import { NormalInputField } from '../../Components/InputFields/NormalInputField/NormalInputField';
 import { SubmitButton } from '../../Components/Buttons/SubmitButton/SubmitButton';
 
+import { useNavigate } from "react-router-dom";
+
 export function SecretEntry() {
   const [secretId, setSecretId] = useState("");
   const [score, setScore] = useState(0);
   const [glitchTrigger, setGlitchTrigger] = useState(false);
+
+  const navigate = useNavigate();
 
   // SecretID とスコアを localStorage に保存する関数
   const saveSecretData = (secretId: string, score: number) => {
@@ -183,6 +187,7 @@ export function SecretEntry() {
               isLoading={false} // 今はローディングは使わない場合
               onClick={() => {
                 saveSecretData(secretId, score); // 保存
+                navigate("/create-join"); // 次の画面へ
               }}
               >
               {allValid ? <Zap size={18} /> : <Lock size={18} />}

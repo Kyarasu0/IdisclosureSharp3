@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { UserHud } from "../../Components/Misc/UserHud/UserHud";
 import { RoomForm } from "../../Components/Misc/RoomForm/RoomForm";
 import styles from "./CreateJoin.module.css";
+import { photonService } from '../../Functions/PhotonControllers/PhotonService';
+import { useNavigate } from "react-router-dom";
 
 export function CreateJoin() {
   const [userData, setUserData] = useState({
@@ -15,6 +17,8 @@ export function CreateJoin() {
   const [roomName, setRoomName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const stored = localStorage.getItem("registrationData");
     if (stored) {
@@ -23,9 +27,27 @@ export function CreateJoin() {
   }, []);
 
   const handleAction = async () => {
+    if (!roomName) return;
     setIsLoading(true);
-    await new Promise((res) => setTimeout(res, 1000));
-    setIsLoading(false);
+
+    try {
+      // サーバー接続
+      await photonService.connect();
+
+      if (activeTab === 'create') {
+        await photonService.createRoom(roomName);
+        alert(`Room "${roomName}" created!`);
+        navigate("/waiting");
+      } else {
+        await photonService.joinRoom(roomName);
+        alert(`Joined room "${roomName}"!`);
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Failed to connect or join/create room');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
