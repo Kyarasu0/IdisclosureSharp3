@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Introduction } from "./WorkSpace/Pages/Introduction/Introduction";
 import { Registration } from "./WorkSpace/Pages/Registration/Registration";
 import { SecretEntry } from "./WorkSpace/Pages/SecretEntry/SecretEntry";
+import { CreateJoin } from "./WorkSpace/Pages/CreateJoin/CreateJoin";
 import { CyberBackground } from "./WorkSpace/Animation/CyberBackground";
 import { TapRipple } from "./WorkSpace/Effects/TapEffect";
 import styles from "./App.module.css";
@@ -37,6 +38,14 @@ function AnimatedRoutes() {
         element={
             <PageWrapper>
                 <SecretEntry />
+            </PageWrapper>
+        }
+        />
+        <Route
+        path="/create-join"
+        element={
+            <PageWrapper>
+                <CreateJoin />
             </PageWrapper>
         }
         />

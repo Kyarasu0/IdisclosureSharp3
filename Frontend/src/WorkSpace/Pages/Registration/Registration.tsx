@@ -7,10 +7,13 @@ import styles from './Registration.module.css';
 import { NormalInputField } from '../../Components/InputFields/NormalInputField/NormalInputField';
 import { WarningMessage } from '../../Components/Infomation/WarningMessage/WarningMessage';
 import { SubmitButton } from '../../Components/Buttons/SubmitButton/SubmitButton';
+import { useNavigate } from 'react-router-dom';
 
 export const Registration = () => {
   const [formData, setFormData] = useState({ userId: '', birthDate: '' });
   const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   // ローカルストレージ保存関数
   const saveToLocalStorage = (data: typeof formData) => {
@@ -26,7 +29,7 @@ export const Registration = () => {
 
     setTimeout(() => {
       setIsLoading(false);
-      alert(`Access Granted.\nWelcome, Agent ${formData.userId}.`);
+      navigate("/secret-entry");
     }, 1500);
   };
 
