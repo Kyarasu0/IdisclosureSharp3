@@ -27,28 +27,38 @@ export function CreateJoin() {
   }, []);
 
   const handleAction = async () => {
-    if (!roomName) return;
+    if (!roomName || isLoading) return;
+
+    if (!/^[a-zA-Z0-9_-]+$/.test(roomName)) {
+      alert("ルーム名は英数字と _ のみ使用可能です");
+      return;
+    }
+
     setIsLoading(true);
 
     try {
-      // サーバー接続
-      await photonService.connect();
+      // 接続プロセス開始
+      await photonService.connectToRegion("jp");
 
       if (activeTab === 'create') {
-        await photonService.createRoom(roomName);
-        alert(`Room "${roomName}" created!`);
-        navigate("/waiting");
+        console.log(`Creating room: ${roomName}`);
+        await photonService.createRoom(roomName, { maxPlayers: 8 });
       } else {
+        console.log(`Joining room: ${roomName}`);
         await photonService.joinRoom(roomName);
-        alert(`Joined room "${roomName}"!`);
       }
-    } catch (err) {
-      console.error(err);
-      alert('Failed to connect or join/create room');
-    } finally {
+      
+      // 🔴 Room入室が State.Joined(8) になるのを内部で待っているので、
+      // ここに来たときはすでに名前設定のリクエストも飛んでいます。
+      // 🔴 ルーム名を state として渡す
+      navigate("/waiting", { state: { roomName: roomName } });
+    } catch (err: any) {
+      console.error("Error:", err);
+      alert(`Failed: ${err.message || "Unknown error"}`);
       setIsLoading(false);
     }
   };
+
 
   return (
     <div className={styles.page}>
