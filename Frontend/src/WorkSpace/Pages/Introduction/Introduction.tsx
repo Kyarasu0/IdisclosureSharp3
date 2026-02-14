@@ -8,6 +8,7 @@ import { RoundedButton } from "../../Components/Buttons/RoundedButton/RoundedBut
 
 // Introduction (STARTボタン押下時に /register へ遷移するページ)
 export const Introduction = () => {
+  // navigate関数を使う
   const navigate = useNavigate();
 
   // STARTボタン押下時の処理
@@ -16,13 +17,12 @@ export const Introduction = () => {
   };
 
   return (
-    // container
     <div className={styles.container}>
       
-      {/* アイコン画像・ロゴ・サブタイトル */}
+      {/* 1. アイコン画像・ロゴ・サブタイトル */}
       <div className={styles.logoArea}>
 
-        {/* アイコン画像 */}
+        {/* 1.1. アイコン画像 */}
         <div className={styles.iconWrapper}>
           <div className={styles.iconGlow}></div>
           <img
@@ -36,25 +36,25 @@ export const Introduction = () => {
           />
         </div>
 
-        {/* タイトルテキスト */}
+        {/* 1.2. タイトルテキスト */}
         <h1 className={styles.title}>
           <span className={styles.titleId}>Id</span>
           <span className={styles.titleIsclosure}>isclosure</span>
           <span className={styles.titleHash}>#3</span>
         </h1>
 
-        {/* サブタイトル */}
+        {/* 1.3. サブタイトル */}
         <p className={styles.subTitle}>
           SYSTEM BREACH PROTOCOL
         </p>
       </div>
 
-      {/* STARTボタン */}
+      {/* 2. STARTボタン */}
       <RoundedButton onClick={handleStart}>
         PRESS TO START
       </RoundedButton>
 
-      {/* 下部バウンス矢印 */}
+      {/* 3. 下部バウンス矢印 */}
       <div className={styles.bounceArrow}>▼</div>
 
     </div>

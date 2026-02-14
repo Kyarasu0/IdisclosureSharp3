@@ -1,75 +1,85 @@
 /* Introduction.module.css */
 
 .container {
+  /* 大きさ設定 */
+  min-height: 100vh;
+  /* バックグラウンド設定 */
+  /* 要素配置設定 */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  /* 余白設定 */
+  /* 文字設定 */
+  /* 装飾設定 */
+  /* 配置基準設定 */
+  /* アニメーション設定 */
   transition: all 0.7s;
 }
 
-.containerExiting {
-  opacity: 0;
-  transform: translateY(-20px);
-  filter: blur(2px);
-}
-
+/* 1. アイコン画像・ロゴ・サブタイトル */
 .logoArea {
+  /* 大きさ設定 */
+  /* バックグラウンド設定 */
+  /* 要素配置設定 */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  /* 余白設定 */
   margin-bottom: 3rem;
+  /* 文字設定 */
+  /* 装飾設定 */
+  /* 配置基準設定 */
   position: relative;
   z-index: 10;
 }
 
+/* 1.1. アイコン画像 */
 .iconWrapper {
-  position: relative;
+  /* 余白設定 */
   margin-bottom: 2rem;
+  /* 配置基準設定 */
+  position: relative;
 }
 
 .iconGlow {
+  /* バックグラウンド設定 */
+  background-color: #06ffff;
+  opacity: 0.2;
+  /* 配置基準設定 */
   position: absolute;
   inset: 0;
-  background-color: #06ffff;
+  /* 装飾設定 */
   border-radius: 9999px;
-  opacity: 0.2;
   filter: blur(48px);
+  /* アニメーション設定 */
   transition: opacity 0.5s;
   animation: pulse 2s infinite;
 }
 
 .iconGlow:hover {
+  /* バックグラウンド設定 */
   opacity: 0.4;
 }
 
+/* 実際の画像 */
 .iconImage {
+  /* 大きさ設定 */
   width: 8rem;
   height: 8rem;
-  object-fit: contain;
+  /* 装飾設定 */
   filter: drop-shadow(0 0 15px rgba(0, 243, 255, 0.5));
+  /* 配置基準設定 */
   position: relative;
   z-index: 10;
+  /* 画像設定 */
+  object-fit: contain;
 }
 
-/* .iconFallback {
-  display: none;
-  width: 8rem;
-  height: 8rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid #06ffff;
-  border-radius: 0.5rem;
-  background-color: rgba(15, 23, 42, 0.5);
-  backdrop-filter: blur(4px);
-  color: #06ffff;
-  font-size: 0.625rem;
-} */
-
+/* 1.2. ロゴ */
 .title {
+  /* 文字設定 */
   font-family: 'Anonymous Pro', monospace;
   font-weight: 900;
   text-align: center;
@@ -78,42 +88,57 @@
 }
 
 .titleId {
+  /* バックグラウンド設定 */
   background: linear-gradient(to bottom, #ff00ff, #d600d6);
-  -webkit-background-clip: text;
+  /* 文字設定 */
   color: transparent;
   text-shadow: 0 0 10px rgba(255, 0, 255, 0.8);
   letter-spacing: 0.25em;
+  /* 装飾設定 - 背景を文字型に切り抜く */
+  -webkit-background-clip: text;
 }
 
 .titleIsclosure {
+   /* バックグラウンド設定 */
   background: linear-gradient(to bottom, #00f3ff, #00c0cc);
-  -webkit-background-clip: text;
+  /* 文字設定 */
   color: transparent;
   text-shadow: 0 0 10px rgba(0, 243, 255, 0.8);
   letter-spacing: 0.25em;
+  /* 装飾設定 - 背景を文字型に切り抜く */
+  -webkit-background-clip: text;
 }
 
 .titleHash {
+  /* 余白設定 */
   margin-left: 0.5rem;
+  /* 文字設定 */
   font-size: 2rem;
   color: #a3e635;
   text-shadow: 0 0 8px rgba(163, 230, 53, 0.8);
   letter-spacing: 0.25em;
 }
 
+/* 1.2. サブタイトル */
 .subTitle {
+  /* 余白設定 */
   margin-top: 1rem;
+  /* 文字設定 */
   font-family: monospace;
   font-size: 0.875rem;
   color: rgba(0, 243, 255, 1);
   letter-spacing: 0.5em;
+  /* アニメーション設定 */
   animation: pulse 2s infinite;
 }
 
 .bounceArrow {
+  /* 余白設定 */
   margin-top: 2rem;
+  /* 文字設定 */
   font-size: 1.25rem;
   color: rgba(6, 243, 255, 0.5);
+  /* アニメーション設定 */
   animation: bounce 2s infinite;
 }
 

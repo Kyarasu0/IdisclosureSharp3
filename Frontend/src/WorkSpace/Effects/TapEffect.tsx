@@ -1,20 +1,28 @@
 // ==========================================
-// 共通コンポーネント: タップエフェクト
+// TapEffect.tsx
 // ==========================================
 import { useEffect, useState } from 'react';
 
 export const TapRipple = () => {
+  // ripples = [{ x, y, id }, { x, y, id }, ...] 
   const [ripples, setRipples] = useState<{ x: number; y: number; id: number }[]>([]);
 
   useEffect(() => {
+    // 関数設定
     const handleClick = (e: MouseEvent) => {
+      // idに日にちを設定
       const id = Date.now();
+      // 現在の配列の最後尾に追加
       setRipples((prev) => [...prev, { x: e.clientX, y: e.clientY, id }]);
+      // setTimeout( ()=>{}, s )でs秒後に()=>{}を実行する
+      // 以下は1秒後にrippleを消す役割
       setTimeout(() => {
         setRipples((prev) => prev.filter((r) => r.id !== id));
       }, 1000);
     };
+    // マウント時に実行
     window.addEventListener('click', handleClick);
+    // アンマウント時に実行
     return () => window.removeEventListener('click', handleClick);
   }, []);
 
