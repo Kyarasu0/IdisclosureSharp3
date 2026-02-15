@@ -1,9 +1,15 @@
-// ==========================================
-// Component: TimeDial
-// ==========================================
-import './TimeDial.module.css';
+import styles from './TimeDial.module.css';
+import { Plus, Minus } from "lucide-react";
 
-export const TimeDial = ({ value, onChange, disabled }: { value: number; onChange: (v: number) => void; disabled: boolean }) => {
+export const TimeDial = ({
+  value,
+  onChange,
+  disabled,
+}: {
+  value: number;
+  onChange: (v: number) => void;
+  disabled: boolean;
+}) => {
   const radius = 55;
   const stroke = 6;
   const normalizedRadius = radius - stroke * 2;
@@ -11,24 +17,72 @@ export const TimeDial = ({ value, onChange, disabled }: { value: number; onChang
   const offset = circumference - ((value - 5) / 10) * circumference;
 
   return (
-    <div className="dial-section">
-      <div style={{ position: 'relative', width: radius * 2, height: radius * 2 }}>
-        <svg height={radius * 2} width={radius * 2} style={{ transform: 'rotate(-90deg)' }}>
-          <circle stroke="rgba(255,255,255,0.05)" strokeWidth={stroke} fill="transparent" r={normalizedRadius} cx={radius} cy={radius} />
-          <circle stroke="var(--c-cyan)" strokeWidth={stroke} strokeDasharray={circumference + ' ' + circumference} style={{ strokeDashoffset: offset, transition: '0.3s' }} strokeLinecap="round" fill="transparent" r={normalizedRadius} cx={radius} cy={radius} />
-        </svg>
-        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', textAlign: 'center' }}>
-          <div style={{ fontSize: '1.8rem', fontWeight: 'bold', color: 'var(--c-cyan)' }}>{value}</div>
-          <div style={{ fontSize: '0.6rem', color: '#94a3b8' }}>MINS</div>
+    <div className={styles.dialSection}>
+      {/* 横並びラッパー */}
+      <div className={styles.dialRow}>
+        
+        {/* マイナスボタン */}
+        {!disabled && (
+          <button
+            className={styles.dialButton}
+            onClick={() => value > 5 && onChange(value - 1)}
+          >
+            <Minus size={16} />
+          </button>
+        )}
+
+
+        {/* 円形ダイヤル */}
+        <div
+          className={styles.dialCircleWrapper}
+          style={{ width: radius * 2, height: radius * 2 }}
+        >
+          <svg
+            height={radius * 2}
+            width={radius * 2}
+            className={styles.dialSvg}
+          >
+            <circle
+              className={styles.dialBg}
+              strokeWidth={stroke}
+              fill="transparent"
+              r={normalizedRadius}
+              cx={radius}
+              cy={radius}
+            />
+            <circle
+              className={styles.dialProgress}
+              strokeWidth={stroke}
+              strokeDasharray={`${circumference} ${circumference}`}
+              style={{ strokeDashoffset: offset }}
+              strokeLinecap="round"
+              fill="transparent"
+              r={normalizedRadius}
+              cx={radius}
+              cy={radius}
+            />
+          </svg>
+
+          <div className={styles.dialCenterText}>
+            <div className={styles.dialValue}>{value}</div>
+            <div className={styles.dialUnit}>MINS</div>
+          </div>
         </div>
+
+        {/* プラスボタン */}
+        {!disabled && (
+          <button
+            className={styles.dialButton}
+            onClick={() => value < 15 && onChange(value + 1)}
+          >
+            <Plus size={16} />
+          </button>
+        )}
+
       </div>
-      <div style={{ marginTop: '12px', fontSize: '0.7rem', color: '#94a3b8', letterSpacing: '1px' }}>MISSION DURATION</div>
-      {!disabled && (
-        <div style={{ display: 'flex', gap: '20px', marginTop: '10px' }}>
-          <button onClick={() => value > 5 && onChange(value - 1)} style={{ background: 'none', border: '1px solid var(--c-cyan)', color: 'var(--c-cyan)', borderRadius: '50%', width: '28px', height: '28px', cursor: 'pointer' }}>-</button>
-          <button onClick={() => value < 15 && onChange(value + 1)} style={{ background: 'none', border: '1px solid var(--c-cyan)', color: 'var(--c-cyan)', borderRadius: '50%', width: '28px', height: '28px', cursor: 'pointer' }}>+</button>
-        </div>
-      )}
+
+      {/* ラベル */}
+      <div className={styles.dialLabel}>MISSION DURATION</div>
     </div>
   );
 };

@@ -1,210 +1,144 @@
 /* ==========================================
    TimeDial.module.css
+   TimeDial専用スタイル
    ========================================== */
 
-/* ルートカラーカスタムプロパティ */
+
+/* ==========================================
+   カラーカスタムプロパティ
+   ※ :root はグローバル適用される
+   ========================================== */
 :root {
   --c-cyan: #06b6d4;
   --c-cyan-glow: rgba(6, 182, 212, 0.6);
-  --c-pink: #ec4899;
-  --c-panel-bg: rgba(15, 23, 42, 0.4);
   --c-border: rgba(255, 255, 255, 0.1);
-  --font-mono: 'Courier New', Courier, monospace;
 }
+
 
 /* ==========================================
-   Waiting Screen / Container
-   ========================================== */
-.waitingContainer {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10;
-}
-
-/* Glass-like Panel */
-.glassPanel {
-  background: var(--c-panel-bg);
-  border: 1px solid var(--c-border);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-radius: 20px;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8),
-              inset 0 0 0 1px rgba(255,255,255,0.05);
-  position: relative;
-  overflow: hidden;
-  width: 900px;
-  max-width: 95vw;
-}
-
-.panelAccent {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--c-cyan), transparent);
-}
-
-/* ==========================================
-   Content Layout
-   ========================================== */
-.contentWrapper {
-  display: flex;
-  gap: 32px;
-  padding: 40px;
-}
-
-.leftCol { flex: 1.5; }
-.rightCol { 
-  flex: 1; 
-  display: flex; 
-  flex-direction: column; 
-  border-left: 1px solid var(--c-border);
-  padding-left: 32px;
-}
-
-.roomIdTag {
-  font-size: 0.75rem;
-  color: var(--c-pink);
-  border: 1px solid var(--c-pink);
-  padding: 2px 10px;
-  border-radius: 4px;
-  display: inline-block;
-  margin-top: 8px;
-  background: rgba(236, 72, 153, 0.1);
-}
-
-.participantGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 12px;
-  margin-top: 24px;
-}
-
-/* ==========================================
-   User Card
-   ========================================== */
-.userCard {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 12px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.userCard:hover {
-  background: rgba(6, 182, 212, 0.1);
-  border-color: var(--c-cyan);
-  transform: scale(1.02);
-}
-
-.userCardIsMe {
-  border-color: var(--c-cyan);
-  background: rgba(6, 182, 212, 0.05);
-  box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
-}
-
-.avatarBox {
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
-  background: rgba(0,0,0,0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--c-cyan);
-  border: 1px solid rgba(6, 182, 212, 0.3);
-}
-
-/* ==========================================
-   TimeDial Component
+   TimeDial 全体ラッパー
    ========================================== */
 .dialSection {
   background: rgba(0, 0, 0, 0.2);
   border-radius: 16px;
   padding: 20px;
+  border: 1px solid var(--c-border);
+
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid var(--c-border);
 }
 
-.timeText {
-  text-align: right;
-  margin-bottom: 24px;
-}
-
-.timeTextClock {
-  font-size: 2.8rem;
-  font-weight: 800;
-  color: #fff;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-}
 
 /* ==========================================
-   Start Button
+   横並びエリア（← ここが今回の変更点）
+   ボタン + 円 + ボタン を横に並べる
    ========================================== */
-.startBtn {
-  margin-top: auto;
-  width: 100%;
-  padding: 18px;
-  background: var(--c-cyan);
-  color: #000;
-  border: none;
-  border-radius: 12px;
-  font-weight: 900;
-  font-size: 1.1rem;
-  letter-spacing: 2px;
-  cursor: pointer;
-  transition: all 0.3s;
-  text-transform: uppercase;
+.dialRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
 }
 
-.startBtn:hover {
-  box-shadow: 0 0 30px var(--c-cyan-glow);
-  transform: translateY(-2px);
-}
-
-.startBtnDisabled {
-  background: rgba(255,255,255,0.1);
-  color: rgba(255,255,255,0.3);
-  cursor: not-allowed;
-}
 
 /* ==========================================
-   Scanline Animation
+   円形ダイヤルラッパー
    ========================================== */
-@keyframes scanline {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(100%); }
+.dialCircleWrapper {
+  position: relative;
 }
 
-.scanline {
+
+/* SVG回転（上を0スタートにする） */
+.dialSvg {
+  transform: rotate(-90deg);
+}
+
+
+/* 背景円 */
+.dialBg {
+  stroke: rgba(255, 255, 255, 0.05);
+}
+
+
+/* 進捗円 */
+.dialProgress {
+  stroke: var(--c-cyan);
+  transition: stroke-dashoffset 0.3s ease;
+}
+
+
+/* ==========================================
+   円中央テキスト
+   ========================================== */
+.dialCenterText {
   position: absolute;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to bottom, transparent, rgba(6, 182, 212, 0.05), transparent);
-  animation: scanline 8s linear infinite;
-  pointer-events: none;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
 }
 
+
+/* 数値表示 */
+.dialValue {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--c-cyan);
+}
+
+
+/* 単位表示 */
+.dialUnit {
+  font-size: 0.6rem;
+  color: #94a3b8;
+}
+
+
 /* ==========================================
-   TimeDial buttons
+   下部ラベル
+   ========================================== */
+.dialLabel {
+  margin-top: 16px;
+  font-size: 0.7rem;
+  color: #94a3b8;
+  letter-spacing: 1px;
+}
+
+
+/* ==========================================
+   ＋ / − ボタン
    ========================================== */
 .dialButton {
+  /* --- 既存のプロパティ --- */
   background: none;
   border: 1px solid var(--c-cyan);
   color: var(--c-cyan);
   border-radius: 50%;
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+
+  /* --- ここから修正・追加 --- */
+  padding: 0;           /* 1. デフォルトのパディングをゼロにする（重要） */
+  line-height: 0;       /* 2. 行高によるズレを防ぐ */
+  overflow: hidden;     /* 3. はみ出しを防ぐ */
+}
+
+/* アイコン自体のスタイル（念のため） */
+.dialButton svg {
+  display: block;
+}
+
+/* ホバー時の演出（おまけ） */
+.dialButton:hover:not(:disabled) {
+  background: rgba(6, 182, 212, 0.1);
+  box-shadow: 0 0 8px var(--c-cyan-glow);
 }

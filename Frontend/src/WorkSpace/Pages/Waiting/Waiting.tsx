@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Users, Shield, Zap, Calendar, Power } from "lucide-react";
+import { Users, User, Crown, Power } from "lucide-react";
 import { TimeDial } from "../../Components/Misc/TimeDial/TimeDial";
 import styles from "./Waiting.module.css";
 import { usePhoton } from "../../Contexts/PhotonContext";
+import { GlitchText } from '../../Components/Texts/GlitchText/GlitchText';
+import { DurationDisplay } from '../../Components/Infomation/DurationDisplay/DurationDisplay';
+import { SubmitButton } from '../../Components/Buttons/SubmitButton/SubmitButton';
+import { useNavigate } from "react-router-dom";
 
-/**
- * Photon の型定義は global な `Photon` を参照します。
- * index.html に <script src="/photon.js"></script> で読み込む前提です。
- */
 declare global {
   interface Window {
     Photon: any;
@@ -23,12 +23,18 @@ interface Participant {
 }
 
 export function Waiting() {
-  const { client } = usePhoton(); // Context から取得
+  const navigate = useNavigate();
+  // Photonを取得
+  const { client } = usePhoton();
+  // Room名の受取
   const location = useLocation();
-  const roomName = location.state?.roomName || "MyRoom"; // ルーム名（Join している前提）
+  const roomName = location.state?.roomName || "MyRoom";
   
+  // ルームにいる参加者一覧の取得
   const [participants, setParticipants] = useState<Participant[]>([]);
+  // 現在時刻の取得
   const [time, setTime] = useState(new Date());
+  // ゲームの制限時間設定
   const [duration, setDuration] = useState(10);
 
   // 時計更新
@@ -42,10 +48,11 @@ export function Waiting() {
     if (!client) return;
 
     const interval = setInterval(() => {
+      // ルーム情報を取得
       const room = client.myRoom();
       if (!room) return;
 
-      // ルームに入っていれば参加者を取得
+      // 参加者情報を取得(500msに一回更新)
       const actors = client.myRoomActorsArray() || [];
       const list = actors.map((actor: any) => ({
         actorNr: actor.actorNr,
@@ -59,6 +66,7 @@ export function Waiting() {
     return () => clearInterval(interval);
   }, [client]);
 
+  // マスタープレイヤーの情報を取得
   const isMaster = participants.find((p) => p.isLocal)?.isMasterClient ?? false;
 
   // 空スロットを埋める
@@ -75,21 +83,26 @@ export function Waiting() {
   return (
     <div className={styles.waitingContainer}>
       <div className={styles.glassPanel}>
+
+        {/* パネル上部のアクセントライン */}
         <div className={styles.panelAccent} />
         <div className={styles.scanline} />
+
         <div className={styles.contentWrapper}>
           {/* 左側 UI */}
           <div className={styles.leftCol}>
+            {/* ヘッダー(タイトル + ルーム名) */}
             <div className={styles.leftColHeader}>
-              <h1 className={styles.headerTitle}>SYSTEM_STANDBY</h1>
+              <h1 className={styles.headerTitle}><GlitchText text="WAITING FOR PLAYERS..." /></h1>
               <div className={styles.roomIdTag}>
-                ENCRYPTED_NODE: {roomName}
+                RoomName: {roomName}
               </div>
             </div>
 
+            {/* 接続数表示 */}
             <div className={styles.linkedUsers}>
               <Users size={14} />
-              <span>LINKED_USERS: {String(participants.length).padStart(2, "0")} / 08</span>
+              <span>LINKED_PLAYERS: {String(participants.length).padStart(2, "0")} / 08</span>
             </div>
 
             {/* 参加者グリッド */}
@@ -97,15 +110,16 @@ export function Waiting() {
               {displayParticipants.map((p) => {
                 const isEmpty = !p.name;
                 return (
+                  // カード設定(自分 or 空き or その他)
                   <div
                     key={p.actorNr}
-                    className={`${styles.userCard} ${p.isLocal ? styles.userCardIsMe : ""} ${
-                      isEmpty ? styles.emptySlot : ""
-                    }`}
+                    className={`${styles.userCard} ${p.isLocal ? styles.userCardIsMe : ""} ${ isEmpty ? styles.emptySlot : "" }`}
                   >
+                    {/* カードアイコン */}
                     <div className={styles.avatarBox}>
-                      {isEmpty ? "+" : p.isMasterClient ? <Shield size={18} /> : <Zap size={18} />}
+                      {isEmpty ? "+" : p.isMasterClient ? <Crown size={18} /> : <User size={18} />}
                     </div>
+                    {/* カード内容(空き or その他) */}
                     <div className={styles.participantInfo}>
                       {isEmpty ? (
                         <div className={styles.pendingText}>PENDING...</div>
@@ -119,7 +133,7 @@ export function Waiting() {
                             className={styles.participantRole}
                             style={{ color: p.isMasterClient ? "var(--c-cyan)" : "#64748b" }}
                           >
-                            {p.isMasterClient ? "MASTER_NODE" : "GUEST_LINK"}
+                            {p.isMasterClient ? "MASTER_PLAYER" : "GUEST_PLAYER"}
                           </div>
                         </>
                       )}
@@ -133,25 +147,20 @@ export function Waiting() {
           {/* 右側 UI */}
           <div className={styles.rightCol}>
             <div className={styles.timeText}>
-              <div className={styles.dateDisplay}>
-                <Calendar size={12} />
-                {time.toLocaleDateString("ja-JP").replace(/\//g, ".")}
-              </div>
-              <div className={styles.clock}>
-                {time.toLocaleTimeString("ja-JP", { hour12: false })}
-              </div>
+              <DurationDisplay duration={duration * 60} />
             </div>
 
             <TimeDial value={duration} onChange={setDuration} disabled={!isMaster} />
 
-            <div style={{ flex: 1 }} />
-
-            <button className={styles.startBtn} disabled={!isMaster}>
-              Execute Mission
-              <Power size={18} style={{ marginLeft: "10px", verticalAlign: "middle" }} />
-            </button>
-
-            <div className={styles.secureNotice}>Secure connection established</div>
+            <SubmitButton
+              type="button"
+              isLoading={false} // 今はローディングは使わない場合
+              onClick={() => {
+                navigate("/game-screen"); // 次の画面へ
+              }}
+            >
+            &nbsp;START
+            </SubmitButton>
           </div>
         </div>
       </div>

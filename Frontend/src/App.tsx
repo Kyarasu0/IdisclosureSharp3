@@ -8,6 +8,8 @@ import { Registration } from "./WorkSpace/Pages/Registration/Registration";
 import { SecretEntry } from "./WorkSpace/Pages/SecretEntry/SecretEntry";
 import { CreateJoin } from "./WorkSpace/Pages/CreateJoin/CreateJoin";
 import { Waiting } from "./WorkSpace/Pages/Waiting/Waiting";
+import { GameScreen } from "./WorkSpace/Pages/GameScreen/GameScreen";
+
 import { CyberBackground } from "./WorkSpace/Animation/CyberBackground";
 import { TapRipple } from "./WorkSpace/Effects/TapEffect";
 import styles from "./App.module.css";
@@ -57,6 +59,14 @@ function AnimatedRoutes() {
                 <Waiting />
             </PageWrapper>
         }
+        />
+        <Route
+          path="/game-screen"
+          element={
+              <PageWrapper>
+                  <GameScreen />
+              </PageWrapper>
+          }
         />
       </Routes>
     </AnimatePresence>
