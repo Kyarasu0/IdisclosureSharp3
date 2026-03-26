@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Users, User, Crown, Power } from "lucide-react";
+import { Users, User, Crown } from "lucide-react";
 import { TimeDial } from "../../Components/Misc/TimeDial/TimeDial";
 import styles from "./Waiting.module.css";
 import { usePhoton } from "../../Contexts/PhotonContext";
@@ -33,15 +33,15 @@ export function Waiting() {
   // ルームにいる参加者一覧の取得
   const [participants, setParticipants] = useState<Participant[]>([]);
   // 現在時刻の取得
-  const [time, setTime] = useState(new Date());
+  // const [time, setTime] = useState(new Date());
   // ゲームの制限時間設定
   const [duration, setDuration] = useState(10);
 
   // 時計更新
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
+  // useEffect(() => {
+  //   const interval = setInterval(() => setTime(new Date()), 1000);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   // 参加者一覧の更新
   useEffect(() => {
@@ -89,7 +89,7 @@ export function Waiting() {
         <div className={styles.scanline} />
 
         <div className={styles.contentWrapper}>
-          {/* 左側 UI */}
+          {/* ========== 左側 UI ========== */}
           <div className={styles.leftCol}>
             {/* ヘッダー(タイトル + ルーム名) */}
             <div className={styles.leftColHeader}>
@@ -144,7 +144,7 @@ export function Waiting() {
             </div>
           </div>
 
-          {/* 右側 UI */}
+          {/*  ========== 右側 UI ========== */}
           <div className={styles.rightCol}>
             <div className={styles.timeText}>
               <DurationDisplay duration={duration * 60} />

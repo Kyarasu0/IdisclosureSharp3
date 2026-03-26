@@ -6,6 +6,7 @@
 export const COLORS = {
     cyan: '#35CBDB', // ロック本体の色
     pink: '#ff66c4', // ロックのアーム部分の色
+    dangerRed: '#ff4d6d',
     bg: '#0D1A23',   // 濃紺の背景
     green: '#7ed957',// 緑色のアクセント
     grid: '#152231', // グリッド線の色

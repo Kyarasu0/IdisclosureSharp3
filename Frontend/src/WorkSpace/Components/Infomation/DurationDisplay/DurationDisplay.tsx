@@ -34,6 +34,7 @@ export const DurationDisplay: React.FC<DurationDisplayProps> = ({
   }
 
   if (remainingSeconds < 0) remainingSeconds = 0;
+  const isDanger = remainingSeconds <= 60;
 
   const minutes = String(Math.floor(remainingSeconds / 60)).padStart(2, "0");
   const seconds = String(remainingSeconds % 60).padStart(2, "0");
@@ -41,7 +42,7 @@ export const DurationDisplay: React.FC<DurationDisplayProps> = ({
   // ===============================
 
   return (
-    <div className={styles.ctpContainer}>
+    <div className={`${styles.ctpContainer} ${isDanger ? styles.danger : ""}`}>
       <div className={styles.ctpMainPanel}>
 
         {/* 四隅装飾 */}
@@ -54,7 +55,7 @@ export const DurationDisplay: React.FC<DurationDisplayProps> = ({
         <div className={styles.ctpClockArea}>
           <div className={styles.ctpSystemTag}>{label}</div>
 
-          <div className={styles.ctpDigitalDisplay}>
+          <div className={`${styles.ctpDigitalDisplay} ${isDanger ? styles.danger : ""}`}>
             <span className={styles.ctpTimeDigit}>{minutes}</span>
             <span className={styles.ctpTimeSeparator}>:</span>
             <span className={styles.ctpSecondsDigit}>{seconds}</span>
