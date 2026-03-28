@@ -1,21 +1,44 @@
-import type { ReactNode } from 'react';
-import styles from './RoundedButton.module.css';
+import type { ReactNode } from "react";
+import styles from "./RoundedButton.module.css";
 
-type StartButtonProps = {
+type RoundedButtonProps = {
   onClick: () => void;
   children: ReactNode;
-  icon?: ReactNode; // optional
+  icon?: ReactNode;
+  size?: "lg" | "md" | "sm";
+  fullWidth?: boolean;
 };
 
-export const RoundedButton = ({ onClick, children, icon }: StartButtonProps) => {
+export const RoundedButton = ({
+  onClick,
+  children,
+  icon,
+  size = "md",
+  fullWidth = false,
+}: RoundedButtonProps) => {
   return (
-    <div className={styles.startButtonWrapper}>
-      <button className={styles.startButton} onClick={onClick}>
+    <div
+      className={`${styles.startButtonWrapper} ${
+        fullWidth ? styles.fullWidth : ""
+      }`}
+    >
+      <button
+        className={`
+          ${styles.startButton}
+          ${styles[size]}
+        `}
+        onClick={onClick}
+      >
         <div className={styles.startButtonBg}></div>
         <div className={styles.startButtonOverlay}></div>
-        <span className={`${icon ? styles.contentWithIcon : styles.contentNoIcon} relative z-10`}>
+
+        <span
+          className={`${
+            icon ? styles.contentWithIcon : styles.contentNoIcon
+          } ${styles.content}`}
+        >
           {children}
-          {icon && icon}
+          {icon && <span className={styles.icon}>{icon}</span>}
         </span>
       </button>
     </div>

@@ -96,9 +96,15 @@
 /* ================= CONTENT ================= */
 
 .content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
   flex: 1;
   overflow-y: auto;
   padding: 16px;
+  gap: 10px;
+  color: #35CBDB;
 }
 
 /* Scrollbar */

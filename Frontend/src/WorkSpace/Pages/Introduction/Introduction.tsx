@@ -2,7 +2,8 @@
 // ページ1: イントロダクション画面
 // ==========================================
 import { useNavigate } from "react-router-dom";
-import ICON_PATH from "../../Images/IdisclosureIcon.png";
+// import ICON_PATH from "../../Images/IdisclosureIcon.png";
+import ICON_PATH from "../../Images/IdisS3Icon.png";
 import styles from "./Introduction.module.css";
 import { RoundedButton } from "../../Components/Buttons/RoundedButton/RoundedButton";
 
@@ -50,7 +51,7 @@ export const Introduction = () => {
       </div>
 
       {/* 2. STARTボタン */}
-      <RoundedButton onClick={handleStart}>
+      <RoundedButton onClick={handleStart} size="lg">
         PRESS TO START
       </RoundedButton>
 

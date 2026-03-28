@@ -13,7 +13,7 @@ type GlassWindowProps = {
 export const GlassWindow = ({
   icon: Icon,
   title,
-  subTitle,
+  subTitle = "",
   children,
   className = "",
 }: GlassWindowProps) => {

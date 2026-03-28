@@ -1,50 +1,88 @@
+/* ===== WRAPPER ===== */
 .startButtonWrapper {
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   text-align: center;
 }
 
+.fullWidth {
+  width: 100%;
+}
+
+.fullWidth button {
+  width: 100%;
+  justify-content: center;
+}
+
+/* ===== BUTTON BASE ===== */
 .startButton {
   position: relative;
   z-index: 1;
-  padding: 1.25rem 4rem;
+
   border-radius: 9999px;
   background: transparent;
   overflow: hidden;
   cursor: pointer;
-  transition: transform 0.2s;
+
+  transition: all 0.2s;
+
   font-family: 'Anonymous Pro', monospace;
   font-weight: bold;
-  font-size: 1.125rem;
-  letter-spacing: 0.25em;
+  letter-spacing: 0.15em;
   color: #06ffff;
+
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  justify-content: center;
+  gap: 0.5rem;
+
   border: 1px solid rgba(6, 255, 255, 0.5);
 }
 
+/* ===== SIZE VARIANTS ===== */
+
+.lg {
+  padding: 1.2rem 3rem;
+  font-size: 1rem;
+}
+
+.md {
+  padding: 0.7rem 1.8rem;
+  font-size: 0.85rem;
+}
+
+.sm {
+  padding: 0.4rem 1rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+}
+
+/* ===== HOVER / ACTIVE ===== */
 
 .startButton:hover {
   transform: scale(1.05);
-  color: #fff;
+  color: #ffffff;
 }
 
 .startButton:active {
   transform: scale(0.95);
 }
 
+/* ===== BACKGROUND GLOW ===== */
+
 .startButtonBg {
   position: absolute;
   inset: 0;
-  border: 1px solid rgba(6, 255, 255, 0.5);
   border-radius: 9999px;
+  border: 1px solid rgba(6, 255, 255, 0.4);
   transition: all 0.3s;
 }
 
-.startButtonBg:hover {
+.startButton:hover .startButtonBg {
   border-color: #00c0ff;
-  box-shadow: 0 0 30px #00f3ff;
+  box-shadow: 0 0 15px #00f3ff;
 }
+
+/* ===== GLASS OVERLAY ===== */
 
 .startButtonOverlay {
   position: absolute;
@@ -53,4 +91,27 @@
   backdrop-filter: blur(4px);
   border-radius: 9999px;
   pointer-events: none;
+}
+
+/* ===== CONTENT ===== */
+
+.content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.contentWithIcon {
+}
+
+.contentNoIcon {
+}
+
+/* ===== ICON ===== */
+
+.icon {
+  display: flex;
+  align-items: center;
 }

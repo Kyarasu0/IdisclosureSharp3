@@ -1,0 +1,57 @@
+/* CurrencyDisplay.module.css */
+
+.wrapper {
+  padding: 10px 12px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  border-radius: 10px;
+
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+
+  backdrop-filter: blur(6px);
+  transition: all 0.2s;
+}
+
+.wrapper:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--accent) 50%, transparent);
+}
+
+/* 左 */
+.left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--accent);
+  font-size: 18px;
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+
+  color: var(--accent);
+}
+
+/* 右（数値） */
+.amount {
+  font-size: 18px;
+  font-weight: 700;
+
+  color: var(--accent);
+
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 8px color-mix(in srgb, var(--accent) 70%, transparent);
+}

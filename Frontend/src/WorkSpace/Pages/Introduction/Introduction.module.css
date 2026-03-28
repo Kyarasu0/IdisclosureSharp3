@@ -66,8 +66,8 @@
 /* 実際の画像 */
 .iconImage {
   /* 大きさ設定 */
-  width: 8rem;
-  height: 8rem;
+  width: 6rem;
+  height: 6rem;
   /* 装飾設定 */
   filter: drop-shadow(0 0 15px rgba(0, 243, 255, 0.5));
   /* 配置基準設定 */

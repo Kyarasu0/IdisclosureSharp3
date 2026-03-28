@@ -53,11 +53,6 @@
   color: #22d3ee80;
 }
 
-/* ログスクロール */
-.scroll {
-  overflow-y: auto;
-}
-
 /* WiFi */
 .wifiItem {
   display: flex;
@@ -72,6 +67,14 @@
 }
 
 /* バッテリー */
+.Battery{
+  height: 100%;
+  padding: 20px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .progressBar {
   height: 6px;
   background: #1e293b;
@@ -83,4 +86,292 @@
   width: 82%;
   height: 100%;
   background: linear-gradient(90deg, #22d3ee, #06b6d4);
+}
+
+/* ===== WIFI ===== */
+
+.activeBox {
+  background: rgba(34, 211, 238, 0.1);
+  border: 1px solid rgba(34, 211, 238, 0.2);
+  padding: 8px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.activeLabel {
+  font-size: 10px;
+  color: #22d3ee;
+  opacity: 0.7;
+}
+
+.activeName {
+  font-size: 12px;
+  color: white;
+  font-weight: bold;
+}
+
+.wifiList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 140px;
+}
+
+.wifiRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px;
+  border-radius: 6px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.selected {
+  background: rgba(34, 211, 238, 0.15);
+  border: 1px solid rgba(34, 211, 238, 0.3);
+}
+
+.wifiRow:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lock {
+  color: #888;
+}
+
+.unlock {
+  color: #ef4444;
+}
+
+.wifiName {
+  color: #ccc;
+}
+
+.wifiRow:hover .wifiName {
+  color: white;
+}
+
+.signal {
+  display: flex;
+  gap: 2px;
+}
+
+.signalOn {
+  width: 4px;
+  height: 8px;
+  background: #22d3ee;
+}
+
+.signalOff {
+  width: 4px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.wifiIcon {
+  color: #22d3ee;
+  transition: color 0.2s;
+}
+
+/* ========== Browser ========== */
+/* ===== BROWSER ===== */
+
+.browserTop {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.urlBar {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(34,211,238,0.2);
+  border-radius: 8px;
+  padding: 6px 8px;
+}
+
+.searchIcon {
+  margin-right: 6px;
+  font-size: 12px;
+  color: #22d3ee;
+}
+
+.urlInput {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #22d3ee;
+  font-size: 11px;
+  font-family: monospace;
+}
+
+.targetButton {
+  background: rgba(34,211,238,0.2);
+  border: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #22d3ee;
+  transition: all 0.2s;
+}
+
+.targetButton:hover {
+  background: #22d3ee;
+  color: black;
+}
+
+/* ===== MAIN ===== */
+
+.browserMain {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.iconWrap {
+  position: relative;
+}
+
+.bigIcon {
+  font-size: 60px;
+  opacity: 0.2;
+}
+
+.smallIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+}
+
+.centerText {
+  text-align: center;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.desc {
+  font-size: 10px;
+  color: #64748b;
+  margin-top: 6px;
+  max-width: 200px;
+}
+
+/* ===== BUTTON ===== */
+
+.actionButton {
+  background: rgba(34,211,238,0.2);
+  border: 1px solid #22d3ee;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 10px;
+  cursor: pointer;
+  color: #22d3ee;
+  transition: all 0.3s;
+}
+
+.actionButton:hover {
+  background: #22d3ee;
+  color: black;
+}
+
+/* ===== LOG ===== */
+
+.browserLog {
+  margin-top: 12px;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(34,211,238,0.1);
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 10px;
+}
+
+.logTitle {
+  color: #22d3ee;
+  font-size: 9px;
+  margin-bottom: 6px;
+}
+
+.logRow {
+  display: flex;
+  justify-content: space-between;
+  font-family: monospace;
+}
+
+.logOk {
+  color: #22c55e;
+}
+
+.logReady {
+  color: #22d3ee;
+}
+
+/* ===== SEARCH BAR ===== */
+
+.browserTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+/* 入力全体（アイコン + input） */
+.searchBox {
+  display: flex;
+  align-items: center;
+  flex: 1;
+
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(34, 211, 238, 0.4);
+  border-radius: 8px;
+
+  padding: 6px 10px;
+  transition: all 0.2s;
+}
+
+/* フォーカス時 */
+.searchBox:focus-within {
+  border: 1px solid #22d3ee;
+  box-shadow: 0 0 8px rgba(34, 211, 238, 0.5);
+}
+
+/* Lucideアイコン */
+.searchIcon {
+  color: #22d3ee;
+  margin-right: 6px;
+}
+
+/* input */
+.urlInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+
+  color: #e0f2fe;
+  font-size: 12px;
+  font-family: monospace;
+}
+
+/* ===== BUTTON ===== */
+.wrapButton{
+  width: 30%;
 }
