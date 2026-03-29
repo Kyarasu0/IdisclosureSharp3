@@ -1,15 +1,16 @@
-import { Terminal, Database, Wifi, BatteryMedium, Server, Search, Stone, Monitor, HardDrive } from "lucide-react";
+import { Terminal, Database, Wifi, BatteryMedium, Server, Search, Stone, Monitor, HardDrive, BrickWallFire } from "lucide-react";
 import { GlassWindow } from "../../Components/Cards/GlassWindow/GlassWindow";
 import { RoundedButton } from "../../Components/Buttons/RoundedButton/RoundedButton";
 import { ProgressBar } from "../../Components/Infomation/ProgressBar/ProgressBar";
 import { CurrencyDisplay } from "../../Components/Infomation/CurrencyDisplay/CurrencyDisplay";
+import { AppIcon } from "../../Components/Misc/AppIcon/AppIcon";
 import styles from "./GameScreen.module.css";
 import { useEffect, useState } from "react";
 import { DurationDisplay } from '../../Components/Infomation/DurationDisplay/DurationDisplay';
 import { Logo } from '../../Components/Infomation/Logo/Logo';
 
 export function GameScreen() {
-  const [timeLeft, setTimeLeft] = useState(100); // 10分
+  const [timeLeft, setTimeLeft] = useState(100000);
   const [selectedWifi, setSelectedWifi] = useState<string>("BASE_STATION_09");
 
   useEffect(() => {
@@ -30,12 +31,6 @@ export function GameScreen() {
 
     return () => clearInterval(timer);
   }, []);
-
-  const formatTime = (sec: number) => {
-    const m = Math.floor(sec / 60);
-    const s = sec % 60;
-    return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
-  };
 
   return (
     <div className={styles.app}>
@@ -68,13 +63,13 @@ export function GameScreen() {
           <GlassWindow icon={Server} title="IP List">
             <CurrencyDisplay
               amount={"123.123.123.123"}
-              label="PC IP Address"
+              label="PC IP"
               icon={<Monitor size={18} />}
               color={"#7ed957"}
             />
             <CurrencyDisplay
               amount={"123.123.123.123"}
-              label="Server IP Address"
+              label="Server IP"
               icon={<HardDrive size={18} />}
               color={"#ff66c4"}
             />
@@ -89,41 +84,77 @@ export function GameScreen() {
         </div>
 
         {/* ========== CENTER ========== */}
-        <GlassWindow icon={Terminal} title="Browser">
-          {/* ===== SEARCH BAR ===== */}
-          <div className={styles.browserTop}>
-            <div className={styles.searchBox}>
-              <Search size={14} className={styles.searchIcon} />
+        <div className={styles.centerColumn}>
 
-              <input
-                className={styles.urlInput}
-                placeholder="Enter target URL..."
-              />
+          <div className={styles.centerInner}>
+
+            {/* ===== Browser ===== */}
+            <div className={styles.mainArea}>
+              <GlassWindow icon={Terminal} title="Browser">
+
+                <div className={styles.browserTop}>
+                  <div className={styles.searchBox}>
+                    <Search size={14} className={styles.searchIcon} />
+                    <input
+                      className={styles.urlInput}
+                      placeholder="Enter target URL..."
+                    />
+                  </div>
+
+                  <RoundedButton onClick={() => {}}>
+                    SEARCH
+                  </RoundedButton>
+                </div>
+
+                <div className={styles.webList}>
+                  {[
+                    {name: "ADMIN_PANEL", ip: "123.123.123.123:80"},
+                    {name: "ADMIN_PANEL", ip: "123.123.123.123:80"},
+                    {name: "ADMIN_PANEL", ip: "123.123.123.123:80"},
+                  ].map((site, i) => (
+                    <div key={i} className={styles.webItem}>
+                      <span>{site.name}</span>
+                      <span> : </span>
+                      <span>{site.ip}</span>
+                    </div>
+                  ))}
+                </div>
+
+              </GlassWindow>
             </div>
 
-            <RoundedButton onClick={() => {}}>
-              SEARCH
-            </RoundedButton>
+            {/* ===== Applications ===== */}
+            <div className={styles.subArea}>
+              <GlassWindow icon={Monitor} title="Apps">
+
+                <div className={styles.appGridVertical}>
+
+                  <AppIcon
+                    icon={<BrickWallFire size={20} />}
+                    label="Firewall"
+                    color="#7ed957"
+                  />
+
+                  <AppIcon
+                    icon={<Server size={20} />}
+                    label="Server"
+                    color="#ff66c4"
+                  />
+
+                  <AppIcon
+                    icon={<Terminal size={20} />}
+                    label="Terminal"
+                    color="#35CBDB"
+                  />
+
+                </div>
+
+              </GlassWindow>
+            </div>
+
           </div>
 
-          {/* ===== WEB LIST ===== */}
-          <div className={styles.webList}>
-            {[
-              {name: "ADMIN_PANEL", ip: "123.123.123.123:80"},
-              {name: "ADMIN_PANEL", ip: "123.123.123.123:80"},
-              {name: "ADMIN_PANEL", ip: "123.123.123.123:80"},
-              {name: "ADMIN_PANEL", ip: "123.123.123.123:80"},
-              {name: "ADMIN_PANEL", ip: "123.123.123.123:80"},
-              {name: "ADMIN_PANEL", ip: "123.123.123.123:80"},
-            ].map((site, i) => (
-              <div key={i} className={styles.webItem}>
-                <span>{site.name}</span>
-                <span> : </span>
-                <span>{site.ip}</span>
-              </div>
-            ))}
-          </div>
-        </GlassWindow>
+        </div>
 
         {/* ========== RIGHT ========== */}
         <div className={styles.column}>
@@ -146,13 +177,11 @@ export function GameScreen() {
 
           {/* 3. WIFI */}
           <GlassWindow icon={Wifi} title="WiFi">
-            {/* Active */}
             <div className={styles.activeBox}>
               <div className={styles.activeLabel}>ACTIVE</div>
               <div className={styles.activeName}>{selectedWifi}</div>
             </div>
 
-            {/* List */}
             <div>
               {[
                 { id: "SECURE_ALPHA" },
