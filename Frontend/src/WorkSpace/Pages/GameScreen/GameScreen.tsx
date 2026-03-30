@@ -3,6 +3,12 @@ import { GlassWindow } from "../../Components/Cards/GlassWindow/GlassWindow";
 import { RoundedButton } from "../../Components/Buttons/RoundedButton/RoundedButton";
 import { ProgressBar } from "../../Components/Infomation/ProgressBar/ProgressBar";
 import { CurrencyDisplay } from "../../Components/Infomation/CurrencyDisplay/CurrencyDisplay";
+
+import { BrowserWidget } from "../../Components/Widgets/BrowserWidget/BrowserWidget";
+import { FirewallWidget } from "../../Components/Widgets/FirewallWidget/FirewallWidget";
+import { TerminalWidget } from "../../Components/Widgets/TerminalWidget/TerminalWidget";
+import { PhishingWidget } from "../../Components/Widgets/PhishingWidget/PhishingWidget";
+
 import { AppIcon } from "../../Components/Misc/AppIcon/AppIcon";
 import styles from "./GameScreen.module.css";
 import { useEffect, useState } from "react";
@@ -10,8 +16,31 @@ import { DurationDisplay } from '../../Components/Infomation/DurationDisplay/Dur
 import { Logo } from '../../Components/Infomation/Logo/Logo';
 
 export function GameScreen() {
+  type AppType =
+  | "browser"
+  | "firewall"
+  | "terminal"
+  | "server"
+  | "phishing";
+
   const [timeLeft, setTimeLeft] = useState(100000);
   const [selectedWifi, setSelectedWifi] = useState<string>("BASE_STATION_09");
+  const [activeApp, setActiveApp] = useState<AppType>("browser");
+
+  const renderApp = () => {
+  switch (activeApp) {
+    case "browser":
+      return <BrowserWidget />;
+    case "firewall":
+      return <FirewallWidget />;
+    case "terminal":
+      return <TerminalWidget />;
+    case "phishing":
+      return <PhishingWidget />;
+    default:
+      return null;
+  }
+};
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -90,37 +119,7 @@ export function GameScreen() {
 
             {/* ===== Browser ===== */}
             <div className={styles.mainArea}>
-              <GlassWindow icon={Terminal} title="Browser">
-
-                <div className={styles.browserTop}>
-                  <div className={styles.searchBox}>
-                    <Search size={14} className={styles.searchIcon} />
-                    <input
-                      className={styles.urlInput}
-                      placeholder="Enter target URL..."
-                    />
-                  </div>
-
-                  <RoundedButton onClick={() => {}}>
-                    SEARCH
-                  </RoundedButton>
-                </div>
-
-                <div className={styles.webList}>
-                  {[
-                    {name: "ADMIN_PANEL", ip: "123.123.123.123:80"},
-                    {name: "ADMIN_PANEL", ip: "123.123.123.123:80"},
-                    {name: "ADMIN_PANEL", ip: "123.123.123.123:80"},
-                  ].map((site, i) => (
-                    <div key={i} className={styles.webItem}>
-                      <span>{site.name}</span>
-                      <span> : </span>
-                      <span>{site.ip}</span>
-                    </div>
-                  ))}
-                </div>
-
-              </GlassWindow>
+              {renderApp()}
             </div>
 
             {/* ===== Applications ===== */}
@@ -133,18 +132,32 @@ export function GameScreen() {
                     icon={<BrickWallFire size={20} />}
                     label="Firewall"
                     color="#7ed957"
+                    onClick={() => setActiveApp("firewall")}
+                    isActive={activeApp === "firewall"}
                   />
 
                   <AppIcon
                     icon={<Server size={20} />}
                     label="Server"
                     color="#ff66c4"
+                    onClick={() => setActiveApp("server")}
+                    isActive={activeApp === "server"}
                   />
 
                   <AppIcon
                     icon={<Terminal size={20} />}
                     label="Terminal"
                     color="#35CBDB"
+                    onClick={() => setActiveApp("terminal")}
+                    isActive={activeApp === "terminal"}
+                  />
+
+                  <AppIcon
+                    icon={<Monitor size={20} />}
+                    label="Browser"
+                    color="#22d3ee"
+                    onClick={() => setActiveApp("browser")}
+                    isActive={activeApp === "browser"}
                   />
 
                 </div>

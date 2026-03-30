@@ -19,7 +19,7 @@
   transition: all 0.2s;
 }
 
-/* ホバー（これが命） */
+/* ホバー */
 .wrapper:hover {
   border-color: var(--accent);
   box-shadow: 0 0 14px color-mix(in srgb, var(--accent) 60%, transparent);
@@ -31,6 +31,15 @@
   transform: scale(0.95);
 }
 
+/* ✅ アクティブ状態（ここが本命） */
+.active {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
+  box-shadow:
+    0 0 20px color-mix(in srgb, var(--accent) 70%, transparent),
+    inset 0 0 10px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
 /* アイコン */
 .icon {
   display: flex;
@@ -40,7 +49,6 @@
   color: var(--accent);
   font-size: 20px;
 
-  /* ほんのり発光 */
   filter: drop-shadow(0 0 6px color-mix(in srgb, var(--accent) 70%, transparent));
 }
 

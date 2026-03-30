@@ -203,12 +203,6 @@
 /* ========== Browser ========== */
 /* ===== BROWSER ===== */
 
-.browserTop {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
 .urlBar {
   flex: 1;
   display: flex;
@@ -350,44 +344,6 @@
   justify-content: space-between;
   gap: 10px;
   margin-bottom: 14px;
-}
-
-/* 入力全体（アイコン + input） */
-.searchBox {
-  display: flex;
-  align-items: center;
-  flex: 1;
-
-  background: rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(34, 211, 238, 0.4);
-  border-radius: 8px;
-
-  padding: 6px 10px;
-  transition: all 0.2s;
-}
-
-/* フォーカス時 */
-.searchBox:focus-within {
-  border: 1px solid #22d3ee;
-  box-shadow: 0 0 8px rgba(34, 211, 238, 0.5);
-}
-
-/* Lucideアイコン */
-.searchIcon {
-  color: #22d3ee;
-  margin-right: 6px;
-}
-
-/* input */
-.urlInput {
-  flex: 1;
-  background: transparent;
-  border: none;
-  outline: none;
-
-  color: #e0f2fe;
-  font-size: 12px;
-  font-family: monospace;
 }
 
 /* ===== BUTTON ===== */
