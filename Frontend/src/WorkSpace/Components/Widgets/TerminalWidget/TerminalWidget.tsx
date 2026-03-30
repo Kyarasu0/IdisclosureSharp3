@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import type { FormEvent, ReactNode } from 'react';
-import { Terminal, Activity, ShieldAlert, Cpu } from 'lucide-react';
+import { Terminal, ShieldAlert } from 'lucide-react';
 import styles from './TerminalWidget.module.css';
 
 const cx = (...classNames: Array<string | undefined | null | false>) =>
@@ -77,17 +77,17 @@ export function TerminalWidget() {
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
         if (e.key === "Backspace") {
-        setInput((prev) => prev.slice(0, -1));
+          setInput((prev) => prev.slice(0, -1));
         } else if (e.key === "Enter") {
-        handleCommand(e as any);
+          handleCommand(e as any);
         } else if (e.key.length === 1) {
-        setInput((prev) => prev + e.key);
+          setInput((prev) => prev + e.key);
         }
     };
 
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-    }, [input]);
+  }, [input]);
 
   useEffect(() => {
     if (logRef.current) {

@@ -1,11 +1,10 @@
-import { Terminal, Database, Wifi, BatteryMedium, Server, Search, Stone, Monitor, HardDrive, BrickWallFire } from "lucide-react";
+import { Terminal, Database, Wifi, BatteryMedium, Server, Stone, Monitor, HardDrive, BrickWallFire } from "lucide-react";
 import { GlassWindow } from "../../Components/Cards/GlassWindow/GlassWindow";
-import { RoundedButton } from "../../Components/Buttons/RoundedButton/RoundedButton";
 import { ProgressBar } from "../../Components/Infomation/ProgressBar/ProgressBar";
 import { CurrencyDisplay } from "../../Components/Infomation/CurrencyDisplay/CurrencyDisplay";
 
 import { BrowserWidget } from "../../Components/Widgets/BrowserWidget/BrowserWidget";
-import { FirewallWidget } from "../../Components/Widgets/FirewallWidget/FirewallWidget";
+import FirewallWidget from "../../Components/Widgets/FirewallWidget/FirewallWidget";
 import { TerminalWidget } from "../../Components/Widgets/TerminalWidget/TerminalWidget";
 import { PhishingWidget } from "../../Components/Widgets/PhishingWidget/PhishingWidget";
 

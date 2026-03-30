@@ -7,18 +7,25 @@ import ICON_PATH from "../../Images/IdisS3Icon.png";
 import styles from "./Introduction.module.css";
 import { RoundedButton } from "../../Components/Buttons/RoundedButton/RoundedButton";
 
+type IntroductionProps = {
+  onStart?: () => void;
+  isExiting?: boolean;
+};
+
 // Introduction (STARTボタン押下時に /register へ遷移するページ)
-export const Introduction = () => {
+export const Introduction = ({ onStart, isExiting }: IntroductionProps) => {
   // navigate関数を使う
   const navigate = useNavigate();
+  const containerClassName = [styles.container, isExiting ? styles.exiting : ''].filter(Boolean).join(' ');
 
   // STARTボタン押下時の処理
   const handleStart = () => {
+    onStart?.();
     navigate("/register");
   };
 
   return (
-    <div className={styles.container}>
+    <div className={containerClassName}>
       
       {/* 1. アイコン画像・ロゴ・サブタイトル */}
       <div className={styles.logoArea}>
