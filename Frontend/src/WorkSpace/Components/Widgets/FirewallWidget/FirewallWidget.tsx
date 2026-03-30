@@ -218,7 +218,6 @@ export default function FirewallWidget() {
                         <div className={styles.emptyText}>[ EMPTY_SLOT ]</div>
                       ) : (
                         <>
-                          <Crosshair size={20} className={styles.blockedIcon} />
                           <div className={styles.blockedContent}>
                             <div className={styles.blockedDetails}>
                               <span className={styles.blockedLabel}>BLOCKED_NODE</span>
@@ -228,7 +227,7 @@ export default function FirewallWidget() {
                               onClick={() => handleRemoveIP(ip)}
                               className={styles.removeBtn}
                             >
-                              <X size={20} className={styles.removeBtnIcon} />
+                              <span><X size={18} /></span>
                             </button>
                           </div>
                           {/* Deco lines for blocked item */}
