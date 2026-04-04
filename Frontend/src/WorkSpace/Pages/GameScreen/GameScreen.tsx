@@ -139,8 +139,8 @@ export function GameScreen() {
                     icon={<Server size={20} />}
                     label="Server"
                     color="#ff66c4"
-                    onClick={() => setActiveApp("server")}
-                    isActive={activeApp === "server"}
+                    onClick={() => setActiveApp("phishing")}
+                    isActive={activeApp === "phishing"}
                   />
 
                   <AppIcon

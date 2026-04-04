@@ -1,0 +1,98 @@
+.wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== GRID ===== */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.card {
+  display: flex;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid rgba(0,255,204,0.2);
+  background: rgba(0,0,0,0.4);
+  color: #00ffcc;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.card:hover {
+  border-color: #00ffcc;
+  background: rgba(0,255,204,0.1);
+}
+
+.title {
+  font-weight: bold;
+}
+
+.meta {
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+/* ===== HOSTING ===== */
+.hosting {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.headerLeft {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.power {
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+/* Logs */
+.logBox {
+  flex: 1;
+  background: rgba(0,0,0,0.6);
+  border: 1px solid rgba(0,255,204,0.2);
+  padding: 10px;
+  font-family: monospace;
+  overflow-y: auto;
+}
+
+.log {
+  font-size: 12px;
+  margin-bottom: 4px;
+  opacity: 0.8;
+}
+
+/* Status */
+.status {
+  margin-top: 10px;
+  display: flex;
+  gap: 6px;
+  color: #ff3366;
+}
+
+.logBox {
+  overflow-y: auto;
+
+  /* Chrome, Safari */
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE, Edge */
+}
+
+.logBox::-webkit-scrollbar {
+  display: none;                /* Chrome系 */
+}
