@@ -9,6 +9,7 @@ import { SecretEntry } from "./WorkSpace/Pages/SecretEntry/SecretEntry";
 import { CreateJoin } from "./WorkSpace/Pages/CreateJoin/CreateJoin";
 import { Waiting } from "./WorkSpace/Pages/Waiting/Waiting";
 import { GameScreen } from "./WorkSpace/Pages/GameScreen/GameScreen";
+import { SuccessOrFailed } from "./WorkSpace/Pages/SuccessOrFailed/SuccessOrFailed";
 
 import { CyberBackground } from "./WorkSpace/Animation/CyberBackground";
 import { TapRipple } from "./WorkSpace/Effects/TapEffect";
@@ -65,6 +66,14 @@ function AnimatedRoutes() {
           element={
               <PageWrapper>
                   <GameScreen />
+              </PageWrapper>
+          }
+        />
+        <Route
+          path="/sof"
+          element={
+              <PageWrapper>
+                  <SuccessOrFailed />
               </PageWrapper>
           }
         />

@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import type { FormEvent, ReactNode } from 'react';
 import { Terminal, ShieldAlert } from 'lucide-react';
 import styles from './TerminalWidget.module.css';
+// SOF用
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const cx = (...classNames: Array<string | undefined | null | false>) =>
   classNames.filter((c): c is string => Boolean(c)).join(' ');
@@ -51,6 +53,9 @@ export function TerminalWidget() {
   const [input, setInput] = useState('');
   const [cwd, setCwd] = useState<string[]>([]);
   const [alertMode, setAlertMode] = useState(false);
+  // SOF用
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const logRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -155,6 +160,28 @@ export function TerminalWidget() {
       }
       case 'help': {
         nextLogs = [...updatedLogs, { id: crypto.randomUUID(), type: 'info', content: 'AVAILABLE: ls, cd [dir], clear, sudo, help, exit' }];
+        break;
+      }
+      case 'sof': {
+        const arg = args[1];
+
+        if (arg === 'success' || arg === 'failed') {
+          navigate('/sof', {
+            state: {
+              result: arg,
+              from: location.pathname
+            }
+          });
+        } else {
+          nextLogs = [
+            ...updatedLogs,
+            {
+              id: crypto.randomUUID(),
+              type: 'error',
+              content: 'usage: sof [success | failed]'
+            }
+          ];
+        }
         break;
       }
       default: {

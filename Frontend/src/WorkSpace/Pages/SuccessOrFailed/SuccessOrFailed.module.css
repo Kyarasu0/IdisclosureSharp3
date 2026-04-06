@@ -1,0 +1,174 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: transparent;
+  z-index: 9999;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.terminal {
+  background: #050b14;
+  border: 1px solid rgba(0,255,255,0.2);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.5s;
+}
+
+/* 初期アニメーション */
+.boot {
+  width: 0;
+  height: 0;
+  opacity: 0;
+  animation: expand 0.6s forwards;
+}
+
+.full {
+  width: min(1000px, 90vw);
+  height: min(700px, 85vh);
+}
+
+@keyframes expand {
+  to {
+    width: min(1000px, 90vw);
+    height: min(700px, 85vh);
+    opacity: 1;
+  }
+}
+
+.header {
+  display:flex;
+  justify-content:space-between;
+  padding:12px;
+  border-bottom:1px solid rgba(0,255,255,0.2);
+}
+
+.title {
+  display:flex;
+  gap:8px;
+  color:cyan;
+}
+
+.loader {
+  color:cyan;
+  display:flex;
+  gap:6px;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform:rotate(360deg);}
+}
+
+.progressWrap {
+  padding:10px;
+}
+
+.progressText {
+  display:flex;
+  justify-content:space-between;
+  font-size:12px;
+  color:cyan;
+}
+
+.progressBar {
+  height:4px;
+  background:#111;
+}
+
+.progressFill {
+  height:100%;
+  background:cyan;
+}
+
+/* ============================== */
+/* 重要：レイヤー制御エリア */
+/* ============================== */
+
+.body {
+  flex:1;
+  position:relative;
+  overflow: hidden;
+}
+
+/* ログ */
+.log {
+  height:100%;
+  overflow:auto;
+  font-family:monospace;
+  font-size:12px;
+  padding:10px;
+
+  position: relative;
+  z-index: 1; /* ← resultより下 */
+}
+
+.log::-webkit-scrollbar {
+  display:none;
+}
+
+/* フェードアウト（完全に消す） */
+.fadeOut {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s;
+}
+
+/* ============================== */
+/* 結果画面（最重要） */
+/* ============================== */
+
+.result {
+  position:absolute;
+  inset:0;
+
+  z-index: 999; /* ← 最前面 */
+
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:12px;
+
+  background:rgba(0,0,0,0.95);
+
+  /* ふわっと表示 */
+  animation: fadeIn 0.4s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.success {
+  color:lime;
+}
+
+.failed {
+  color:red;
+}
+
+.closeBtn {
+  margin-top: 12px;
+  padding: 8px 16px;
+  background: black;
+  border: 1px solid cyan;
+  color: cyan;
+  cursor: pointer;
+}
