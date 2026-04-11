@@ -4,6 +4,11 @@
   margin-bottom: 12px;
 }
 
+.webList{
+  display: flex;
+  flex: 1;
+}
+
 /* 入力全体（アイコン + input） */
 .searchBox {
   display: flex;

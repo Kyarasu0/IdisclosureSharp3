@@ -3,7 +3,7 @@ import { useLocation, useNavigate, Navigate } from 'react-router-dom';
 import styles from './SuccessOrFailed.module.css';
 import { Terminal, Unlock, Lock, Loader2 } from 'lucide-react';
 
-type ResultType = 'success' | 'failed';
+export type ResultType = 'success' | 'failed';
 
 const generateIP = () =>
   `${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*10)}.${Math.floor(Math.random()*255)}`;
