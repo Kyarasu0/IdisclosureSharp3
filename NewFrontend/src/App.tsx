@@ -1,121 +1,124 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+// ==========================================
+// メインコンポーネント: App (Router + Animation)
+// ==========================================
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
+// import { Introduction } from "./WorkSpace/Pages/Introduction/Introduction";
+// import { Registration } from "./WorkSpace/Pages/Registration/Registration";
+// import { SecretEntry } from "./WorkSpace/Pages/SecretEntry/SecretEntry";
+// import { CreateJoin } from "./WorkSpace/Pages/CreateJoin/CreateJoin";
+// import { Waiting } from "./WorkSpace/Pages/Waiting/Waiting";
+// import { GameScreen } from "./WorkSpace/Pages/GameScreen/GameScreen";
+// import { SuccessOrFailed } from "./WorkSpace/Pages/SuccessOrFailed/SuccessOrFailed";
 
-function App() {
-  const [count, setCount] = useState(0)
+// Themeのインポート
+import { PALETTE } from "./Workspace/Theme/Palettes/MajorCyberPalette";
+import { MajorCyberBackground } from "./Workspace/Theme/Backgrounds/MajorCyberBackground/MajorCyberBackground";
+import { TapRipple } from "./Workspace/Theme/CursorEffects/TapRipple/TapRipple";
+import styles from "./App.module.css";
 
+// function AnimatedRoutes() {
+//   const location = useLocation();
+
+//   return (
+//     <AnimatePresence mode="wait">
+//       <Routes location={location} key={location.pathname}>
+//         <Route
+//           path="/"
+//           element={
+//             <PageWrapper>
+//               <Introduction />
+//             </PageWrapper>
+//           }
+//         />
+//         <Route
+//           path="/register"
+//           element={
+//             <PageWrapper>
+//               <Registration />
+//             </PageWrapper>
+//           }
+//         />
+//         <Route
+//         path="/secret-entry"
+//         element={
+//             <PageWrapper>
+//                 <SecretEntry />
+//             </PageWrapper>
+//         }
+//         />
+//         <Route
+//         path="/create-join"
+//         element={
+//             <PageWrapper>
+//                 <CreateJoin />
+//             </PageWrapper>
+//         }
+//         />
+//         <Route
+//         path="/waiting"
+//         element={
+//             <PageWrapper>
+//                 <Waiting />
+//             </PageWrapper>
+//         }
+//         />
+//         <Route
+//           path="/game-screen"
+//           element={
+//               <PageWrapper>
+//                   <GameScreen />
+//               </PageWrapper>
+//           }
+//         />
+//         <Route
+//           path="/sof"
+//           element={
+//               <PageWrapper>
+//                   <SuccessOrFailed />
+//               </PageWrapper>
+//           }
+//         />
+//       </Routes>
+//     </AnimatePresence>
+//   );
+// }
+
+// ===================================
+// 出現、消滅時のアニメーション付与関数
+// ===================================
+// childrenは子要素、React.ReactNodeは表示できるもの全部を表す型
+function PageWrapper({ children }: { children: React.ReactNode }) {
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+    // motion.div: アニメーション付きのdiv
+    <motion.div
+      className={styles.main}
+      initial={{ opacity: 0, scale: 1.05, filter: "blur(6px)" }}
+      animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+      exit={{ opacity: 0, scale: 0.95, filter: "blur(6px)" }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+    >
+      {children}
+    </motion.div>
+  );
 }
 
-export default App
+// ===================================
+// メインのApp関数
+// ===================================
+export default function App() {
+  return (
+    // URL監視や履歴管理、ルーティング機能の有効化などURL系の土台を担当
+    <BrowserRouter>
+      <div className={styles.app} style={{"--color": PALETTE.cyan, "--background-color": PALETTE.black}  as React.CSSProperties }>
+        <MajorCyberBackground />
+        <TapRipple />
+
+        {/* <main className={styles.main}>
+          // URLのパスに対して何を描画するか決める部分を担当
+          <AnimatedRoutes />
+        </main> */}
+      </div>
+    </BrowserRouter>
+  );
+}

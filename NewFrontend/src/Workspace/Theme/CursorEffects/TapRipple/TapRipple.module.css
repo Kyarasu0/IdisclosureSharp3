@@ -1,0 +1,42 @@
+/* ====================================================
+   Theme/CursorEffects/TapRipple/TapRipple.module.css
+==================================================== */
+
+.container {
+    /* 配置基準設定 */
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+
+    /* 詳細設定 */
+    pointer-events: none; /* クリックを透過 */
+    overflow: hidden;     /* はみ出た部分は無視 */
+}
+
+.ripple {
+    /* 配置基準設定 */
+    position: absolute;
+    width: 20px;
+    height: 20px;
+
+    /* 装飾設定 */
+    border-radius: 9999px;
+    border: 1px solid var(--ripple-color);
+    opacity: 0.75;
+    transform: translate(-50%, -50%);
+
+    /* アニメーション設定 */
+    animation: ping 1s ease-out forwards;
+}
+
+/* 波紋のアニメーション */
+@keyframes ping {
+  0% {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+  }
+}
