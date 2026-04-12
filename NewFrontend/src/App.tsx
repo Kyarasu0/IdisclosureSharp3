@@ -3,7 +3,7 @@
 // ==========================================
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-// import { Introduction } from "./WorkSpace/Pages/Introduction/Introduction";
+import { Introduction } from "./Workspace/Components/5-Pages/1-Introduction/Introduction";
 // import { Registration } from "./WorkSpace/Pages/Registration/Registration";
 // import { SecretEntry } from "./WorkSpace/Pages/SecretEntry/SecretEntry";
 // import { CreateJoin } from "./WorkSpace/Pages/CreateJoin/CreateJoin";
@@ -118,6 +118,8 @@ export default function App() {
           // URLのパスに対して何を描画するか決める部分を担当
           <AnimatedRoutes />
         </main> */}
+
+        <Introduction />
       </div>
     </BrowserRouter>
   );

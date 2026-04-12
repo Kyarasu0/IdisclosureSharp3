@@ -24,7 +24,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 999;         /* 背景として扱う */
+    z-index: -998;         /* 背景として扱う */
     
     /* 詳細設定 */
     pointer-events: none; /* クリックを透過 */

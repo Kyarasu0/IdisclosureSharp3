@@ -6,6 +6,10 @@ body,
   margin: 0;
 }
 
+html {
+  font-size: 16px;
+}
+
 .font-anonymous {
   font-family: 'Anonymous Pro', monospace !important;
 }

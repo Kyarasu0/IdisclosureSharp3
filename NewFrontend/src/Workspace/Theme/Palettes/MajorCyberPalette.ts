@@ -5,6 +5,7 @@
 export const PALETTE = {
     // 適当に決めたサイバーなシアン
     cyan: '#35CBDB',
+    cyanShadow: '#35CBDB80',
     // 同一色相配色であり明度のみ落とした黒色と純黒色
     black: '#001314',
     gray: '#002729',
