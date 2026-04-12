@@ -15,7 +15,7 @@
 
   /* 配置基準設定 */
   position: relative;
-  z-index: -999;
+  z-index: 0;
 
   /* 詳細設定 */
   overflow: hidden;

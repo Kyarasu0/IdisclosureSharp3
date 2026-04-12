@@ -8,7 +8,9 @@ export const PALETTE = {
     cyanShadow: '#35CBDB80',
     // 同一色相配色であり明度のみ落とした黒色と純黒色
     black: '#001314',
+    blackGlass: '#00131440',
     gray: '#002729',
+    grayGlass: '#00272940',
     // 同一トーン配色であるアクセント色
     pink: '#FF00E1',
     green: '#6DFF2E',

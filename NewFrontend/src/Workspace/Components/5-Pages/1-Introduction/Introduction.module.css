@@ -1,8 +1,42 @@
+.container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+}
+
 .logoWrapper{
     width:100%;
-    height: 100%;
+    height: 30%;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.roundedButtonWrapper{
+    width:100%;
+    height: 10%;
 
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.bounceArrow {
+    display: flex;
+    align-items: flex-start;
+  /* 文字設定 */
+  font-size: 1.25rem;
+  color: var(--cyan);
+  /* アニメーション設定 */
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(0.5rem); }
 }

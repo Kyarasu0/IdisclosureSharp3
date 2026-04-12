@@ -1,0 +1,60 @@
+/* ===== BUTTON BASE ===== */
+.roundedButton {
+  /* バックグラウンド設定 */
+  background: var(--black-glass);
+
+  /* 要素配置設定 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* 文字設定 */
+  font-family: 'Anonymous Pro', monospace;
+  font-weight: bold;
+  letter-spacing: 0.15em;
+  color: var(--cyan);
+
+  /* 装飾設定 */
+  border-radius: 9999px;
+  border: 1px solid var(--cyan);
+  backdrop-filter: blur(4px);
+  cursor: pointer;
+
+  /* 配置基準設定 */
+  position: relative;
+
+  /* アニメーション設定 */
+  transition: all 0.2s ease-in-out;
+
+  /* 詳細設定 */
+  cursor: pointer;
+}
+
+/* ===== HOVER ===== */
+.roundedButton:hover {
+  transform: scale(1.05);
+  color: var(--cyan);
+  box-shadow: 0 0 15px var(--cyan);
+}
+
+/* ===== SIZE ===== */
+.lg { padding: 1.2rem 3rem; font-size: 1rem; }
+.md { padding: 0.7rem 1.8rem; font-size: 0.85rem; }
+.sm { padding: 0.4rem 1rem; font-size: 0.7rem; }
+
+/* ===== ACTIVE ===== */
+.button:active {
+  transform: scale(0.95);
+}
+
+/* ===== CONTENT ===== */
+.content {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* ===== ICON ===== */
+.icon {
+  display: flex;
+}
