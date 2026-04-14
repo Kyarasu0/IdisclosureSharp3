@@ -24,7 +24,7 @@
   position: relative;
 
   /* アニメーション設定 */
-  transition: all 0.2s ease-in-out;
+  transition: all 0.2s;
 
   /* 詳細設定 */
   cursor: pointer;
@@ -36,11 +36,6 @@
   color: var(--cyan);
   box-shadow: 0 0 15px var(--cyan);
 }
-
-/* ===== SIZE ===== */
-.lg { padding: 1.2rem 3rem; font-size: 1rem; }
-.md { padding: 0.7rem 1.8rem; font-size: 0.85rem; }
-.sm { padding: 0.4rem 1rem; font-size: 0.7rem; }
 
 /* ===== ACTIVE ===== */
 .button:active {

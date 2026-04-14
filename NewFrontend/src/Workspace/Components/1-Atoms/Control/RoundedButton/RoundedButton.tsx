@@ -20,16 +20,20 @@ export const RoundedButton = ({
     onClick = () => { console.log("RoundedButton!") },
     size = "md"
 }: RoundedButtonProps ) => {
+    let scale = 0.75;
+    switch(size){
+        case "sm": scale *= 2/3; break;
+        case "lg": scale *= 2; break;
+    }
     return(
         <button
             onClick={onClick}
-            className={`
-                ${styles.roundedButton}
-                ${styles[size]}
-            `}
+            className={ styles.roundedButton }
             style={{
                 "--cyan": PALETTE.cyan,
                 "--black-glass": PALETTE.blackGlass,
+                padding: `${scale}rem ${scale * 2}rem`,
+                fontSize: `${scale * 4/5}rem`,
             } as React.CSSProperties}
         >
             <span className={styles.content}>

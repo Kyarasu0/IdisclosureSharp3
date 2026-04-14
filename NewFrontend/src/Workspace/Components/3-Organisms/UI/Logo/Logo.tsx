@@ -67,6 +67,7 @@ export const Logo = ({ type = "horizontal", size = "md" }: LogoProps ) => {
                         textShadow: `0 0 20px ${PALETTE.green}`
                     }}>{logoType[2]}</span>
                 </div>
+                
                 {/* タグライン */}
                 <div className={styles.tagLine} style={{fontSize: `${scale / 2}rem`}}>{tagLine}</div>
             </div>
