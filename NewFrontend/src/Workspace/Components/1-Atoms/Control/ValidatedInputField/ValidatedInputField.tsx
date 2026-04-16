@@ -2,20 +2,23 @@
 // Components/1-Atoms/Control/ValidatedInputField/ValidatedInputField.tsx
 // ========================================================================
 
-import styles from './ValidatedInputField.module.css';
+// 基本的な関数をインポート
 import type { ReactNode } from 'react';
+// デザインに関連するファイルをインポート
+import styles from "./ValidatedInputField.module.css";
+import { PALETTE } from "../../../../Theme/Palettes/MajorCyberPalette";
 
 type ValidatedInputFieldProps = {
-  label: string;
-  icon: ReactNode;
-  type?: string;
-  value: string;
-  onChange: (value: string) => void;
-  placeholder?: string;
-  required?: boolean;
-  pattern?: RegExp;     // TS側バリデーション
-  htmlPattern?: string; // HTML側バリデーション
-  showStatusDot?: boolean;
+  label: string;                      // 入力欄の名前
+  icon: ReactNode;                    // アイコンを指定
+  type?: string;                      // 入力タイプ
+  value: string;                      // 入力値
+  onChange: (value: string) => void;  // 入力変更時の処理
+  placeholder?: string;               // 入力欄の説明
+  required?: boolean;                 // データが揃う必要があるか
+  pattern?: RegExp;                   // TS側バリデーション
+  htmlPattern?: string;               // HTML側バリデーション
+  showStatusDot?: boolean;            // 入力値が正しいかのチェック
 };
 
 export const ValidatedInputField = ({
@@ -59,9 +62,10 @@ export const ValidatedInputField = ({
         {/* ステータスドット（入力状態表示） */}
         {showStatusDot && value && (
           <div
-            className={`${styles.dot} ${
-              isValid ? styles.valid : styles.invalid
-            }`}
+            className={styles.dot}
+            style={{
+              background: isValid ? PALETTE.green : PALETTE.pink
+            }}
           />
         )}
 

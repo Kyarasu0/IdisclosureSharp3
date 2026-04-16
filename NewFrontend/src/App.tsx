@@ -4,6 +4,7 @@
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { Introduction } from "./Workspace/Components/5-Pages/1-Introduction/Introduction";
+import { UserSetup } from "./Workspace/Components/5-Pages/2-UserSetup/UserSetup";
 // import { Registration } from "./WorkSpace/Pages/Registration/Registration";
 // import { SecretEntry } from "./WorkSpace/Pages/SecretEntry/SecretEntry";
 // import { CreateJoin } from "./WorkSpace/Pages/CreateJoin/CreateJoin";
@@ -119,7 +120,7 @@ export default function App() {
           <AnimatedRoutes />
         </main> */}
 
-        <Introduction />
+        <UserSetup isNavigationBlocked={false}/>
       </div>
     </BrowserRouter>
   );

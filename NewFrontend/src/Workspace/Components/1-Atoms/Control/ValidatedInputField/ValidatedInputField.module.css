@@ -3,6 +3,10 @@
 =================================================================================== */
 
 .field {
+    /* 大きさ設定 */
+    width: 100%;
+    height: 100%;
+
     /* 要素配置設定 */
     display: flex;
     flex-direction: column;
@@ -26,6 +30,10 @@
 }
 
 .inputWrapper {
+    /* 大きさ設定 */
+    width: 100%;
+    height: 100%;
+
     /* 配置基準設定 */
     position: relative;
 }
@@ -33,6 +41,7 @@
 .input {
     /* 大きさ設定 */
     width: 100%;
+    box-sizing: border-box;
 
     /* 余白設定 */
     padding: 1rem;
@@ -75,14 +84,4 @@
     /* アニメーション設定 */
     transform: translateY(-50%);
     animation: pulse 1.5s infinite;
-}
-
-.valid {
-    /* 装飾設定 */
-    background: #22c55e;
-}
-
-.invalid {
-    /* 装飾設定 */
-    background: #ec4899;
 }
