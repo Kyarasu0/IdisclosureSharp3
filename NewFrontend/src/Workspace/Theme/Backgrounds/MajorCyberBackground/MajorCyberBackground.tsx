@@ -6,7 +6,7 @@
 import { useRef, useEffect } from 'react';
 // デザインに関連する情報をインポート
 import styles from './MajorCyberBackground.module.css';
-import { PALETTE } from '../../Palettes/MajorCyberPalette';
+import { PALETTE } from '../../Appearance/ColorPalettes/MajorCyberPalette';
 
 // パーティクルの型定義
 type Particle = {

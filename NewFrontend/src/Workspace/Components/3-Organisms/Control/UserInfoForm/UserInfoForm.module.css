@@ -1,0 +1,91 @@
+.card{
+    /* 大きさ設定 */
+    width: 25%;
+    height: 60%;
+
+    /* バックグラウンド設定 */
+    background-color: var(--black-glass);
+
+    /* 要素配置設定 */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: relative;
+    overflow-y: hidden;
+
+    /* 余白設定 */
+    padding: 1.5rem;
+    gap: 1.5rem;
+
+    /* 装飾設定 */
+    border-radius: 16px;
+}
+
+.form{
+    /* 要素配置設定 */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    /* 余白設定 */
+    gap: 2rem;
+}
+
+/* header以降 */
+.header{
+    /* 大きさ設定 */
+    width: 100%;
+    height: 20%;
+
+    /* 要素配置設定 */
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    /* 余白設定 */
+    gap: 1.5rem;
+}
+
+.title{
+    /* 大きさ設定 */
+    width: 100%;
+    height: 100%;
+
+    /* 要素配置設定 */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.mainTitle{
+    /* 文字設定 */
+    font-size: 2.5rem;
+}
+
+.subTitle{
+    /* 文字設定 */
+    font-size: 1.0rem;
+}
+
+.scanLine {
+    /* 大きさ設定 */
+    width: 100%;
+    height: 4px;
+    background-size: 200% 100%;
+
+    /* バックグラウンド設定 */
+    background: linear-gradient(
+        var(--deg),
+        var(--cyan),
+        var(--pink),
+        var(--cyan),
+        var(--cyan)
+    );
+
+    /* 要素配置設定 */
+    position: absolute;
+    left: 0;
+
+    /* アニメーション設定 */
+    animation: gradientMove 3s linear infinite;
+}

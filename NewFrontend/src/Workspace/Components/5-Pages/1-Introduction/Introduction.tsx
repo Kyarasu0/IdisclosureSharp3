@@ -6,10 +6,10 @@
 import { Logo } from "./../../3-Organisms/UI/Logo/Logo";
 import { RoundedButton } from "./../../1-Atoms/Control/RoundedButton/RoundedButton";
 // デザインに関連するファイルをインポート
-import { PALETTE } from "./../../../Theme/Palettes/MajorCyberPalette";
+import { PALETTE } from "../../../Theme/Appearance/ColorPalettes/MajorCyberPalette";
 import styles from "./Introduction.module.css";
 // 自作の関数をインポート
-import { useSafeNavigate } from "../../../Hooks/useSafeNavigate";
+import { useSafeNavigate } from "../../../Functions/Hooks/useSafeNavigate";
 
 export const Introduction = () => {
     // 関数を抽出

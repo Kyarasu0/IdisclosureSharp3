@@ -6,7 +6,8 @@
 import type { ReactNode } from 'react';
 // デザインに関連するファイルをインポート
 import styles from "./ValidatedInputField.module.css";
-import { PALETTE } from "../../../../Theme/Palettes/MajorCyberPalette";
+// 設定ファイルをインポート
+import { useAppearance } from "../../../../../Core/Contexts/AppearanceContext";
 
 type ValidatedInputFieldProps = {
   label: string;                      // 入力欄の名前
@@ -36,12 +37,23 @@ export const ValidatedInputField = ({
 
   // 入力値のバリデーション判定
   const isValid = pattern ? pattern.test(value) : value.length > 0;
+  // 文字の大きさ設定
+  const fontSize = 1.3;
+
+  const { palette, font } = useAppearance();
 
   return (
     <div className={styles.field}>
       
       {/* ラベル表示（アイコン + テキスト） */}
-      <label className={styles.label}>
+      <label 
+        className={styles.label}
+        style={{ 
+          color: palette.cyan,
+          fontFamily: font.primary,
+          fontSize: `${1 * fontSize}rem`,
+        }}
+      >
         {icon} {label}
       </label>
 
@@ -56,19 +68,26 @@ export const ValidatedInputField = ({
           placeholder={placeholder}
           className={styles.input}
           pattern={htmlPattern}
-          style={{ colorScheme: 'dark' }}
+          style={{ 
+            colorScheme: 'dark',
+            background: palette.black,
+            color: palette.cyan,
+            fontSize: `${1 * fontSize}rem`,
+            "--cyan": palette.cyan,
+            "--cyan-shadow": palette.cyanShadow,
+            fontFamily: font.secondary,
+          } as React.CSSProperties}
         />
 
         {/* ステータスドット（入力状態表示） */}
-        {showStatusDot && value && (
+        {showStatusDot && (
           <div
             className={styles.dot}
             style={{
-              background: isValid ? PALETTE.green : PALETTE.pink
+              background: isValid ? palette.green : palette.pink
             }}
           />
         )}
-
       </div>
     </div>
   );

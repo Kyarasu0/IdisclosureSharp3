@@ -6,12 +6,16 @@
 import { useState, useEffect } from "react";
 // 他のコンポーネントをインポート
 import { ValidatedInputField } from "../../1-Atoms/Control/ValidatedInputField/ValidatedInputField";
+import { UserInfoForm } from "../../3-Organisms/Control/UserInfoForm/UserInfoForm";
 // 自作の関数とタイプをインポート
-import { useSafeNavGuard } from "../../../Hooks/useSafeNavGuard";
-import type { NavigationGuardProps } from "../../../Hooks/useSafeNavGuard";
+import { useSafeNavGuard } from "../../../Functions/Hooks/useSafeNavGuard";
+import type { NavigationGuardProps } from "../../../Functions/Hooks/useSafeNavGuard";
+// アイコンのインポート
+import { User } from "lucide-react";
+// デザインに関するファイルをインポート
+import styles from "./UserSetup.module.css";
 
 export const UserSetup = (isNavigationBlocked: NavigationGuardProps) => {
-    const UserIcon = () => <span>👤</span>;
     // 入力値を管理
     const [username, setUsername] = useState("");
     // 遷移元を確認し遷移を許可するかを管理
@@ -26,17 +30,8 @@ export const UserSetup = (isNavigationBlocked: NavigationGuardProps) => {
     }, [isNavigationBlocked]);
 
     return(
-        <ValidatedInputField
-            label="Username"
-            icon={<UserIcon />}
-            type="text"
-            value={username}
-            onChange={setUsername}
-            placeholder="Enter your username"
-            required={true}
-            pattern={/^[a-zA-Z0-9_]{3,12}$/}   // 3〜12文字の英数字＋_
-            htmlPattern="^[a-zA-Z0-9_]{3,12}$"
-            showStatusDot={true}
-        />
+        <div className={styles.container}>
+            <UserInfoForm />
+        </div>
     );
 }

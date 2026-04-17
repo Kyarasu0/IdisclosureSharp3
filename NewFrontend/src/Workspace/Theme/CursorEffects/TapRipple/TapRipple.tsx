@@ -6,7 +6,7 @@
 import { useEffect, useState } from 'react';
 // Themeのインポート
 import styles from './TapRipple.module.css';
-import { PALETTE } from '../../Palettes/MajorCyberPalette';
+import { PALETTE } from '../../Appearance/ColorPalettes/MajorCyberPalette';
 
 export const TapRipple = () => {
   // ripples = [{ x, y, id }, { x, y, id }, ...] 

@@ -4,28 +4,42 @@
 
 // デザインに関連する情報をインポート
 import styles from "./GlitchText.module.css";
-import { PALETTE } from "./../../../../Theme/Palettes/MajorCyberPalette";
+// 設定ファイルをインポート
+import { useAppearance } from "../../../../../Core/Contexts/AppearanceContext";
 
 type Props = {
-  text: string;
+  content: string;
   className?: string;
 };
 
-export const GlitchText = ({ text, className = "" }: Props) => {
+export const GlitchText = ({ content, className = "" }: Props) => {
+  const { palette, font } = useAppearance();
+
   return (
     <div className={`${styles.glitch} ${className}`}>
         <span 
             className={styles.base}
-            style={{ color: PALETTE.cyan }}
-        >{text}</span>
-        <span 
-            className={styles.layer1}
-            style={{ color: PALETTE.pink }}
-        >{text}</span>
-        <span 
-            className={styles.layer2}
-            style={{ color: PALETTE.green }}
-        >{text}</span>
+            style={{ 
+                color: palette.cyan,
+                fontFamily: font.secondary,
+            }}
+        >
+            {content}
+            <span 
+                className={styles.layer1}
+                style={{ 
+                    color: "white",
+                    fontFamily: font.secondary,
+                }}
+            >{content}</span>
+            <span 
+                className={styles.layer2}
+                style={{ 
+                    color: palette.pink,
+                    fontFamily: font.secondary,
+                }}
+            >{content}</span>
+        </span>
     </div>
   );
 };

@@ -13,7 +13,6 @@
   justify-content: center;
 
   /* 文字設定 */
-  font-family: 'Anonymous Pro', monospace;
   font-weight: bold;
   letter-spacing: 0.15em;
   color: var(--cyan);

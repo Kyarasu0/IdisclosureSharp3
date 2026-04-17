@@ -4,8 +4,9 @@
 
 // デザインに関連するファイルをインポート
 import symbolMark from "./../../../../Theme/Images/IdisclosureS3.png";
-import { PALETTE } from "./../../../../Theme/Palettes/MajorCyberPalette";
 import styles from "./Logo.module.css";
+// 設定ファイルをインポート
+import { useAppearance } from "../../../../../Core/Contexts/AppearanceContext";
 
 type LogoProps = {
     type?: "horizontal" | "vertical"
@@ -21,12 +22,13 @@ export const Logo = ({ type = "horizontal", size = "md" }: LogoProps ) => {
         case "sm": scale *= 2/3; break;
         case "lg": scale *= 2; break;
     }
+    const { palette, font } = useAppearance();
     return (
         <div 
             className={`${type === "horizontal" ? styles.horizontal : styles.vertical} ${styles[size]}`}
             style={{
-                "--cyan": PALETTE.cyan,
-                "--cyan-shadow": PALETTE.cyanShadow,
+                "--cyan": palette.cyan,
+                "--cyan-shadow": palette.cyanShadow,
             } as React.CSSProperties}
         >
             {/* シンボルマーク */}
@@ -47,24 +49,24 @@ export const Logo = ({ type = "horizontal", size = "md" }: LogoProps ) => {
                 {/* ロゴタイプ */}
                 <div className={styles.logoType}>
                     <span style={{
-                        color: PALETTE.pink,
+                        color: palette.pink,
                         fontSize: `${scale}rem`,
                         letterSpacing: `${scale * 1/5}rem`,
-                        textShadow: `0 0 20px ${PALETTE.pink}`
+                        textShadow: `0 0 20px ${palette.pink}`
                     }}>{logoType[0]}</span>
 
                     <span style={{
-                        color: PALETTE.cyan,
+                        color: palette.cyan,
                         fontSize: `${scale}rem`,
                         letterSpacing: `${scale * 1/5}rem`,
-                        textShadow: `0 0 20px ${PALETTE.cyan}`
+                        textShadow: `0 0 20px ${palette.cyan}`
                     }}>{logoType[1]}</span>
 
                     <span style={{
-                        color: PALETTE.green,
+                        color: palette.green,
                         fontSize: `${scale * 2/3}rem`,
                         letterSpacing: `${scale * 1/5}rem`,
-                        textShadow: `0 0 20px ${PALETTE.green}`
+                        textShadow: `0 0 20px ${palette.green}`
                     }}>{logoType[2]}</span>
                 </div>
                 
