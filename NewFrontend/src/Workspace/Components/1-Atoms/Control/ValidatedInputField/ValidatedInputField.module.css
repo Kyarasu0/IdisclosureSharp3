@@ -54,7 +54,7 @@
     /* 装飾設定 */
     outline: none;
     border-color: var(--cyan);
-    box-shadow: 0 0 15px var(--cyan-shadow);
+    box-shadow: 0 0 20px var(--cyan);
     border: 1px solid var(--cyan);
 }
 

@@ -1,0 +1,102 @@
+/* ===============================================
+   Submit Button
+=============================================== */
+
+/* 大きさ設定 */
+/* バックグラウンド設定 */
+/* 要素配置設定 */
+/* 余白設定 */
+/* 文字設定 */
+/* 装飾設定 */
+/* 配置基準設定 */
+/* アニメーション設定 */
+/* 画像設定 */
+/* 詳細設定 */
+
+/* ボタン本体 */
+.button {
+  /* バックグラウンド設定 */
+  background: var(--black);
+
+  /* 文字設定 */
+  color: var(--cyan);
+  font-weight: bold;
+
+  /* 装飾設定 */
+  border: 1px solid var(--cyan);
+  border-radius: 12px;
+  cursor: pointer;
+
+  /* 配置基準設定 */
+  position: relative;
+
+  /* アニメーション設定 */
+  transition: 0.3s ease;
+}
+
+/* ホバー時 */
+.button:hover {
+    /* 装飾設定 */
+    box-shadow: 0 0 20px var(--cyan);
+}
+
+/* 押した瞬間 */
+.button:active {
+    /* アニメーション設定 */
+    transform: scale(0.97);
+}
+
+/* ボタン内テキスト */
+.buttonContent {
+    /* 要素配置設定 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* 余白設定 */
+    gap: 0.5rem;
+}
+
+/* アイコンを少し右へ動かす */
+.button svg {
+    /* アニメーション設定 */
+    transition: transform 0.3s ease;
+}
+
+.button:hover svg {
+    /* アニメーション設定 */
+    transform: translateX(6px);
+}
+
+/* ===============================================
+   Loading Spinner
+=============================================== */
+
+/* ローダー中央配置 */
+.loaderWrapper {
+    /* 要素配置設定 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 回転する円 */
+.loader {
+    /* 大きさ設定 */
+    width: 18px;
+    height: 18px;
+
+    /* 装飾設定 */
+    border-radius: 50%;
+    border: 2px solid var(--gray);
+    border-top: 2px solid var(--cyan);
+
+    /* アニメーション設定 */
+    animation: spin 0.8s linear infinite;
+}
+
+/* 回転アニメーション */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

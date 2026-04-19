@@ -1,4 +1,4 @@
-import { FONT as MajorFont } from "../../Workspace/Theme/FontPalettes/MajorFontPalette/MajorFontPalette";
+import { FONT as MajorFont } from "../../Workspace/Theme/Appearance/FontPalettes/MajorFontPalette/MajorFontPalette";
 
 export const FontsRegistry = {
 

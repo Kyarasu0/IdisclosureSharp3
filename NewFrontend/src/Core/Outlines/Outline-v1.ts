@@ -1,7 +1,7 @@
 import type { PageKey } from "../Registries/PagesRegistry";
 
-//URL直打ちでの画面遷移を許可するかどうか
-const isNavigationBlocked: boolean = false; 
+//URL直打ちでの画面遷移の防御を有効にするかどうか
+const isNavigationBlocked: boolean = true;
 
 export const MainOutline: {
   path: string;
@@ -11,13 +11,16 @@ export const MainOutline: {
   {
     path: "/",
     page: "Introduction",
-    props: {},
+    props: {
+      onMoveClick: "GoToUserSetupFromIntroduction"
+    },
   },
   {
     path: "/user-setup",
     page: "UserSetup",
     props: {
       isNavigationBlocked: isNavigationBlocked,
+      onGuard: "GuardUserSetup"
     },
   },
 ];

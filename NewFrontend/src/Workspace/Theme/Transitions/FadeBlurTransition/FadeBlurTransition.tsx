@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import styles from "./FadeBlurTransition.module.css";
 
 export function FadeBlurTransition({ children }: { children: React.ReactNode }) {
   return (
@@ -7,6 +8,7 @@ export function FadeBlurTransition({ children }: { children: React.ReactNode }) 
       animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
       exit={{ opacity: 0, scale: 0.95, filter: "blur(6px)" }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      className={styles.main}
     >
       {children}
     </motion.div>

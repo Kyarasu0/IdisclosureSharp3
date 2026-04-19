@@ -8,13 +8,14 @@ import { RoundedButton } from "./../../1-Atoms/Control/RoundedButton/RoundedButt
 // デザインに関連するファイルをインポート
 import { PALETTE } from "../../../Theme/Appearance/ColorPalettes/MajorCyberPalette";
 import styles from "./Introduction.module.css";
-// 自作の関数をインポート
-import { useSafeNavigate } from "../../../Functions/Hooks/useSafeNavigate";
 
-export const Introduction = () => {
-    // 関数を抽出
-    const go = useSafeNavigate();
+type Props = {
+  onMoveClick?: () => void;
+};
 
+export const Introduction = ({
+    onMoveClick = () => alert("onMoveClick is not assigned"),
+}: Props) => {
     return (
         <div 
             className={styles.container}
@@ -30,12 +31,7 @@ export const Introduction = () => {
                 <RoundedButton 
                     size="lg"
                     label="PRESS TO START"
-                    onClick={() =>
-                        go({
-                            path: "/user-setup",
-                            fromPage: "Introduction"
-                        })
-                    }
+                    onClick={onMoveClick}
                 />
             </div>
 
