@@ -6,18 +6,24 @@
 import { useState, useEffect } from "react";
 // 他のコンポーネントをインポート
 import { UserInfoForm } from "../../3-Organisms/Control/UserInfoForm/UserInfoForm";
-
+import { Logo } from "./../../3-Organisms/UI/Logo/Logo";
+import { RoundedButton } from "./../../1-Atoms/Control/RoundedButton/RoundedButton";
 // デザインに関するファイルをインポート
 import styles from "./UserSetup.module.css";
+import { ArrowBigLeft } from "lucide-react";
 
 type Props = {
   isNavigationBlocked?: boolean;
   onGuard?: () => void;
+  onSaveAndMoveClick?: ( userId: string, birthDate: string ) => void;
+  onReturnClick?: () => void;
 };
 
 export const UserSetup = ({
     isNavigationBlocked = false,
     onGuard,
+    onSaveAndMoveClick = () => alert("onSaveAndMoveClick is not assigned"),
+    onReturnClick = () => alert("onReturnClick is not assigned"),
 }: Props) => {
     // 入力値を管理
     const [userId, setUserId] = useState("");
@@ -31,13 +37,31 @@ export const UserSetup = ({
     }, [isNavigationBlocked]);
 
     return(
-        <div className={styles.container}>
-            <UserInfoForm
-                userId={userId}
-                setUserId={setUserId}
-                birthDate={birthDate}
-                setBirthDate={setBirthDate}
-            />
+        <div className={styles.userSetupContainer}>
+            <header className={styles.userSetupHeader}>
+                {/* ロゴマーク */}
+                <Logo size="md" type="horizontal"/>
+            </header>
+            <main className={styles.userSetupMain}>
+                {/* 入力フォーム */}
+                <UserInfoForm
+                    userId={userId}
+                    setUserId={setUserId}
+                    birthDate={birthDate}
+                    setBirthDate={setBirthDate}
+                    onSaveAndMoveClick={() =>
+                        onSaveAndMoveClick(userId, birthDate)
+                    }
+                />
+            </main>
+            <footer className={styles.userSetupFooter}>
+                {/* 戻るボタン */}
+                <RoundedButton 
+                    size="lg"
+                    icon={ArrowBigLeft}
+                    onClick={onReturnClick}
+                />
+            </footer>
         </div>
     );
 }

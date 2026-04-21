@@ -20,7 +20,9 @@ export const MainOutline: {
     page: "UserSetup",
     props: {
       isNavigationBlocked: isNavigationBlocked,
-      onGuard: "GuardUserSetup"
+      onGuard: "GuardUserSetup",
+      onReturnClick: "GoToIntroductionFromUserSetup",
+      onSaveAndMoveClick: "GoToSecretSetupFromUserSetup",
     },
   },
 ];

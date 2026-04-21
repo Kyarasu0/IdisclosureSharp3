@@ -2,13 +2,45 @@
     Components/5-Pages/2-UserSetup/UserSetup.module.css
 =============================================================== */
 
-.container{
+.userSetupContainer{
     /* 大きさ設定 */
     width: 100%;
     height: 100%;
 
     /* 要素配置設定 */
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
+
+    /* 余白設定 */
+    padding: 1rem;
+}
+
+.userSetupHeader{
+    /* 大きさ設定 */
+    width: 100%;
+    height: 10%;
+}
+
+.userSetupMain{
+    /* 大きさ設定 */
+    width: 100%;
+    height: 77%;
+
+    /* 要素配置設定 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.userSetupFooter{
+    /* 大きさ設定 */
+    width: 100%;
+    height: 10%;
+
+    /* 要素配置設定 */
+    display: flex;
+    justify-content: flex-start;
     align-items: center;
 }

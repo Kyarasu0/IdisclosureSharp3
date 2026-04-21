@@ -34,7 +34,7 @@ export const SubmitButton = ({
     type = "button",
     isLoading = false,
     disabled = false,
-    onClick,
+    onClick = () => {},
     children,
     size,
 }: SubmitButtonProps) => {

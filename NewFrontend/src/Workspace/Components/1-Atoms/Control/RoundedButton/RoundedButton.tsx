@@ -16,9 +16,9 @@ type RoundedButtonProps = {
 }
 
 export const RoundedButton = ({
-    label = "Click me!",
+    label = "",
     icon: Icon,
-    onClick = () => { console.log("RoundedButton!") },
+    onClick = () => { alert("RoundedButton!") },
     size = "md"
 }: RoundedButtonProps ) => {
     let scale = 0.75;
@@ -40,7 +40,10 @@ export const RoundedButton = ({
             } as React.CSSProperties}
         >
             <span className={styles.content}>
-                {Icon && <Icon className={styles.icon} />}
+                {Icon && <Icon 
+                    className={styles.icon} 
+                    size={scale * 20}
+                />}
                 {label}
             </span>
         </button>

@@ -12,19 +12,19 @@ export const FunctionsRegistry = () => {
     // ====================
     // Introduction
     // ====================
-    GoToIntroductionFromUserSedtup: () =>
+    GoToUserSetupFromIntroduction: () =>
       go({
-        path: "/",
-        fromPage: "UserSetup",
+        path: "/user-setup",
+        fromPage: "Introduction",
       }),
 
     // ====================
     // UserSetup
     // ====================
-    GoToUserSetupFromIntroduction: () =>
+    GoToIntroductionFromUserSetup: () =>
       go({
-        path: "/user-setup",
-        fromPage: "Introduction",
+        path: "/",
+        fromPage: "UserSetup",
       }),
 
     GuardUserSetup: () =>
@@ -32,6 +32,20 @@ export const FunctionsRegistry = () => {
         allowedFromPages: ["Introduction"],
         redirectPath: "/user-setup",
       }),
+    
+    GoToSecretSetupFromUserSetup: (userId: string, birthDate: string) => {
+      localStorage.setItem(
+        "registrationData",
+        JSON.stringify({
+          userId,
+          birthDate,
+        })
+      );
+      go({
+        path: "/secret-setup",
+        fromPage: "UserSetup",
+      });
+    },
 
   };
 };

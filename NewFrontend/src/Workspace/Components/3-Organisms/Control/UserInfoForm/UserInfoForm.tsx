@@ -17,6 +17,7 @@ type UserInfoFormProps = {
   setUserId: React.Dispatch<React.SetStateAction<string>>;
   birthDate: string;
   setBirthDate: React.Dispatch<React.SetStateAction<string>>;
+  onSaveAndMoveClick?: ( userId: string, birthDate: string ) => void;
 };
 
 export const UserInfoForm = ({
@@ -24,6 +25,7 @@ export const UserInfoForm = ({
     setUserId,
     birthDate,
     setBirthDate,
+    onSaveAndMoveClick = () => alert("onSaveAndMoveClick is not assigned"),
 }: UserInfoFormProps) => {
 
     const { palette, font } = useAppearance();
@@ -67,7 +69,13 @@ export const UserInfoForm = ({
                 </div>
             </div>
 
-            <form className={styles.form}> {/* onSubmit={handleSubmit} */}
+            <form 
+                className={styles.form}
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    onSaveAndMoveClick?.(userId, birthDate);
+                }}    
+            >
 
                 {/* User Name */}
                 <div className={styles.userIdWrapper}>
@@ -99,7 +107,7 @@ export const UserInfoForm = ({
                 </div>
 
                 {/* 登録ボタン */}
-                <SubmitButton>
+                <SubmitButton type="submit">
                     Register
                     <ArrowRight />
                 </SubmitButton>
