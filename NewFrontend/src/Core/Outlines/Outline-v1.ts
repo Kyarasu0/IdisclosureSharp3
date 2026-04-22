@@ -25,4 +25,14 @@ export const MainOutline: {
       onSaveAndMoveClick: "GoToSecretSetupFromUserSetup",
     },
   },
+  {
+    path: "/secret-setup",
+    page: "SecretSetup",
+    props:{
+      isNavigationBlocked:true,
+      onGuard:"GuardSecretSetup",
+      onReturnClick:"GoToUserSetupFromSecretSetup",
+      onConfirmClick:"GoToCreateJoinFromSecretSetup"
+    }
+  }
 ];

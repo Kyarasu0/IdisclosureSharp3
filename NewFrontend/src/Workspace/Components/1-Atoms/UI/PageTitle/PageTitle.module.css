@@ -1,0 +1,43 @@
+/* =======================================================
+    Components/1-Atoms/UI/PageTitle/PageTitle.module.css
+========================================================== */
+
+.header{
+    /* 大きさ設定 */
+    width: 100%;
+    /* height: 20%; */
+
+    /* 要素配置設定 */
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    /* 余白設定 */
+    gap: 1.5rem;
+}
+
+.title{
+    /* 大きさ設定 */
+    width: 100%;
+    height: 100%;
+
+    /* 要素配置設定 */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.mainTitle{
+    /* 文字設定 */
+    font-size: 2.5rem;
+}
+
+.subTitle{
+    /* 文字設定 */
+    font-size: 1.0rem;
+}
+
+.icon{
+
+}

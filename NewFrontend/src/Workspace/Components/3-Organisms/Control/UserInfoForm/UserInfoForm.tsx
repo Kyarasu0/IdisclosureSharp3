@@ -4,13 +4,12 @@
 
 // 他のコンポーネントをインポート
 import { ValidatedInputField } from "./../../../1-Atoms/Control/ValidatedInputField/ValidatedInputField";
-import { GlitchText } from "../../../1-Atoms/UI/GlitchText/GlitchText";
 import { SubmitButton } from "../../../1-Atoms/Control/SubmitButton/SubmitButton";
+import { CyberFormCard } from "../../../2-Molecules/CyberFormCard/CyberFormCard";
+import { PageTitle } from "../../../1-Atoms/UI/PageTitle/PageTitle";
 // デザインに関するファイルをインポート
 import styles from "./UserInfoForm.module.css";
-import { ShieldCheck, User, Calendar, ArrowRight } from "lucide-react";
-// 設定ファイルをインポート
-import { useAppearance } from "../../../../../Core/Contexts/AppearanceContext";
+import { File, User, Calendar, ArrowRight } from "lucide-react";
 
 type UserInfoFormProps = {
   userId: string;
@@ -27,47 +26,11 @@ export const UserInfoForm = ({
     setBirthDate,
     onSaveAndMoveClick = () => alert("onSaveAndMoveClick is not assigned"),
 }: UserInfoFormProps) => {
-
-    const { palette, font } = useAppearance();
-
     return(
-        <div 
-            className={styles.card}
-            style={{
-                "--black-glass": palette.blackGlass,
-                "--cyan": palette.cyan,
-                "--cyan-shadow": palette.cyanShadow,
-                "--pink": palette.pink,
-            } as React.CSSProperties}
-        >
-            {/* 四つ角飾り */}
-            <div className={styles.rightTop}></div>
-            <div className={styles.rightBottom}></div>
-            <div className={styles.leftTop}></div>
-            <div className={styles.leftBottom}></div>
-
-            {/* スキャンライン */}
-            <div 
-                className={styles.scanLine} 
-                style={{ 
-                    top: 0,
-                    "--deg": "90deg",
-                } as React.CSSProperties}
-            />
+        <CyberFormCard className={styles.cyberFormCard}>
 
             {/* タイトル */}
-            <div className={styles.header}>
-                <ShieldCheck size={80} strokeWidth={1} />
-                <div className={styles.title}>
-                    <GlitchText content={"REGISTRATION"} className={styles.mainTitle}/>
-                    <p 
-                        className={styles.subTitle}
-                        style={{ fontFamily: font.secondary }}
-                    >
-                        Please enter your information.
-                    </p>
-                </div>
-            </div>
+            <PageTitle Icon={File} mainTitle={"USER SETUP"} subTitle={"Please enter your information."}/>
 
             <form 
                 className={styles.form}
@@ -113,15 +76,7 @@ export const UserInfoForm = ({
                 </SubmitButton>
 
             </form>
-
-            {/* スキャンライン */}
-            <div 
-                className={styles.scanLine} 
-                style={{ 
-                    bottom: 0,
-                    "--deg": "-90deg",
-                } as React.CSSProperties}
-            />
-        </div>
+            
+        </CyberFormCard>
     );
 }

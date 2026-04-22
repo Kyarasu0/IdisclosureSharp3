@@ -11,6 +11,8 @@ export const PALETTE = {
     blackGlass: '#001314E0',
     gray: '#002729',
     grayGlass: '#002729E0',
+    white: '#FFFFFF',
+    whiteGlass: '#FFFFFF14',
     // 同一トーン配色であるアクセント色
     pink: '#FF00E1',
     green: '#6DFF2E',

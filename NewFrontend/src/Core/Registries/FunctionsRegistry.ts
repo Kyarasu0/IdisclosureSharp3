@@ -29,7 +29,7 @@ export const FunctionsRegistry = () => {
 
     GuardUserSetup: () =>
       guard({
-        allowedFromPages: ["Introduction"],
+        allowedFromPages: ["Introduction", "SecretSetup"],
         redirectPath: "/user-setup",
       }),
     
@@ -46,6 +46,38 @@ export const FunctionsRegistry = () => {
         fromPage: "UserSetup",
       });
     },
+
+    // ====================
+    // SecretSetup
+    // ====================
+    GoToCreateJoinFromSecretSetup: (
+      secretId: string,
+      score: number
+    ) => {
+      const raw = localStorage.getItem("registrationData");
+
+      const base = raw ? JSON.parse(raw) : {};
+
+      localStorage.setItem(
+        "registrationData",
+        JSON.stringify({
+          ...base,
+          secretId,
+          score,
+        })
+      );
+
+      go({
+        path: "/create-join",
+        fromPage: "SecretSetup",
+      });
+    },
+
+    GuardSecretSetup: () =>
+      guard({
+        allowedFromPages: ["UserSetup", "CreateJoin"],
+        redirectPath: "/secret-setup",
+      }),
 
   };
 };
