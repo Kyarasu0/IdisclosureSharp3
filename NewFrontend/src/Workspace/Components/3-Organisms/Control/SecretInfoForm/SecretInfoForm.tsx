@@ -5,15 +5,14 @@
 import { useMemo } from "react";
 import styles from "./SecretInfoForm.module.css";
 
-import { Lock, Zap, FileLock } from "lucide-react";
+import { Lock, ArrowRight, FileLock, TriangleAlert } from "lucide-react";
 
 import { ValidatedInputField } from "../../../1-Atoms/Control/ValidatedInputField/ValidatedInputField";
 import { SubmitButton } from "../../../1-Atoms/Control/SubmitButton/SubmitButton";
 import { CyberFormCard } from "../../../2-Molecules/CyberFormCard/CyberFormCard";
 import { PageTitle } from "../../../1-Atoms/UI/PageTitle/PageTitle";
-
-// 設定ファイルをインポート
-import { useAppearance } from "../../../../../Core/Contexts/AppearanceContext";
+import { CyberMessageBox } from "../../../2-Molecules/CyberMessageBox/CyberMessageBox";
+import { CyberList } from "../../../2-Molecules/CyberList/CyberList";
 
 // 外部関数
 import { calculateScore } from "../../../../Functions/Utils/calculateScore";
@@ -37,8 +36,6 @@ export function SecretInfoForm({
     setSecretId,
     onSaveAndMoveClick = () => alert("onSaveAndMoveClick is not assigned")
 }: Props) {
-    const { palette, font } = useAppearance();
-
   // --------------------------------------------
   // 保存済みデータ取得
   // --------------------------------------------
@@ -62,40 +59,45 @@ export function SecretInfoForm({
     return calculateScore(secretId, registrationData);
   }, [secretId, registrationData]);
 
+  // --------------------------------------------
+    // Score詳細表示用データ
+    // --------------------------------------------
+    // 判定リストを作る
+    const ruleItems = [
+        {
+            id: "userId",
+            label: "UserID included",
+            valid: result.hasUserId,
+        },
+        {
+            id: "year",
+            label: "Birthyear included",
+            valid: result.hasYear,
+        },
+        {
+            id: "birthday",
+            label: "Birthday included",
+            valid: result.hasBirthday,
+        },
+        {
+            id: "noise",
+            label: "Noise characters",
+            valid: result.hasNoise,
+        },
+    ];
+
   // ==============================================
   // JSX
   // ==============================================
   return (
-    <CyberFormCard 
-        className={styles.cyberFormCard}
-    >
+    <CyberFormCard className={styles.cyberFormCard}>
         {/* 左側 */}
-        <div 
-            className={styles.left}
-            style={{
-                "--cyan": palette.cyan,
-                "--white-glass": palette.whiteGlass,
-                "--pink": palette.pink,
-            } as React.CSSProperties }
-        >
+        <div className={styles.left}>
             {/* タイトル */}
             <PageTitle Icon={FileLock} mainTitle={"SECRET SETUP"} subTitle={"Please enter your secret id."}/>
 
             <div className={styles.scoreDetail}>
-                <ul className={styles.ruleList}>
-                    <li className={result.hasUserId ? styles.ok : styles.ng}>
-                    UserID included
-                    </li>
-                    <li className={result.hasYear ? styles.ok : styles.ng}>
-                    Birthyear included
-                    </li>
-                    <li className={result.hasBirthday ? styles.ok : styles.ng}>
-                    Birthday included
-                    </li>
-                    <li className={result.hasNoise ? styles.ok : styles.ng}>
-                    Noise characters
-                    </li>
-                </ul>
+                <CyberList items={ruleItems} />
 
                 <div className={styles.info}>
                     <p>UserID : {registrationData.userId}</p>
@@ -111,32 +113,47 @@ export function SecretInfoForm({
                 <strong className={styles.score}>{result.score}</strong>
             </div>
 
-            <ValidatedInputField
-                label="SECRET ID"
-                value={secretId}
-                onChange={setSecretId}
-                required={true}
-                placeholder="ENTER SECRET ID"
-                icon={<Lock size={18} />}
-            />
+            <form className={styles.form}>
+                <div className={styles.secretIdWrapper}>
+                    <ValidatedInputField
+                        label="SECRET ID"
+                        value={secretId}
+                        onChange={setSecretId}
+                        required={true}
+                        placeholder="ENTER SECRET ID"
+                        icon={<Lock size={18} />}
+                        showStatusDot={true}
+                        // JS/TS 側の正規表現
+                        pattern={/^[A-Za-z0-9!#$%&'\-=^~|@`;+:*,<.>\/?_\\[\](){}"]{1,15}$/}
+                        // HTML pattern 属性用（エスケープ済み）
+                        htmlPattern="[A-Za-z0-9!#$%&'\-=^~|@`;+:*,<.>/?_\\[\](){}\u0022]{1,15}$"
+                    />
+                </div>
 
-            <div className={styles.progress}>
-                <div
-                className={styles.progressBar}
-                style={{ width: `${result.progress}%` }}
+                <CyberMessageBox
+                    title="WARNING"
+                    message="Secret ID can use a-z, A-Z, 1-9, and symbols. It must be 1 to 15 characters long."
+                    icon={<TriangleAlert size={16} />}
+                    variant="warning"
+                    className={styles.warning}
                 />
-            </div>
 
-            <SubmitButton
-                type="button"
-                isLoading={false}
-                onClick={() =>
-                    onSaveAndMoveClick?.(secretId, result.score)
-                }
-            >
-                {result.isValid ? <Zap size={18} /> : <Lock size={18} />}
-                &nbsp;Confirm Secret ID
-            </SubmitButton>
+                <div className={styles.progress}>
+                    <div
+                    className={styles.progressBar}
+                    style={{ width: `${result.progress}%` }}
+                    />
+                </div>
+
+                {/* 登録ボタン */}
+                <SubmitButton 
+                    type="submit"
+                    className={styles.submitButton}
+                >
+                    Comfirm
+                    <ArrowRight />
+                </SubmitButton>
+            </form>
         </div>
     </CyberFormCard>
   );

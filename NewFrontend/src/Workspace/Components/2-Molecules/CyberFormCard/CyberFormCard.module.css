@@ -26,7 +26,7 @@
 .scanLine {
     /* 大きさ設定 */
     width: 100%;
-    height: 2px;
+    height: 1px;
     background-size: 200% 100%;
 
     /* バックグラウンド設定 */

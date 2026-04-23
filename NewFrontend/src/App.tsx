@@ -14,6 +14,7 @@ import { AppearanceContext } from "./Core/Contexts/AppearanceContext";
 import { MainOutline } from "./Core/Outlines/Outline-v1";
 // デザインに関するファイルをインポート
 import styles from "./App.module.css";
+import { SettingsRegistry } from "./Core/Registries/SettingsRegistry";
 
 // =============================
 // AnimatedRoutes（構造そのまま）
@@ -75,23 +76,31 @@ export default function App() {
   const Transition = TransitionsRegistry.FadeBlur;
   const Appearance = AppearancesRegistry.MajorCyber;
 
+  // CSS設定
+  const cssVars: Record<string, string> = {};
+  for (const key in Appearance.palette) {
+    const typedKey = key as keyof typeof Appearance.palette;
+    const value = Appearance.palette[typedKey];
+
+    cssVars[`--${key}`] = value;
+  }
+
   return (
     <AppearanceContext.Provider value={Appearance}>
       <BrowserRouter>
         <div
           className={styles.app}
-          style={
-            {
-              "--color": Appearance.palette.cyan,
-              "--background-color": Appearance.palette.black,
+          style={{
+            ...cssVars,
+            "--color": Appearance.palette.cyan,
+            "--background-color": Appearance.palette.black,
 
-              // 必要なら増やせる
-              "--accent": Appearance.palette.cyan,
-              "--sub-color": Appearance.palette.gray,
+            // 必要なら増やせる
+            "--accent": Appearance.palette.cyan,
+            "--sub-color": Appearance.palette.gray,
 
-              fontFamily: Appearance.font.primary,
-            } as React.CSSProperties
-          }
+            fontFamily: Appearance.font.primary,
+          } as React.CSSProperties }
         >
           <Background />
           <Cursor />

@@ -1,0 +1,64 @@
+/* =========================================================================
+    Components/2-Molecules/CyberMessageBox/CyberMessageBox.module.css
+========================================================================= */
+
+.box {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  align-items: flex-start;
+}
+
+.icon {
+  margin-top: 2px;
+}
+
+.text {
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+/* warning */
+.warning {
+  background: var(--yellowBackground);
+  border: 1px solid var(--yellowBorder);
+}
+
+.warning .icon,
+.warning .text {
+  color: var(--yellow);
+}
+
+/* danger */
+.danger {
+  background: var(--redBackground);
+  border: 1px solid var(--redBorder);
+}
+
+.danger .icon
+.danger .text {
+  color: var(--red);
+}
+
+/* info */
+.info {
+  background: var(--blueBackground);
+  border: 1px solid var(--blueBorder);
+}
+
+.info .icon,
+.info .text {
+  color: var(--blue);
+}
+
+/* success */
+.success {
+  background: var(--greenBackground);
+  border: 1px solid var(--greenBorder);
+}
+
+.success .icon,
+.success .text {
+  color: var(--green);
+}

@@ -25,6 +25,8 @@ type SubmitButtonProps = {
   children: ReactNode;
   // ボタンのサイズ
   size?: "sm" | "md" | "lg";
+  // CSSの適応
+  className?: string;
 };
 
 // ===============================================
@@ -37,6 +39,7 @@ export const SubmitButton = ({
     onClick = () => {},
     children,
     size,
+    className,
 }: SubmitButtonProps) => {
     let scale = 0.75;
     switch(size){
@@ -51,7 +54,7 @@ export const SubmitButton = ({
             // disabled または loading中なら押せない
             disabled={disabled || isLoading}
             onClick={onClick}
-            className={styles.button}
+            className={`${styles.button} ${className}`}
             style={{
                 "--black": palette.black,
                 "--cyan": palette.cyan,

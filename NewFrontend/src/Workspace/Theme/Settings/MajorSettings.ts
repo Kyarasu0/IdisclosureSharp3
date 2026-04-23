@@ -5,7 +5,7 @@
 // MajorSettingsの設定
 export const MajorSettings = {
 
-  CurrencyName: "Blue Shard",
+  ScoreName: "Blue Shard",
   
 } as const;
 

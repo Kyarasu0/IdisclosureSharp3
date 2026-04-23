@@ -1,0 +1,75 @@
+/* ==================================================================
+CyberList.module.css
+================================================================== */
+
+/* ------------------------------------------
+全体
+------------------------------------------ */
+.list {
+  width: 100%;
+  margin: 2rem 0rem;
+  padding: 0;
+
+  list-style: none;
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ------------------------------------------
+共通
+------------------------------------------ */
+.list li {
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 20px 16px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  font-size: 14px;
+
+  border-left: 3px solid;
+  border-radius: 2px;
+
+  transition: all 0.35s ease;
+}
+
+/* ------------------------------------------
+成功
+------------------------------------------ */
+.ok {
+  color: var(--cyan);
+
+  border-color: var(--cyan);
+
+  background: var(--gray);
+
+  transform: translateX(8px);
+}
+
+/* ------------------------------------------
+失敗
+------------------------------------------ */
+.ng {
+  color: var(--lightGray);
+
+  border-color: var(--grayGlass);
+
+  background: var(--lightGray_op10);
+}
+
+/* ------------------------------------------
+文字
+------------------------------------------ */
+.label {
+  letter-spacing: 0.04em;
+}
+
+.value {
+  font-size: 12px;
+  opacity: 0.85;
+}

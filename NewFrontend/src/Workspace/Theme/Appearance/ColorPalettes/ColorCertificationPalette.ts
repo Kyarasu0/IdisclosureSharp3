@@ -3,40 +3,48 @@
 // =============================================
 // Idisclosure#3で使用する色の組み合わせ
 export const PALETTE = {
+    // -------------------------------
+    // 基準となる色
+    // -------------------------------
     // 適当に決めたサイバーなシアン
-    cyan: '#35CBDB',
-    cyanShadow: '#35CBDB80',
+    cyan: '52D2E0',
+    cyan_op40: '#52D2E066',
+    cyan_op10: '52D2E019',
+
+    // -------------------------------
+    // 同一色相配色であるアクセント色
+    // -------------------------------
     // 同一色相配色であり明度のみ落とした黒色と純黒色
     black: '#001314',
     blackGlass: '#001314E0',
     gray: '#002729',
     grayGlass: '#002729E0',
     lightGray: '#7a7a7a',
-    lightGray_op40: '#7a7a7a66',
-    lightGray_op10: '#7a7a7a19',
     white: '#FFFFFF',
     whiteGlass: '#FFFFFF14',
 
     // -------------------------------
     // 同一トーン配色であるアクセント色
     // -------------------------------
-    pink: '#FF00E1',
-
+    //ピンクに関する種類
+    pink: '#E052D0',
+    pink_op40: '#E052D066',
+    pink_op10: '#E052D019',
     // 緑に関する種類
-    green: '#6DFF2E',
-    greenBorder: '#6DFF2E66',
-    greenBackground: '#6DFF2E19',
+    green: '#7CE052',
+    green_op40: '#7CE05266',
+    green_op10: '#7CE05219',
     // 赤に関する種類
-    red: '#FF3D3D',
-    redBorder: '#FF3D3D66',
-    redBackground: '#FF3D3D19',
+    red: '#E05252',
+    red_op40: '#E0525266',
+    red_op10: '#E0525219',
     // 黄色に関する種類
-    yellow: '#FACC15',
-    yellowBorder: '#FACC1566',
-    yellowBackground: '#FACC1519',
+    yellow: '#E0C452',
+    yellow_op40: '#E0C45266',
+    yellow_op10: '#E0C45219',
     // 青に関する種類(仮)
-    blue: '#93c5fd',
-    blueBorder: '#93c5fd66',
-    blueBackground: '#93c5fd19',
+    blue: '#5294E0',
+    blue_op40: '#5294E066',
+    blue_op10: '#5294E019',
     // 文字に関する色
 };
