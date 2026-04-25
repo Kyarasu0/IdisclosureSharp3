@@ -4,8 +4,6 @@
 
 // デザインに関するファイルをインポート
 import styles from "./CyberFormCard.module.css";
-// 設定ファイルをインポート
-import { useAppearance } from "../../../../Core/Contexts/AppearanceContext";
 
 type CyberFormCardProps = {
   children: React.ReactNode;
@@ -14,21 +12,11 @@ type CyberFormCardProps = {
 
 export const CyberFormCard = ({
     children,
-    className = "",
+    className,
 }: CyberFormCardProps) => {
 
-    const { palette } = useAppearance();
-
     return(
-        <div 
-            className={`${styles.card} ${className}`}
-            style={{
-                "--black-glass": palette.blackGlass,
-                "--cyan": palette.cyan,
-                "--cyan-shadow": palette.cyanShadow,
-                "--pink": palette.pink,
-            } as React.CSSProperties}
-        >
+        <div className={`${styles.card} ${className}`}>
             {/* 四つ角飾り */}
             <div className={styles.rightTop}></div>
             <div className={styles.rightBottom}></div>

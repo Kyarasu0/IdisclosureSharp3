@@ -29,10 +29,12 @@ export const MainOutline: {
     path: "/secret-setup",
     page: "SecretSetup",
     props:{
-      isNavigationBlocked:true,
+      isNavigationBlocked: isNavigationBlocked,
       onGuard:"GuardSecretSetup",
       onReturnClick:"GoToUserSetupFromSecretSetup",
-      onConfirmClick:"GoToCreateJoinFromSecretSetup"
+      onConfirmClick:"GoToCreateJoinFromSecretSetup",
+      getLocalStorage: "getLocalStorage",
+      calculateScoreFn: "calculateScoreFn",
     }
   }
 ];

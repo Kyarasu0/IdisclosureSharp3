@@ -5,6 +5,13 @@ import { createContext, useContext } from "react";
 export type Appearance = {
     palette: Record<string, string>;
     font: Record<string, string>;
+    scoreName?: string;
+    initialScore?: number,
+    userIdCost?: number,
+    birthYearCost?: number,
+    birthDayCost?: number,
+    noiseCost?: number
+
 };
 
 export const AppearanceContext = createContext<Appearance | null>(null);

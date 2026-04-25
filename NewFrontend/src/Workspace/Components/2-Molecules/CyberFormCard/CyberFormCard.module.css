@@ -4,10 +4,7 @@
 
 .card{
     /* バックグラウンド設定 */
-    background-color: var(--black-glass);
-
-    /* 装飾設定 */
-    border: 1px solid var(--cyan-shadow);
+    background-color: var(--black_opWeak);
 
     /* 配置基準設定 */
     position: relative;
@@ -16,7 +13,7 @@
     overflow: hidden;
 
     /* 余白設定 */
-    padding: 3rem 1.5rem;
+    padding: 1.5rem;
     gap: 1.5rem;
 
     /* 装飾設定 */

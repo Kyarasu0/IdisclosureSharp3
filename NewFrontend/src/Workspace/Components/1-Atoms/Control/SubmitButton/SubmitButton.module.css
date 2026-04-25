@@ -21,6 +21,7 @@
   /* 文字設定 */
   color: var(--cyan);
   font-weight: bold;
+  font-family: var(--primary);
 
   /* 装飾設定 */
   border: 1px solid var(--cyan);
@@ -87,7 +88,7 @@
 
     /* 装飾設定 */
     border-radius: 50%;
-    border: 2px solid var(--gray);
+    border: 2px solid var(--darkGray);
     border-top: 2px solid var(--cyan);
 
     /* アニメーション設定 */

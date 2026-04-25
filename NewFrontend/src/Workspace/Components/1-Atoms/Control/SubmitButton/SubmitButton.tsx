@@ -6,8 +6,6 @@
 import type { ReactNode } from "react";
 // デザインに関連するファイルをインポート
 import styles from "./SubmitButton.module.css";
-// 設定ファイルをインポート
-import { useAppearance } from "../../../../../Core/Contexts/AppearanceContext";
 
 // ===============================================
 // Props型定義
@@ -46,8 +44,6 @@ export const SubmitButton = ({
         case "sm": scale *= 2/3; break;
         case "lg": scale *= 2; break;
     }
-    const { palette, font } = useAppearance();
-
     return (
         <button
             type={type}
@@ -56,10 +52,6 @@ export const SubmitButton = ({
             onClick={onClick}
             className={`${styles.button} ${className}`}
             style={{
-                "--black": palette.black,
-                "--cyan": palette.cyan,
-                "--gray": palette.gray,
-                fontFamily: font.primary,
                 padding: `${scale}rem ${scale * 2}rem`,
                 fontSize: `${scale * 1.5}rem`,
             } as React.CSSProperties}

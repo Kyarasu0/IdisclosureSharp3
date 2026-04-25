@@ -7,14 +7,16 @@ CyberList.module.css
 ------------------------------------------ */
 .list {
   width: 100%;
-  margin: 2rem 0rem;
+  height: 100%;
   padding: 0;
+  margin: 0;
 
   list-style: none;
 
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
 /* ------------------------------------------
@@ -31,6 +33,7 @@ CyberList.module.css
   align-items: center;
 
   font-size: 14px;
+  font-family: var(--secondary);
 
   border-left: 3px solid;
   border-radius: 2px;
@@ -46,7 +49,7 @@ CyberList.module.css
 
   border-color: var(--cyan);
 
-  background: var(--gray);
+  background: var(--cyan_opWeak);
 
   transform: translateX(8px);
 }
@@ -57,9 +60,9 @@ CyberList.module.css
 .ng {
   color: var(--lightGray);
 
-  border-color: var(--grayGlass);
+  border-color: var(--darkGray_opMid);
 
-  background: var(--lightGray_op10);
+  background: var(--darkGray_opWeak);
 }
 
 /* ------------------------------------------

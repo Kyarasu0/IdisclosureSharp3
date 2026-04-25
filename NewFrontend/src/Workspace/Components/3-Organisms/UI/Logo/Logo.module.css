@@ -38,7 +38,7 @@
   height: 100%;
 
   /* バックグラウンド設定 */
-  background-color: var(--cyan-shadow);
+  background-color: var(--cyan_opWeak);
 
   /* 装飾設定 */
   border-radius: 9999px;
@@ -55,7 +55,7 @@
 /* アイコン */
 .icon {
   /* 装飾設定 */
-  filter: drop-shadow(0 0 15px var(--cyan-shadow));
+  filter: drop-shadow(0 0 15px var(--cyan_opWeak));
 
   /* 配置基準設定 */
   position: relative;
@@ -75,7 +75,7 @@
   flex-direction: column;
 
   /* 文字設定 */
-  font-family: 'Anonymous Pro', monospace;
+  font-family: var(--primary);
   font-weight: 900;
 }
 
@@ -91,7 +91,7 @@
 /* ========== ロゴタイプ ========== */
 .logoType {
   /* 装飾設定 */
-  text-shadow: 0 0 20px var(--cyan-shadow);
+  text-shadow: 0 0 20px var(--cyan_opWeak);
 }
 
 /* ========== タグライン ========== */
@@ -101,7 +101,7 @@
   color: var(--cyan);
 
   /* 装飾設定 */
-  text-shadow: 0 0 8px var(--cyan-shadow);
+  text-shadow: 0 0 8px var(--cyan_opWeak);
 
   /* アニメーション設定 */
   animation: pulse 2s infinite;

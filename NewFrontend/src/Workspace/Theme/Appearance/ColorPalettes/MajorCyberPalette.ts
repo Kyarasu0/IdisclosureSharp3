@@ -4,7 +4,7 @@
 // Idisclosure#3で使用する色の組み合わせ
 export const PALETTE = {
     // 適当に決めたサイバーなシアン
-    cyan: '#35CBDB',
+    cyan: '#3DE2F5',
     cyanShadow: '#35CBDB80',
     // 同一色相配色であり明度のみ落とした黒色と純黒色
     black: '#001314',
@@ -12,8 +12,8 @@ export const PALETTE = {
     gray: '#002729',
     grayGlass: '#002729E0',
     lightGray: '#7a7a7a',
-    lightGray_op40: '#7a7a7a66',
-    lightGray_op10: '#7a7a7a19',
+    lightGray_opMid: '#7a7a7a66',
+    lightGray_opWeak: '#7a7a7a19',
     white: '#FFFFFF',
     whiteGlass: '#FFFFFF14',
 

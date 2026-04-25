@@ -20,6 +20,10 @@
     display: flex;
     align-items: center;
 
+    /* 文字設定 */
+    font-family: var(--primary);
+    color: var(--cyan);
+
     /* 余白設定 */
     gap: 0.5rem;
 }
@@ -39,8 +43,15 @@
     height: 100%;
     box-sizing: border-box;
 
+    /* バックグラウンド設定 */
+    background-color: var(--black);
+
     /* 余白設定 */
     padding: 1rem;
+
+    /* 文字設定 */
+    font-family: var(--secondary);
+    color: var(--cyan);
 
     /* 装飾設定 */
     border-radius: 12px;

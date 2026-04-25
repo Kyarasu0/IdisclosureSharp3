@@ -6,12 +6,16 @@
     /* 配置基準設定 */
     /* 配置の基準になり、文字のサイズピッタリの箱になる */
     position: relative;
+    display: flex;
+    align-items: center;
 }
 
 /* --- 各文字に対しての設定 --- */
 .base {
     /* 文字設定 */
     position: relative;
+    color: var(--cyan);
+    font-family: var(--secondary);
 }
 
 .layer1,
@@ -21,8 +25,11 @@
     top: 0;
     left: 0;
 
+    /* 文字設定 */
+    font-family: var(--secondary);
+
     /* 装飾設定 */
-    z-index: 1;
+    z-index: -1;
     opacity: 0;
     transition: 0.1s;
 }
@@ -31,13 +38,13 @@
 .glitch:hover .layer1 {
     /* アニメーション設定 */
     opacity: 0.7;
-    color: #22d3ee;
-    transform: translateX(1px);
+    color: var(--blue);
+    transform: translateX(3px);
 }
 
 .glitch:hover .layer2 {
     /* アニメーション設定 */
     opacity: 0.7;
-    color: #ec4899;
-    transform: translateX(-1px);
+    color: var(--pink);
+    transform: translateX(-2px);
 }

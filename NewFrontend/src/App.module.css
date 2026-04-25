@@ -8,10 +8,10 @@
   width: 100vw;
 
   /* バックグラウンド設定 */
-  background-color: var(--background-color);
+  background-color: var(--black);
 
   /* 文字設定 */
-  color: var(--color);
+  color: var(--cyan);
 
   /* 配置基準設定 */
   position: relative;

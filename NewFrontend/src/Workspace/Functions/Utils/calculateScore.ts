@@ -1,8 +1,8 @@
 // ======================================================
-//  Functions/Utils/calculateSecretScore.ts
+//  Functions/Utils/calculateScore.ts
 // ======================================================
 
-// 入力値を受け取り、判定結果と点数を返す関数
+import { useAppearance } from "../../../Core/Contexts/AppearanceContext";
 
 type UserData = {
   userId: string;
@@ -13,55 +13,65 @@ export function calculateScore(
   secretId: string,
   userData: UserData
 ) {
+  // CostとScoreの設定
+  const appearance = useAppearance();
+  const initialScore = appearance.initialScore;
+  const userIdCost = appearance.userIdCost;
+  const birthYearCost = appearance.birthYearCost;
+  const birthDayCost = appearance.birthDayCost;
+  const noiseCost = appearance.noiseCost;
+
+
   const userId = userData.userId || "";
   const birthDate = userData.birthDate || "";
 
-  // 誕生日分解
-  const year = birthDate.split("-")[0] || "";
-  const month = birthDate.split("-")[1] || "";
-  const day = birthDate.split("-")[2] || "";
+  const [year, month, day] = birthDate.split("-");
 
-  const mmdd = month + day;
+  const mmdd = `${month || ""}${day || ""}`;
 
-  // 条件判定
-  const hasUserId = userId !== "" && secretId.includes(userId);
-  const hasYear = year !== "" && secretId.includes(year);
-  const hasBirthday = mmdd !== "" && secretId.includes(mmdd);
+  // -----------------------------------
+  // 出現回数を数える関数
+  // -----------------------------------
+  const countOccurrences = (text: string, pattern: string) => {
+    if (!pattern) return 0;
+    return text.split(pattern).length - 1;
+  };
 
-  // ノイズ文字
-  const noiseText = secretId
-    .replaceAll(userId, "")
-    .replaceAll(year, "")
-    .replaceAll(mmdd, "");
+  // -----------------------------------
+  // 各カウント
+  // -----------------------------------
+  const userIdCount = countOccurrences(secretId, userId);
+  const birthYearCount = countOccurrences(secretId, year);
+  const birthDayCount = countOccurrences(secretId, mmdd);
+
+  // -----------------------------------
+  // ノイズ（削除残り）
+  // -----------------------------------
+  let noiseText = secretId;
+
+  if (userId) noiseText = noiseText.replaceAll(userId, "");
+  if (year) noiseText = noiseText.replaceAll(year, "");
+  if (mmdd) noiseText = noiseText.replaceAll(mmdd, "");
 
   const noiseCount = noiseText.length;
-  const hasNoise = noiseCount > 0;
 
-  // 全達成
-  const isValid =
-    hasUserId &&
-    hasYear &&
-    hasBirthday &&
-    hasNoise;
+  // -----------------------------------
+  // スコア
+  // -----------------------------------
+  const userIdTotalCost = userIdCount * (userIdCost ? userIdCost : 1);
+  const birthYearTotalCost = birthYearCount * (birthYearCost ? birthYearCost : 1);
+  const birthDayTotalCost = birthDayCount * (birthDayCost ? birthDayCost : 1);
+  const noiseTotalCost = (noiseCost ? noiseCost : 1) ** noiseCount - 1;
+  const cost = userIdTotalCost + birthYearTotalCost + birthDayTotalCost + noiseTotalCost;
 
-  // 点数
-  let score = 0;
-
-  if (hasUserId) score += 20;
-  if (hasYear) score += 25;
-  if (hasBirthday) score += 25;
-
-  score += noiseCount * 8;
-
-  // バー表示
-  const progress = Math.min(score, 100);
+  const score = Math.floor((initialScore ? initialScore : 1) / (cost !== 0 ? cost : 1))
+  const progress = (Math.floor(score * 100 / (initialScore ? initialScore : 1)));
 
   return {
-    hasUserId,
-    hasYear,
-    hasBirthday,
-    hasNoise,
-    isValid,
+    userIdTotalCost,
+    birthYearTotalCost,
+    birthDayTotalCost,
+    noiseTotalCost,
     score,
     progress,
   };

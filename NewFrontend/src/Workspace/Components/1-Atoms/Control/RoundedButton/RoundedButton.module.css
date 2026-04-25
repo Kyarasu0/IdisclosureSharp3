@@ -5,7 +5,7 @@
 /* ===== BUTTON BASE ===== */
 .roundedButton {
   /* バックグラウンド設定 */
-  background: var(--black-glass);
+  background: var(--black_opMid);
 
   /* 要素配置設定 */
   display: flex;
@@ -16,6 +16,7 @@
   font-weight: bold;
   letter-spacing: 0.15em;
   color: var(--cyan);
+  font-family: var(--primary);
 
   /* 装飾設定 */
   border-radius: 9999px;

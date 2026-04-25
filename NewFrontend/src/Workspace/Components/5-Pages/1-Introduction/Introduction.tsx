@@ -6,7 +6,6 @@
 import { Logo } from "./../../3-Organisms/UI/Logo/Logo";
 import { RoundedButton } from "./../../1-Atoms/Control/RoundedButton/RoundedButton";
 // デザインに関連するファイルをインポート
-import { PALETTE } from "../../../Theme/Appearance/ColorPalettes/MajorCyberPalette";
 import styles from "./Introduction.module.css";
 
 type Props = {
@@ -17,10 +16,7 @@ export const Introduction = ({
     onMoveClick = () => alert("onMoveClick is not assigned"),
 }: Props) => {
     return (
-        <div 
-            className={styles.container}
-            style={{ "--cyan": PALETTE.cyan } as React.CSSProperties}
-        >
+        <div className={styles.container}>
             {/* ロゴマーク */}
             <div className={styles.logoWrapper}>
                 <Logo size="lg" type="vertical"/>

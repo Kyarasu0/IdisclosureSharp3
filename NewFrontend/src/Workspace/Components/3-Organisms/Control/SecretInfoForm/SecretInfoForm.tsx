@@ -13,9 +13,9 @@ import { CyberFormCard } from "../../../2-Molecules/CyberFormCard/CyberFormCard"
 import { PageTitle } from "../../../1-Atoms/UI/PageTitle/PageTitle";
 import { CyberMessageBox } from "../../../2-Molecules/CyberMessageBox/CyberMessageBox";
 import { CyberList } from "../../../2-Molecules/CyberList/CyberList";
+import { ProgressBar } from "../../../1-Atoms/UI/ProgressBar/ProgressBar";
 
-// 外部関数
-import { calculateScore } from "../../../../Functions/Utils/calculateScore";
+import { useAppearance } from "../../../../../Core/Contexts/AppearanceContext";
 
 // ==============================================
 // 型
@@ -25,39 +25,59 @@ type Props = {
     setSecretId: React.Dispatch<React.SetStateAction<string>>;
     score: number;
     setScore: React.Dispatch<React.SetStateAction<number>>;
-    onSaveAndMoveClick?: ( secretId: string, score: number ) => void;
+    onConfirmClick?: ( registrationData: Record<string, string> ) => void;
+    calculateScoreFn?: (
+        secretId: string,
+        registrationData: any
+    ) => {
+        userIdTotalCost: number;
+        birthYearTotalCost: number;
+        birthDayTotalCost: number;
+        noiseTotalCost: number;
+        score: number;
+        progress: number;
+    };
+    getLocalStorage?: (key: string) => Record<string, string>
 };
 
 // ==============================================
 // SecretInfoForm
 // ==============================================
-export function SecretInfoForm({ 
+export function SecretInfoForm({
     secretId,
+    score,
     setSecretId,
-    onSaveAndMoveClick = () => alert("onSaveAndMoveClick is not assigned")
+    setScore,
+    onConfirmClick = () => alert("onConfirmClick is not assigned"),
+    calculateScoreFn = (secretId = "not_found", registrationData) => {
+        alert(`${secretId}${registrationData}: calculateScoreFn is not assigned`)
+        return {
+            userIdTotalCost: 0,
+            birthYearTotalCost: 0,
+            birthDayTotalCost: 0,
+            noiseTotalCost: 0,
+            score: 0,
+            progress: 0,
+        }
+    },
+    getLocalStorage = (key = "not_found") => { return {[key]: "getLocalStorage is not assigned"}},
+
 }: Props) {
+    const appearance = useAppearance();
+
   // --------------------------------------------
   // 保存済みデータ取得
   // --------------------------------------------
-  const registrationData = useMemo(() => {
-    const raw = localStorage.getItem("registrationData");
-
-    if (!raw) {
-      return {
-        userId: "",
-        birthDate: "",
-      };
-    }
-
-    return JSON.parse(raw);
-  }, []);
+  const registrationData = useMemo(() => getLocalStorage("registrationData"), []);
 
   // --------------------------------------------
   // 点数計算関数を呼ぶ
   // --------------------------------------------
   const result = useMemo(() => {
-    return calculateScore(secretId, registrationData);
-  }, [secretId, registrationData]);
+    const base = calculateScoreFn(secretId, registrationData);
+    setScore(base.score);
+    return base;
+}, [secretId, registrationData, calculateScoreFn]);
 
   // --------------------------------------------
     // Score詳細表示用データ
@@ -67,22 +87,22 @@ export function SecretInfoForm({
         {
             id: "userId",
             label: "UserID included",
-            valid: result.hasUserId,
+            valid: result.userIdTotalCost > 0,
         },
         {
             id: "year",
             label: "Birthyear included",
-            valid: result.hasYear,
+            valid: result.birthYearTotalCost > 0,
         },
         {
             id: "birthday",
             label: "Birthday included",
-            valid: result.hasBirthday,
+            valid: result.birthDayTotalCost > 0,
         },
         {
             id: "noise",
-            label: "Noise characters",
-            valid: result.hasNoise,
+            label: "Noise characters included",
+            valid: result.noiseTotalCost > 0,
         },
     ];
 
@@ -91,29 +111,38 @@ export function SecretInfoForm({
   // ==============================================
   return (
     <CyberFormCard className={styles.cyberFormCard}>
-        {/* 左側 */}
-        <div className={styles.left}>
+        {/* Header */}
+        <div className={styles.secretSetupHeader}>
             {/* タイトル */}
-            <PageTitle Icon={FileLock} mainTitle={"SECRET SETUP"} subTitle={"Please enter your secret id."}/>
-
-            <div className={styles.scoreDetail}>
-                <CyberList items={ruleItems} />
-
-                <div className={styles.info}>
-                    <p>UserID : {registrationData.userId}</p>
-                    <p>Birth : {registrationData.birthDate}</p>
-                </div>
+            <div className={styles.pageTitleWrapper}>
+                <PageTitle Icon={FileLock} mainTitle={"SECRET SETUP"} subTitle={"Please enter your secret id."}/>
+            </div>
+            {/* スコア */}
+            <div className={styles.scoreBox}>
+                <span className={styles.scoreLabel}>{appearance.scoreName}</span>
+                <strong className={styles.score}>{result.score}</strong>
             </div>
         </div>
 
-        {/* 右側 */}
-        <div className={styles.right}>
-            <div className={styles.scoreBox}>
-                <span className={styles.scoreLabel}>SECRET SCORE</span>
-                <strong className={styles.score}>{result.score}</strong>
+        {/* Main */}
+        <div className={styles.secretSetupMain}>
+            {/* 左側 */}
+            <div className={styles.scoreDetail}>
+                <CyberList items={ruleItems} />
             </div>
-
-            <form className={styles.form}>
+            {/* 右側 */}
+            <form 
+                className={styles.form}
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    onConfirmClick?.({ 
+                        userId: registrationData.userId,
+                        birthDate: registrationData.birthDate,
+                        secretId,
+                        score: String(score)
+                    });
+                }}    
+            >
                 <div className={styles.secretIdWrapper}>
                     <ValidatedInputField
                         label="SECRET ID"
@@ -138,12 +167,10 @@ export function SecretInfoForm({
                     className={styles.warning}
                 />
 
-                <div className={styles.progress}>
-                    <div
-                    className={styles.progressBar}
-                    style={{ width: `${result.progress}%` }}
-                    />
-                </div>
+                <ProgressBar
+                    progress={result.progress}
+                    color="linear-gradient(90deg, var(--cyan), var(--pink))"
+                />
 
                 {/* 登録ボタン */}
                 <SubmitButton 
@@ -154,6 +181,14 @@ export function SecretInfoForm({
                     <ArrowRight />
                 </SubmitButton>
             </form>
+        </div>
+
+        {/* footer */}
+        <div className={styles.secretSetupFooter}>
+            <div className={styles.info}>
+                <p>UserID : {registrationData.userId}</p>
+                <p>BirthDate : {registrationData.birthDate}</p>
+            </div>
         </div>
     </CyberFormCard>
   );

@@ -6,8 +6,6 @@
 import type { ReactNode } from 'react';
 // デザインに関連するファイルをインポート
 import styles from "./ValidatedInputField.module.css";
-// 設定ファイルをインポート
-import { useAppearance } from "../../../../../Core/Contexts/AppearanceContext";
 
 type ValidatedInputFieldProps = {
   label: string;                      // 入力欄の名前
@@ -40,17 +38,13 @@ export const ValidatedInputField = ({
   // 文字の大きさ設定
   const fontSize = 1.3;
 
-  const { palette, font } = useAppearance();
-
   return (
     <div className={styles.field}>
       
       {/* ラベル表示（アイコン + テキスト） */}
       <label 
         className={styles.label}
-        style={{ 
-          color: palette.cyan,
-          fontFamily: font.primary,
+        style={{
           fontSize: `${1 * fontSize}rem`,
         }}
       >
@@ -70,12 +64,7 @@ export const ValidatedInputField = ({
           pattern={htmlPattern}
           style={{ 
             colorScheme: 'dark',
-            background: palette.black,
-            color: palette.cyan,
             fontSize: `${1 * fontSize}rem`,
-            "--cyan": palette.cyan,
-            "--cyan-shadow": palette.cyanShadow,
-            fontFamily: font.secondary,
           } as React.CSSProperties}
         />
 
@@ -84,7 +73,7 @@ export const ValidatedInputField = ({
           <div
             className={styles.dot}
             style={{
-              background: isValid ? palette.green : palette.pink
+              background: isValid ? "var(--green)" : "var(--pink)"
             }}
           />
         )}

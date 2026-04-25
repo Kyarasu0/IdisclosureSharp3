@@ -21,44 +21,44 @@
 
 /* warning */
 .warning {
-  background: var(--yellowBackground);
-  border: 1px solid var(--yellowBorder);
+  background: var(--yellow_opWeak);
+  border: 1px solid var(--yellow_opMid);
 }
 
 .warning .icon,
 .warning .text {
-  color: var(--yellow);
+  color: var(--yellow_opMid);
 }
 
 /* danger */
 .danger {
-  background: var(--redBackground);
-  border: 1px solid var(--redBorder);
+  background: var(--red_opWeak);
+  border: 1px solid var(--red_opMid);
 }
 
 .danger .icon
 .danger .text {
-  color: var(--red);
+  color: var(--red_opMid);
 }
 
 /* info */
 .info {
-  background: var(--blueBackground);
-  border: 1px solid var(--blueBorder);
+  background: var(--blue_opWeak);
+  border: 1px solid var(--blue_opMid);
 }
 
 .info .icon,
 .info .text {
-  color: var(--blue);
+  color: var(--blue_opMid);
 }
 
 /* success */
 .success {
-  background: var(--greenBackground);
-  border: 1px solid var(--greenBorder);
+  background: var(--green_opWeak);
+  border: 1px solid var(--green_opMid);
 }
 
 .success .icon,
 .success .text {
-  color: var(--green);
+  color: var(--green_opMid);
 }

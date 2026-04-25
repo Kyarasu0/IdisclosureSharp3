@@ -52,6 +52,7 @@ export const UserSetup = ({
                     onSaveAndMoveClick={() =>
                         onSaveAndMoveClick(userId, birthDate)
                     }
+                    className={styles.userSetupForm}
                 />
             </main>
             <footer className={styles.userSetupFooter}>

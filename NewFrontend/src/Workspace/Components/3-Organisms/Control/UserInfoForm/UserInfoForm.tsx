@@ -17,6 +17,7 @@ type UserInfoFormProps = {
   birthDate: string;
   setBirthDate: React.Dispatch<React.SetStateAction<string>>;
   onSaveAndMoveClick?: ( userId: string, birthDate: string ) => void;
+  className?: string;
 };
 
 export const UserInfoForm = ({
@@ -25,9 +26,10 @@ export const UserInfoForm = ({
     birthDate,
     setBirthDate,
     onSaveAndMoveClick = () => alert("onSaveAndMoveClick is not assigned"),
+    className,
 }: UserInfoFormProps) => {
     return(
-        <CyberFormCard className={styles.cyberFormCard}>
+        <CyberFormCard className={`${styles.cyberFormCard} ${className}`}>
 
             {/* タイトル */}
             <PageTitle Icon={File} mainTitle={"USER SETUP"} subTitle={"Please enter your information."}/>

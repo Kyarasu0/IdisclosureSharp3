@@ -5,8 +5,6 @@
 // デザインに関連するファイルをインポート
 import styles from "./RoundedButton.module.css";
 import type { LucideIcon } from "lucide-react";
-// 設定ファイルをインポート
-import { useAppearance } from "../../../../../Core/Contexts/AppearanceContext";
 
 type RoundedButtonProps = {
     label?: string;
@@ -26,15 +24,11 @@ export const RoundedButton = ({
         case "sm": scale *= 2/3; break;
         case "lg": scale *= 2; break;
     }
-    const { palette, font } = useAppearance();
     return(
         <button
             onClick={onClick}
             className={ styles.roundedButton }
             style={{
-                "--cyan": palette.cyan,
-                "--black-glass": palette.blackGlass,
-                fontFamily: font.primary,
                 padding: `${scale}rem ${scale * 2}rem`,
                 fontSize: `${scale * 4/5}rem`,
             } as React.CSSProperties}
