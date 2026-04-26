@@ -139,6 +139,7 @@ export function SecretInfoForm({
                 className={styles.form}
                 onSubmit={(e) => {
                     e.preventDefault();
+                    if (!/^[A-Za-z0-9!#$%&'\-=^~|@`;+:*,<.>\/?_\\[\](){}"]{1,15}$/.test(secretId)) return;
                     onConfirmClick?.({ 
                         userId: registrationData.userId,
                         birthDate: registrationData.birthDate,
@@ -159,7 +160,7 @@ export function SecretInfoForm({
                         // JS/TS 側の正規表現
                         pattern={/^[A-Za-z0-9!#$%&'\-=^~|@`;+:*,<.>\/?_\\[\](){}"]{1,15}$/}
                         // HTML pattern 属性用（エスケープ済み）
-                        htmlPattern="[A-Za-z0-9!#$%&'\-=^~|@`;+:*,<.>/?_\\[\](){}\u0022]{1,15}$"
+                        htmlPattern="^[A-Za-z0-9!#$%&'\-=^~|@`;+:*,<.>/?_\\[\](){}\u0022]{1,15}$"
                     />
                 </div>
 
