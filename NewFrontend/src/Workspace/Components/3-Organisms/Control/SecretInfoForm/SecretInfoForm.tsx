@@ -88,21 +88,25 @@ export function SecretInfoForm({
             id: "userId",
             label: "UserID included",
             valid: result.userIdTotalCost > 0,
+            value: result.userIdTotalCost,
         },
         {
             id: "year",
             label: "Birthyear included",
             valid: result.birthYearTotalCost > 0,
+            value: result.birthYearTotalCost,
         },
         {
             id: "birthday",
             label: "Birthday included",
             valid: result.birthDayTotalCost > 0,
+            value: result.birthDayTotalCost,
         },
         {
             id: "noise",
             label: "Noise characters included",
             valid: result.noiseTotalCost > 0,
+            value: result.noiseTotalCost,
         },
     ];
 
@@ -185,6 +189,15 @@ export function SecretInfoForm({
 
         {/* footer */}
         <div className={styles.secretSetupFooter}>
+            <div className={styles.pulse}>
+                <p>Total Cost : {
+                    result.userIdTotalCost
+                    + result.birthYearTotalCost
+                    + result.birthDayTotalCost 
+                    + result.noiseTotalCost
+                }</p>
+                <p>Blue Shard : 100000 / Total Cost</p>
+            </div>
             <div className={styles.info}>
                 <p>UserID : {registrationData.userId}</p>
                 <p>BirthDate : {registrationData.birthDate}</p>

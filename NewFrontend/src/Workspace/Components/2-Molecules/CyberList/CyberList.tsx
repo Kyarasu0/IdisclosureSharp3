@@ -47,7 +47,7 @@ export function CyberList({
           {/* 右側表示（あれば出す） */}
           {item.value !== undefined && (
             <span className={styles.value}>
-              {item.value}
+              + {item.value}
             </span>
           )}
         </li>

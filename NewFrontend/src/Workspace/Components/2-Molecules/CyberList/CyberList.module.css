@@ -73,6 +73,5 @@ CyberList.module.css
 }
 
 .value {
-  font-size: 12px;
-  opacity: 0.85;
+  font-size: 0.75rem;
 }
