@@ -1,3 +1,6 @@
+// 型読み込み
+/// <reference path="../../types/photon.d.ts" />
+
 // Core/Registries/FunctionsRegistry.ts
 
 import { useSafeNavigate } from "../../Workspace/Functions/Hooks/useSafeNavigate";
@@ -100,7 +103,127 @@ export const FunctionsRegistry = () => {
     getLocalStorage: (key: string) => {
       const raw = localStorage.getItem(key);
       return raw ? JSON.parse(raw) : {};
-    }
+    },
+
+    // ====================
+    // CreateJoin
+    // ====================
+    // 1. 前のページへ遷移
+    GoToSecretSetupFromCreateJoin: () =>
+      go({
+        path: "/secret-setup",
+        fromPage: "CreateJoin",
+      }),
+    
+    // ガード
+    GuardCreateJoin: () =>
+      guard({
+        allowedFromPages: ["SecretSetup", "Waiting"],
+        redirectPath: "/create-join",
+      }),
+
+    // 部屋作成
+    CreateRoomAndMove: (roomName: string, userName: string) => {
+      const Photon = (globalThis as any).Photon;
+
+      // URLパラメータ取得
+      const params = new URLSearchParams(window.location.search);
+      const photonApi = params.get("photon_api");
+
+      const client =
+        new Photon.LoadBalancing.LoadBalancingClient(
+          Photon.ConnectionProtocol.Wss,
+          photonApi,
+          "1.0"
+        );
+
+      client.myActor().setName(userName);
+
+      client.onStateChange = (state: number) => {
+        if (state === 4) {
+          client.createRoom(roomName, { maxPlayers: 8 });
+        }
+
+        if (state === 8) {
+          (window as any).photonClient = client;
+
+          go({
+            path: "/waiting",
+            fromPage: "CreateJoin",
+          });
+        }
+      };
+
+      client.connectToRegionMaster("jp");
+    },
+
+    // 部屋参加
+    JoinRoomAndMove: (roomName: string, userName: string) => {
+      const Photon = (window as any).Photon;
+
+      // URLパラメータ取得
+      const params = new URLSearchParams(window.location.search);
+      const photonApi = params.get("photon_api");
+
+      const client =
+        new Photon.LoadBalancing.LoadBalancingClient(
+          Photon.ConnectionProtocol.Wss,
+          photonApi,
+          "1.0"
+        );
+
+      client.myActor().setName(userName);
+
+      client.onStateChange = (state: number) => {
+        if (state === 4) {
+          client.joinRoom(roomName);
+        }
+
+        if (state === 8) {
+          (window as any).photonClient = client;
+
+          go({
+            path: "/waiting",
+            fromPage: "CreateJoin",
+          });
+        }
+      };
+
+      client.connectToRegionMaster("jp");
+    },
+
+    // ====================
+    // Waiting
+    // ====================
+
+    // ガード
+    GuardWaiting: () =>
+      guard({
+        allowedFromPages: ["CreateJoin"],
+        redirectPath: "/create-join",
+      }),
+
+    // 参加者一覧取得
+    GetPhotonPlayers: () => {
+      const client = (window as any).photonClient;
+      if (!client) return [];
+
+      const actors = client.myRoomActorsArray() || [];
+
+      return actors.map((actor: any) => ({
+        actorNr: actor.actorNr,
+        name: actor.name || `Player${actor.actorNr}`,
+        isLocal: actor.isLocal,
+        isMasterClient: actor.actorNr === 1
+      }));
+    },
+
+    // ゲーム開始
+    GoToDesktopFromWaiting: () =>
+      go({
+        path: "/pc-desktop",
+        fromPage: "Waiting",
+      }),
 
   };
 };

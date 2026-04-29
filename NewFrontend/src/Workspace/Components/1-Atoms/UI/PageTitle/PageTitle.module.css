@@ -16,6 +16,11 @@
     gap: 1.5rem;
 }
 
+.icon{
+    /* 装飾設定 */
+    filter: drop-shadow(0 0 5px var(--cyan))
+}
+
 .title{
     /* 大きさ設定 */
     width: 100%;
@@ -36,4 +41,5 @@
 .subTitle{
     /* 文字設定 */
     font-size: 1.0rem;
+    text-shadow: 0 0 5px var(--cyan);
 }

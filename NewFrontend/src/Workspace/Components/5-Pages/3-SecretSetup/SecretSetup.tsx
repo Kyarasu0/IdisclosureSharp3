@@ -1,6 +1,6 @@
-// ===============================================
-// Components/5-Pages/2-UserSetup/UserSetup.tsx
-// ===============================================
+// ==================================================
+// Components/5-Pages/3-SecretSetup/SecretSetup.tsx
+// ==================================================
 
 // 基本的な関数をインポート
 import { useState, useEffect } from "react";
@@ -15,7 +15,7 @@ import { ArrowBigLeft } from "lucide-react";
 type Props = {
   isNavigationBlocked?: boolean;
   onGuard?: () => void;
-  onConfirmClick?: ( registrationData: Record<string, string> ) => void;
+  onConfirmClick?: ( userId: string, birthDate: string, secretId: string, score: number ) => void;
   onReturnClick?: () => void;
   calculateScoreFn?: (
         secretId: string,
@@ -73,9 +73,7 @@ export const SecretSetup = ({
                     setSecretId={setSecretId}
                     score={score}
                     setScore={setScore}
-                    onConfirmClick={() =>
-                        onConfirmClick({})
-                    }
+                    onConfirmClick={onConfirmClick}
                     calculateScoreFn={calculateScoreFn}
                     getLocalStorage={getLocalStorage}
                 />

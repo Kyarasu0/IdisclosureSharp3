@@ -36,5 +36,27 @@ export const MainOutline: {
       getLocalStorage: "getLocalStorage",
       calculateScoreFn: "calculateScoreFn",
     }
-  }
+  },
+  {
+    path: "/create-join",
+    page: "CreateJoin",
+    props: {
+      isNavigationBlocked: isNavigationBlocked,
+      onGuard: "GuardCreateJoin",
+      onReturnClick: "GoToSecretSetupFromCreateJoin",
+      getLocalStorage: "getLocalStorage",
+      onCreateRoom: "CreateRoomAndMove",
+      onJoinRoom: "JoinRoomAndMove"
+    }
+  },
+  // {
+  //   path: "/waiting",
+  //   page: "Waiting",
+  //   props: {
+  //     isNavigationBlocked: isNavigationBlocked,
+  //     onGuard: "GuardWaiting",
+  //     getPhotonPlayers: "GetPhotonPlayers",
+  //     onStartGame: "GoToDesktopFromWaiting"
+  //   }
+  // }
 ];

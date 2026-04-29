@@ -18,6 +18,11 @@
     font-family: var(--secondary);
 }
 
+.layer0{
+    /* 文字設定 */
+    text-shadow: 0 0 5px var(--cyan);
+}
+
 .layer1,
 .layer2 {
     /* 要素配置設定 */

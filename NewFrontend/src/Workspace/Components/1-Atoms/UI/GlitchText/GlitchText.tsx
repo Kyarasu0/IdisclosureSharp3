@@ -15,7 +15,7 @@ export const GlitchText = ({ content, className = "" }: Props) => {
   return (
     <div className={`${styles.glitch} ${className}`}>
         <span className={styles.base}>
-            {content}
+            <span className={styles.layer0}>{content}</span>
             <span className={styles.layer1}>{content}</span>
             <span className={styles.layer2}>{content}</span>
         </span>

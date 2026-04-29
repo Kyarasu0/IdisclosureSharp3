@@ -28,7 +28,7 @@ export const PageTitle = ({
 
     return (
         <div className={`${styles.header} ${className}`}>
-            {Icon && <Icon size={80} strokeWidth={1} />}
+            {Icon && <Icon size={80} strokeWidth={1} className={styles.icon}/>}
             <div className={styles.title}>
                 <GlitchText content={mainTitle} className={styles.mainTitle}/>
                 <p 

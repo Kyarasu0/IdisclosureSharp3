@@ -2,7 +2,7 @@
 // Components/3-Organisms/Control/SecretInfoForm/SecretInfoForm.tsx
 // ==================================================================
 
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import styles from "./SecretInfoForm.module.css";
 
 import { Lock, ArrowRight, FileLock, TriangleAlert } from "lucide-react";
@@ -25,10 +25,11 @@ type Props = {
     setSecretId: React.Dispatch<React.SetStateAction<string>>;
     score: number;
     setScore: React.Dispatch<React.SetStateAction<number>>;
-    onConfirmClick?: ( registrationData: Record<string, string> ) => void;
+    onConfirmClick?: ( userId: string, birthDate: string, secretId: string, score: number ) => void;
     calculateScoreFn?: (
         secretId: string,
-        registrationData: any
+        registrationData: any,
+        costs: Record<string, number>,
     ) => {
         userIdTotalCost: number;
         birthYearTotalCost: number;
@@ -49,7 +50,7 @@ export function SecretInfoForm({
     setSecretId,
     setScore,
     onConfirmClick = () => alert("onConfirmClick is not assigned"),
-    calculateScoreFn = (secretId = "not_found", registrationData) => {
+    calculateScoreFn = ( secretId = "not_found", registrationData, {} ) => {
         alert(`${secretId}${registrationData}: calculateScoreFn is not assigned`)
         return {
             userIdTotalCost: 0,
@@ -74,10 +75,23 @@ export function SecretInfoForm({
   // 点数計算関数を呼ぶ
   // --------------------------------------------
   const result = useMemo(() => {
-    const base = calculateScoreFn(secretId, registrationData);
-    setScore(base.score);
+    const base = calculateScoreFn(
+        secretId, 
+        registrationData, 
+        {
+            initialScore: appearance.initialScore,
+            userIdCost: appearance.userIdCost,
+            birthYearCost: appearance.birthYearCost,
+            birthDayCost: appearance.birthDayCost,
+            noiseCost: appearance.noiseCost,
+        }
+    );
     return base;
 }, [secretId, registrationData, calculateScoreFn]);
+
+useEffect(() => {
+    setScore(result.score);
+}, [result.score]);
 
   // --------------------------------------------
     // Score詳細表示用データ
@@ -140,12 +154,17 @@ export function SecretInfoForm({
                 onSubmit={(e) => {
                     e.preventDefault();
                     if (!/^[A-Za-z0-9!#$%&'\-=^~|@`;+:*,<.>\/?_\\[\](){}"]{1,15}$/.test(secretId)) return;
-                    onConfirmClick?.({ 
-                        userId: registrationData.userId,
-                        birthDate: registrationData.birthDate,
+                    console.log(`Debug: 
+                        ${registrationData.userId},
+                        ${registrationData.birthDate},
+                        ${secretId},
+                        ${score}`);
+                    onConfirmClick?.(
+                        registrationData.userId,
+                        registrationData.birthDate,
                         secretId,
-                        score: String(score)
-                    });
+                        score,
+                    );
                 }}    
             >
                 <div className={styles.secretIdWrapper}>

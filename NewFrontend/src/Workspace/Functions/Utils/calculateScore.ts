@@ -2,8 +2,6 @@
 //  Functions/Utils/calculateScore.ts
 // ======================================================
 
-import { useAppearance } from "../../../Core/Contexts/AppearanceContext";
-
 type UserData = {
   userId: string;
   birthDate: string;
@@ -11,15 +9,15 @@ type UserData = {
 
 export function calculateScore(
   secretId: string,
-  userData: UserData
+  userData: UserData,
+  costs: Record<string, number>,
 ) {
   // CostとScoreの設定
-  const appearance = useAppearance();
-  const initialScore = appearance.initialScore;
-  const userIdCost = appearance.userIdCost;
-  const birthYearCost = appearance.birthYearCost;
-  const birthDayCost = appearance.birthDayCost;
-  const noiseCost = appearance.noiseCost;
+  const initialScore = costs.initialScore;
+  const userIdCost = costs.userIdCost;
+  const birthYearCost = costs.birthYearCost;
+  const birthDayCost = costs.birthDayCost;
+  const noiseCost = costs.noiseCost;
 
 
   const userId = userData.userId || "";

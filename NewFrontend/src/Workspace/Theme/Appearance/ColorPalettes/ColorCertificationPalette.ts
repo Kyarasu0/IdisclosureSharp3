@@ -15,16 +15,17 @@ export const PALETTE = {
     //
     // そこで、刺激を抑えるために彩度をやや下げ、
     // 暗背景でも沈みにくく視認性を保ちながら、眩しすぎない範囲で明度を上げ、
-    // 最終的に HSL(180, CC%, 60%) に調整した。
-    cyan: '#3DF5F5',
+    // 一旦 HSL(180, 90%, 60%) に調整したがさらにきらっとした印象を与えるために
+    // 最終的に HSL(180, 90%, 65%)にした。
+    cyan: '#55F6F6',
 
     // 40%透過(50%弱)にすることで、"単に透けた色"ではなく
     // "UIに自然に添える色"として機能させる。
-    cyan_opMid: '#3DF5F5CC',
+    cyan_opMid: '#55F6F6CC',
 
     // 10%透過は、背景にうっすら色味を感じられる下限。
     // 雰囲気を出しつつ視認ノイズは増やさない。
-    cyan_opWeak: '#3DF5F519',
+    cyan_opWeak: '#55F6F619',
 
     // ----------------------------------
     // 類似色相対照トーン配色である背景色
@@ -52,33 +53,33 @@ export const PALETTE = {
     // -------------------------------
     // 同一トーン配色であるアクセント色
     // -------------------------------
-    // 赤(HSL(0, CC, 60))に関する種類
-    red: '#F53D3D',
-    red_opMid: '#F53D3DCC',
-    red_opWeak: '#F53D3D19',
+    // 赤(HSL(0, 90, 65))に関する種類
+    red: '#F65555',
+    red_opMid: '#F65555CC',
+    red_opWeak: '#F6555519',
 
-    // 黄色(HSL(60, CC, 60))に関する種類
-    yellow: '#F5F53D',
-    yellow_opMid: '#F5F53DCC',
-    yellow_opWeak: '#F5F53D19',
+    // 黄色(HSL(60, 90, 65))に関する種類
+    yellow: '#F6F655',
+    yellow_opMid: '#F6F655CC',
+    yellow_opWeak: '#F6F65519',
 
-    // 緑(HSL(120, CC, 60))に関する種類
-    green: '#3DF53D',
-    green_opMid: '#3DF53DCC',
-    green_opWeak: '#3DF53D19',
+    // 緑(HSL(120, 90, 65))に関する種類
+    green: '#55F655',
+    green_opMid: '#55F655CC',
+    green_opWeak: '#55F65519',
 
-    // 水色(HSL(180, CC, 60))に関する情報(既にアクセント色)
-    // cyan: '#3DF5F5',
-    // cyan_opMid: '#3DF5F5CC',
-    // cyan_opWeak: '#3DF5F519',
+    // 水色(HSL(180, 90, 65))に関する情報(既にアクセント色)
+    // cyan: '#55F6F6',
+    // cyan_opMid: '#55F6F6CC',
+    // cyan_opWeak: '#55F6F619',
 
-    // 青(HSL(240, CC, 60))に関する種類
-    blue: '#3D3DF5',
-    blue_opMid: '#3D3DF5CC',
-    blue_opWeak: '#3D3DF519',
+    // 青(HSL(240, 90, 65))に関する種類
+    blue: '#5555F6',
+    blue_opMid: '#5555F6CC',
+    blue_opWeak: '#5555F619',
 
-    //ピンク(HSL(300, CC, 60))に関する種類
-    pink: '#F53DF5',
-    pink_opMid: '#F53DF5CC',
-    pink_opWeak: '#F53DF519',
+    //ピンク(HSL(300, 90, 65))に関する種類
+    pink: '#F655F6',
+    pink_opMid: '#F655F6CC',
+    pink_opWeak: '#F655F619',
 };
