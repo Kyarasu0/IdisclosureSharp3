@@ -33,7 +33,7 @@ Components/3-Organisms/Control/RoomForm/RoomForm.module.css
   justify-content: space-between;
 
   /* 余白設定 */
-  gap: 3rem;
+  gap: 1.5rem;
 }
 
 /* tabs */
@@ -81,4 +81,9 @@ Components/3-Organisms/Control/RoomForm/RoomForm.module.css
 .activePink {
   background: var(--pink_opWeak);
   color: var(--pink);
+}
+
+.roomFormSubmitButton{
+  /* 余白設定 */
+  margin: 2rem 0;
 }

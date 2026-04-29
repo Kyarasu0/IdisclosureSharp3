@@ -18,6 +18,7 @@ type ValidatedInputFieldProps = {
   pattern?: RegExp;                   // TS側バリデーション
   htmlPattern?: string;               // HTML側バリデーション
   showStatusDot?: boolean;            // 入力値が正しいかのチェック
+  className?: string;
 };
 
 export const ValidatedInputField = ({
@@ -30,7 +31,8 @@ export const ValidatedInputField = ({
   required = false,
   pattern,
   htmlPattern,
-  showStatusDot = false
+  showStatusDot = false,
+  className,
 }: ValidatedInputFieldProps) => {
 
   // 入力値のバリデーション判定
@@ -39,7 +41,7 @@ export const ValidatedInputField = ({
   const fontSize = 1.3;
 
   return (
-    <div className={styles.field}>
+    <div className={`${styles.field} ${className}`}>
       
       {/* ラベル表示（アイコン + テキスト） */}
       <label 

@@ -123,17 +123,28 @@ export const FunctionsRegistry = () => {
       }),
 
     // 部屋作成
-    CreateRoomAndMove: (roomName: string, userName: string) => {
-      const Photon = (globalThis as any).Photon;
+    CreateRoomAndMove: (roomName: string, userName: string, photonApiKey: string) => {
+      const Photon = (window as any).Photon;
 
-      // URLパラメータ取得
-      const params = new URLSearchParams(window.location.search);
-      const photonApi = params.get("photon_api");
+      if (!Photon?.LoadBalancing) {
+        console.error("Photon not loaded");
+        return;
+      }
+
+      if (!photonApiKey) {
+        console.error("Missing API key");
+        return;
+      }
+
+      localStorage.setItem(
+        "photonSettings",
+        JSON.stringify({ photonApiKey })
+      );
 
       const client =
         new Photon.LoadBalancing.LoadBalancingClient(
           Photon.ConnectionProtocol.Wss,
-          photonApi,
+          photonApiKey,
           "1.0"
         );
 
@@ -158,17 +169,28 @@ export const FunctionsRegistry = () => {
     },
 
     // 部屋参加
-    JoinRoomAndMove: (roomName: string, userName: string) => {
+    JoinRoomAndMove: (roomName: string, userName: string, photonApiKey: string) => {
       const Photon = (window as any).Photon;
 
-      // URLパラメータ取得
-      const params = new URLSearchParams(window.location.search);
-      const photonApi = params.get("photon_api");
+      if (!Photon?.LoadBalancing) {
+        console.error("Photon not loaded");
+        return;
+      }
+
+      if (!photonApiKey) {
+        console.error("Missing API key");
+        return;
+      }
+
+      localStorage.setItem(
+        "photonSettings",
+        JSON.stringify({ photonApiKey })
+      );
 
       const client =
         new Photon.LoadBalancing.LoadBalancingClient(
           Photon.ConnectionProtocol.Wss,
-          photonApi,
+          photonApiKey,
           "1.0"
         );
 

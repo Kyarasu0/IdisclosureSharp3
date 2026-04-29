@@ -2,6 +2,8 @@
 // Components/3-Organisms/Control/RoomForm/RoomForm.tsx
 // ======================================================
 
+import { useEffect } from "react";
+
 import { CyberFormCard } from "../../../2-Molecules/CyberFormCard/CyberFormCard";
 import { ValidatedInputField } from "../../../1-Atoms/Control/ValidatedInputField/ValidatedInputField";
 import { SubmitButton } from "../../../1-Atoms/Control/SubmitButton/SubmitButton";
@@ -20,7 +22,7 @@ type Props = {
   roomName: string;
   setRoomName: (v: string) => void;
   onStart: () => void;
-  getLocalStorage: (key: string) => Record<string, string>
+  getLocalStorage: <T>(key: string) => T;
   className?: string;
 };
 
@@ -71,9 +73,13 @@ type FaceProps = {
   roomName: string;
   setRoomName: (v: string) => void;
   onStart: () => void;
-  getLocalStorage: (key: string) => Record<string, string>
+  getLocalStorage: <T>(key: string) => T;
   className?: string;
 };
+
+type PhotonApiKey = {
+  photonApiKey: string;
+}
 
 function CardFace({
   setMode,
@@ -139,10 +145,10 @@ function CardFace({
 
       <ValidatedInputField
         label="PHOTON API KEY"
-        value={photonApiKey || getLocalStorage("photonSettings").photonApiKey}
+        value={photonApiKey}
         onChange={setPhotonApiKey}
         required={true}
-        placeholder="ENTER PHOTON API KEY"
+        placeholder={"ENTER PHOTON API KEY"}
         icon={<Key size={18} />}
       />
 
@@ -150,6 +156,7 @@ function CardFace({
       <SubmitButton 
         type="button"
         onClick={onStart}
+        className={styles.roomFormSubmitButton}
       >
         Comfirm
         <ArrowRight />

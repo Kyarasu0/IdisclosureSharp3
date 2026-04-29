@@ -2,70 +2,6 @@
 // Components/5-Pages/4-CreateJoin/CreateJoin.tsx
 // ================================================
 
-// import { useEffect, useState } from "react";
-// import styles from "./CreateJoin.module.css";
-
-// import { UserPanel } from "../../3-Organisms/UI/UserPanel/UserPanel";
-// import { RoomForm } from "../../3-Organisms/Control/RoomForm/RoomForm";
-
-// type Props = {
-//   onGuard: () => void;
-//   getLocalStorage: (key: string) => any;
-//   onCreateRoom: (room: string, user: string) => void;
-//   onJoinRoom: (room: string, user: string) => void;
-// };
-
-// export function CreateJoin({
-//   onGuard,
-//   getLocalStorage,
-//   onCreateRoom,
-//   onJoinRoom
-// }: Props) {
-//   const [userData, setUserData] = useState({
-//     userId: "",
-//     birthDate: "",
-//     secretId: "",
-//     score: 0
-//   });
-//   const [mode, setMode] = useState<"create" | "join">("create");
-//   const [roomName, setRoomName] = useState("");
-
-//   useEffect(() => {
-//     onGuard();
-//     setUserData(getLocalStorage("registrationData"));
-//   }, []);
-
-//   const handleStart = () => {
-//     if (!roomName) return;
-
-//     if (mode === "create") {
-//       onCreateRoom(roomName, userData.userId);
-//     } else {
-//       onJoinRoom(roomName, userData.userId);
-//     }
-//   };
-
-//   return (
-//     <div className={styles.page}>
-//       <div className={styles.layout}>
-//         <UserPanel userData={userData} />
-
-//         <RoomForm
-//           mode={mode}
-//           setMode={setMode}
-//           roomName={roomName}
-//           setRoomName={setRoomName}
-//           onStart={handleStart}
-//         />
-//       </div>
-//     </div>
-//   );
-// }
-
-// ================================================
-// Components/5-Pages/4-CreateJoin/CreateJoin.tsx
-// ================================================
-
 // Memo
 // 関数指定は必須にしましょう
 // 関数は極力ページ内で実行できるものはしましょう
@@ -89,17 +25,17 @@ type UserData = {
   score: number;
 };
 
-type PhotonSettings = {
-  photonApiKey: string;
-};
-
 type Props = {
   isNavigationBlocked?: boolean;
   onGuard: () => void;
   onReturnClick: () => void;
-  getLocalStorage: (key: string) => UserData | PhotonSettings;
-  onCreateRoom: (room: string, user: string) => void;
-  onJoinRoom: (room: string, user: string) => void;
+  getLocalStorage: <T>(key: string) => T;
+  onCreateRoom: (room: string, user: string, photonApiKey: string) => void;
+  onJoinRoom: (room: string, user: string, photonApiKey: string) => void;
+};
+
+type PhotonSettings = {
+  photonApiKey: string;
 };
 
 export const CreateJoin = ({
@@ -119,21 +55,24 @@ export const CreateJoin = ({
     const [mode, setMode] = useState<"create" | "join">("create");
     const [activeMode, setActiveMode] = useState<"create" | "join">("create");
     const [roomName, setRoomName] = useState("");
-    const [photonApiKey, setPhotonApiKey] = useState("");
+    const [photonApiKey, setPhotonApiKey] = useState(() => {
+        const saved = getLocalStorage<PhotonSettings>("photonSettings");
+        return saved?.photonApiKey ?? "";
+    });
 
     const handleStart = () => {
         if (!roomName) return;
 
         if (mode === "create") {
-            onCreateRoom(roomName, userData.userId);
+            onCreateRoom(roomName, userData.userId, photonApiKey);
         } else {
-            onJoinRoom(roomName, userData.userId);
+            onJoinRoom(roomName, userData.userId, photonApiKey);
         }
     };
 
     // 遷移元を確認し遷移を許可するかを管理
     useEffect(() => {
-        setUserData(getLocalStorage("registrationData") as UserData);
+        setUserData(getLocalStorage<UserData>("registrationData"));
         if (!isNavigationBlocked) return;
         // onGuardが存在するなら実行
         onGuard?.();
