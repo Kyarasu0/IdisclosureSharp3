@@ -138,7 +138,7 @@ export const FunctionsRegistry = () => {
 
       localStorage.setItem(
         "photonSettings",
-        JSON.stringify({ photonApiKey })
+        JSON.stringify({ photonApiKey, roomName })
       );
 
       const client =
@@ -184,7 +184,7 @@ export const FunctionsRegistry = () => {
 
       localStorage.setItem(
         "photonSettings",
-        JSON.stringify({ photonApiKey })
+        JSON.stringify({ photonApiKey,roomName })
       );
 
       const client =
@@ -214,9 +214,41 @@ export const FunctionsRegistry = () => {
       client.connectToRegionMaster("jp");
     },
 
+    // 切断処理
+    onDisconnectPhoton: () => {
+      const client = (window as any).photonClient;
+
+      if (!client) {
+        console.warn("No Photon client found");
+        return;
+      }
+
+      try {
+        // ルームから退出（入っていれば）
+        if (client.isJoinedToRoom?.()) {
+          client.leaveRoom?.();
+        }
+
+        // サーバーから切断
+        client.disconnect?.();
+
+      } catch (e) {
+        console.error("Disconnect failed:", e);
+      }
+
+      // グローバル参照を削除
+      (window as any).photonClient = null;
+    },
+
     // ====================
     // Waiting
     // ====================
+    // 1. 前のページへ遷移
+    GoToCreateJoinFromWaiting: () =>
+      go({
+        path: "/create-join",
+        fromPage: "Waiting",
+      }),
 
     // ガード
     GuardWaiting: () =>

@@ -42,4 +42,6 @@
     /* 文字設定 */
     font-size: 1.0rem;
     text-shadow: 0 0 5px var(--cyan);
+    white-space: pre-line;
+    line-height: 1.5;
 }

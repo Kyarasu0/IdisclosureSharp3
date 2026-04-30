@@ -46,17 +46,20 @@ export const MainOutline: {
       onReturnClick: "GoToSecretSetupFromCreateJoin",
       getLocalStorage: "getLocalStorage",
       onCreateRoom: "CreateRoomAndMove",
-      onJoinRoom: "JoinRoomAndMove"
+      onJoinRoom: "JoinRoomAndMove",
+      onDisconnectPhoton: "onDisconnectPhoton",
     }
   },
-  // {
-  //   path: "/waiting",
-  //   page: "Waiting",
-  //   props: {
-  //     isNavigationBlocked: isNavigationBlocked,
-  //     onGuard: "GuardWaiting",
-  //     getPhotonPlayers: "GetPhotonPlayers",
-  //     onStartGame: "GoToDesktopFromWaiting"
-  //   }
-  // }
+  {
+    path: "/waiting",
+    page: "Waiting",
+    props: {
+      isNavigationBlocked: isNavigationBlocked,
+      onGuard: "GuardWaiting",
+      onReturnClick: "GoToCreateJoinFromWaiting",
+      getLocalStorage: "getLocalStorage",
+      getPhotonPlayers: "GetPhotonPlayers",
+      onStartGame: "GoToDesktopFromWaiting"
+    }
+  }
 ];

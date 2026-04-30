@@ -32,10 +32,12 @@ type Props = {
   getLocalStorage: <T>(key: string) => T;
   onCreateRoom: (room: string, user: string, photonApiKey: string) => void;
   onJoinRoom: (room: string, user: string, photonApiKey: string) => void;
+  onDisconnectPhoton: () => void;
 };
 
 type PhotonSettings = {
   photonApiKey: string;
+  roomName: string;
 };
 
 export const CreateJoin = ({
@@ -45,6 +47,7 @@ export const CreateJoin = ({
     getLocalStorage,
     onCreateRoom,
     onJoinRoom,
+    onDisconnectPhoton,
 }: Props) => {
     const [userData, setUserData] = useState({
         userId: "",
@@ -69,6 +72,12 @@ export const CreateJoin = ({
             onJoinRoom(roomName, userData.userId, photonApiKey);
         }
     };
+
+    // useEffect(() => {
+    //     return () => {
+    //         onDisconnectPhoton();
+    //     };
+    // }, []);
 
     // 遷移元を確認し遷移を許可するかを管理
     useEffect(() => {
