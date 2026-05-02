@@ -31,7 +31,7 @@ function AnimatedRoutes({
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
         {MainOutline.map((route) => {
-          const Page = PagesRegistry[route.page];
+          const Page = PagesRegistry[route.page] as React.ComponentType<any>;
 
           // --- 関数差し替え処理 ---
           const props = { ...(route.props || {}) };

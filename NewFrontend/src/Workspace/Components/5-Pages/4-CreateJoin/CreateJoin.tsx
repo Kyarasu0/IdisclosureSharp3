@@ -27,12 +27,17 @@ type UserData = {
 
 type Props = {
   isNavigationBlocked?: boolean;
-  onGuard: () => void;
+  // 前ページに遷移
   onReturnClick: () => void;
+  // ページガード
+  onGuard: () => void;
+  // 次ページに遷移
+  onCreateRoom: (room: string, user: string, photonApiKey: string, onSaveAndMoveClick: () => void) => void;
+  onJoinRoom: (room: string, user: string, photonApiKey: string, onSaveAndMoveClick: () => void) => void;
+  onSaveAndMoveClick: () => void,
+
+  // ローカルストレージから情報を取得
   getLocalStorage: <T>(key: string) => T;
-  onCreateRoom: (room: string, user: string, photonApiKey: string) => void;
-  onJoinRoom: (room: string, user: string, photonApiKey: string) => void;
-  onDisconnectPhoton: () => void;
 };
 
 type PhotonSettings = {
@@ -42,12 +47,17 @@ type PhotonSettings = {
 
 export const CreateJoin = ({
     isNavigationBlocked = false,
-    onGuard,
+    // 前ページに遷移
     onReturnClick,
-    getLocalStorage,
+    // ページガード
+    onGuard,
+    // 次ページに遷移
     onCreateRoom,
     onJoinRoom,
-    onDisconnectPhoton,
+    onSaveAndMoveClick,
+
+    // ローカルストレージから情報を取得
+    getLocalStorage,
 }: Props) => {
     const [userData, setUserData] = useState({
         userId: "",
@@ -67,9 +77,9 @@ export const CreateJoin = ({
         if (!roomName) return;
 
         if (mode === "create") {
-            onCreateRoom(roomName, userData.userId, photonApiKey);
+            onCreateRoom(roomName, userData.userId, photonApiKey, onSaveAndMoveClick);
         } else {
-            onJoinRoom(roomName, userData.userId, photonApiKey);
+            onJoinRoom(roomName, userData.userId, photonApiKey, onSaveAndMoveClick);
         }
     };
 

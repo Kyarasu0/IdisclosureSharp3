@@ -12,6 +12,7 @@ export const MainOutline: {
     path: "/",
     page: "Introduction",
     props: {
+      // 次ページに遷移
       onMoveClick: "GoToUserSetupFromIntroduction"
     },
   },
@@ -20,8 +21,11 @@ export const MainOutline: {
     page: "UserSetup",
     props: {
       isNavigationBlocked: isNavigationBlocked,
-      onGuard: "GuardUserSetup",
+      // 前ページに遷移
       onReturnClick: "GoToIntroductionFromUserSetup",
+      // ページガード
+      onGuard: "GuardUserSetup",
+      // 次ページに遷移
       onSaveAndMoveClick: "GoToSecretSetupFromUserSetup",
     },
   },
@@ -30,10 +34,16 @@ export const MainOutline: {
     page: "SecretSetup",
     props:{
       isNavigationBlocked: isNavigationBlocked,
-      onGuard:"GuardSecretSetup",
+      // 前ページに遷移
       onReturnClick:"GoToUserSetupFromSecretSetup",
+      // ページガード
+      onGuard:"GuardSecretSetup",
+      // 次ページに遷移
       onConfirmClick:"GoToCreateJoinFromSecretSetup",
+
+      // ローカルストレージから情報を取得
       getLocalStorage: "getLocalStorage",
+      // 点数計算関数
       calculateScoreFn: "calculateScoreFn",
     }
   },
@@ -42,12 +52,17 @@ export const MainOutline: {
     page: "CreateJoin",
     props: {
       isNavigationBlocked: isNavigationBlocked,
-      onGuard: "GuardCreateJoin",
+      // 前ページに遷移
       onReturnClick: "GoToSecretSetupFromCreateJoin",
-      getLocalStorage: "getLocalStorage",
+      // ページガード
+      onGuard: "GuardCreateJoin",
+      // 次ページに遷移
       onCreateRoom: "CreateRoomAndMove",
       onJoinRoom: "JoinRoomAndMove",
-      onDisconnectPhoton: "onDisconnectPhoton",
+      onSaveAndMoveClick: "GoToWaitingFromCreateJoin",
+
+      // ローカルストレージから情報を取得
+      getLocalStorage: "getLocalStorage",
     }
   },
   {
@@ -55,11 +70,17 @@ export const MainOutline: {
     page: "Waiting",
     props: {
       isNavigationBlocked: isNavigationBlocked,
-      onGuard: "GuardWaiting",
+      // 前ページに遷移
       onReturnClick: "GoToCreateJoinFromWaiting",
+      // ページガード
+      onGuard: "GuardWaiting",
+      // 次ページに遷移
+      onStartGame: "GoToPCDesktopFromWaiting",
+
+      // ローカルストレージから情報を取得
       getLocalStorage: "getLocalStorage",
+      // Photonから参加プレイヤーの情報を取得
       getPhotonPlayers: "GetPhotonPlayers",
-      onStartGame: "GoToDesktopFromWaiting"
     }
   }
 ];

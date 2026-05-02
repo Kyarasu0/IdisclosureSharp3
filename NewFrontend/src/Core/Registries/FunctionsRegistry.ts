@@ -6,6 +6,10 @@
 import { useSafeNavigate } from "../../Workspace/Functions/Hooks/useSafeNavigate";
 import { useSafeNavGuard } from "../../Workspace/Functions/Hooks/useSafeNavGuard";
 import { calculateScore } from "../../Workspace/Functions/Utils/calculateScore";
+import { createRoom } from "../../Workspace/Functions/Photon/createRoom";
+import { joinRoom } from "../../Workspace/Functions/Photon/joinRoom";
+import { disconnectPhoton } from "../../Workspace/Functions/Photon/disconnectPhoton";
+import { getPhotonPlayers } from "../../Workspace/Functions/Photon/getPhotonPlayers";
 
 export const FunctionsRegistry = () => {
   const go = useSafeNavigate();
@@ -17,61 +21,37 @@ export const FunctionsRegistry = () => {
     // Introduction
     // ====================
     // 1. 次のページへ遷移
-    GoToUserSetupFromIntroduction: () =>
-      go({
-        path: "/user-setup",
-        fromPage: "Introduction",
-      }),
+    GoToUserSetupFromIntroduction: () => go({ path: "/user-setup", fromPage: "Introduction" }),
 
     // ====================
     // UserSetup
     // ====================
     // 1. 前のページへ遷移
-    GoToIntroductionFromUserSetup: () =>
-      go({
-        path: "/",
-        fromPage: "UserSetup",
-      }),
-
+    GoToIntroductionFromUserSetup: () => go({ path: "/", fromPage: "UserSetup" }),
     // 2. ページガード
-    GuardUserSetup: () =>
-      guard({
-        allowedFromPages: ["Introduction", "SecretSetup"],
-        redirectPath: "/user-setup",
-      }),
-    
+    GuardUserSetup: () => guard({ 
+      allowedFromPages: ["Introduction", "SecretSetup"], 
+      redirectPath: "/user-setup"
+    }),
     // 3. 情報を保存して次のページへ遷移
     GoToSecretSetupFromUserSetup: (userId: string, birthDate: string) => {
       localStorage.setItem(
         "registrationData",
-        JSON.stringify({
-          userId,
-          birthDate,
-        })
+        JSON.stringify({ userId, birthDate })
       );
-      go({
-        path: "/secret-setup",
-        fromPage: "UserSetup",
-      });
+      go({ path: "/secret-setup", fromPage: "UserSetup" });
     },
 
     // ====================
     // SecretSetup
     // ====================
     // 1. 前のページへ遷移
-    GoToUserSetupFromSecretSetup: () =>
-      go({
-        path: "/user-setup",
-        fromPage: "SecretSetup",
-      }),
-
+    GoToUserSetupFromSecretSetup: () => go({ path: "/user-setup", fromPage: "SecretSetup" }),
     // 2. ページガード
-    GuardSecretSetup: () =>
-      guard({
-        allowedFromPages: ["UserSetup", "CreateJoin"],
-        redirectPath: "/secret-setup",
-      }),
-    
+    GuardSecretSetup: () => guard({
+      allowedFromPages: ["UserSetup", "CreateJoin"],
+      redirectPath: "/secret-setup"
+    }),
     // 3. 情報の取得と保存をして次のページへ遷移
     GoToCreateJoinFromSecretSetup: (
       userId: string,
@@ -79,23 +59,12 @@ export const FunctionsRegistry = () => {
       secretId: string,
       score: number
     ) => {
-
       localStorage.setItem(
         "registrationData",
-        JSON.stringify({
-          userId,
-          birthDate,
-          secretId,
-          score,
-        })
+        JSON.stringify({ userId, birthDate, secretId, score })
       );
-
-      go({
-        path: "/create-join",
-        fromPage: "SecretSetup",
-      });
+      go({ path: "/create-join", fromPage: "SecretSetup" });
     },
-
     // 4. その他必要なプログラム
     // 特典計算プログラム
     calculateScoreFn: calculateScore,
@@ -109,175 +78,35 @@ export const FunctionsRegistry = () => {
     // CreateJoin
     // ====================
     // 1. 前のページへ遷移
-    GoToSecretSetupFromCreateJoin: () =>
-      go({
-        path: "/secret-setup",
-        fromPage: "CreateJoin",
-      }),
-    
-    // ガード
-    GuardCreateJoin: () =>
-      guard({
-        allowedFromPages: ["SecretSetup", "Waiting"],
-        redirectPath: "/create-join",
-      }),
-
-    // 部屋作成
-    CreateRoomAndMove: (roomName: string, userName: string, photonApiKey: string) => {
-      const Photon = (window as any).Photon;
-
-      if (!Photon?.LoadBalancing) {
-        console.error("Photon not loaded");
-        return;
-      }
-
-      if (!photonApiKey) {
-        console.error("Missing API key");
-        return;
-      }
-
-      localStorage.setItem(
-        "photonSettings",
-        JSON.stringify({ photonApiKey, roomName })
-      );
-
-      const client =
-        new Photon.LoadBalancing.LoadBalancingClient(
-          Photon.ConnectionProtocol.Wss,
-          photonApiKey,
-          "1.0"
-        );
-
-      client.myActor().setName(userName);
-
-      client.onStateChange = (state: number) => {
-        if (state === 4) {
-          client.createRoom(roomName, { maxPlayers: 8 });
-        }
-
-        if (state === 8) {
-          (window as any).photonClient = client;
-
-          go({
-            path: "/waiting",
-            fromPage: "CreateJoin",
-          });
-        }
-      };
-
-      client.connectToRegionMaster("jp");
-    },
-
-    // 部屋参加
-    JoinRoomAndMove: (roomName: string, userName: string, photonApiKey: string) => {
-      const Photon = (window as any).Photon;
-
-      if (!Photon?.LoadBalancing) {
-        console.error("Photon not loaded");
-        return;
-      }
-
-      if (!photonApiKey) {
-        console.error("Missing API key");
-        return;
-      }
-
-      localStorage.setItem(
-        "photonSettings",
-        JSON.stringify({ photonApiKey,roomName })
-      );
-
-      const client =
-        new Photon.LoadBalancing.LoadBalancingClient(
-          Photon.ConnectionProtocol.Wss,
-          photonApiKey,
-          "1.0"
-        );
-
-      client.myActor().setName(userName);
-
-      client.onStateChange = (state: number) => {
-        if (state === 4) {
-          client.joinRoom(roomName);
-        }
-
-        if (state === 8) {
-          (window as any).photonClient = client;
-
-          go({
-            path: "/waiting",
-            fromPage: "CreateJoin",
-          });
-        }
-      };
-
-      client.connectToRegionMaster("jp");
-    },
-
-    // 切断処理
-    onDisconnectPhoton: () => {
-      const client = (window as any).photonClient;
-
-      if (!client) {
-        console.warn("No Photon client found");
-        return;
-      }
-
-      try {
-        // ルームから退出（入っていれば）
-        if (client.isJoinedToRoom?.()) {
-          client.leaveRoom?.();
-        }
-
-        // サーバーから切断
-        client.disconnect?.();
-
-      } catch (e) {
-        console.error("Disconnect failed:", e);
-      }
-
-      // グローバル参照を削除
-      (window as any).photonClient = null;
-    },
+    GoToSecretSetupFromCreateJoin: () => go({ path: "/secret-setup", fromPage: "CreateJoin" }),
+    // 2. ページガード
+    GuardCreateJoin: () => guard({
+      allowedFromPages: ["SecretSetup", "Waiting"],
+      redirectPath: "/create-join"
+    }),
+    // 3. 部屋作成
+    CreateRoomAndMove: createRoom,
+    // 4. 部屋参加
+    JoinRoomAndMove: joinRoom,
+    // 5. 切断処理
+    onDisconnectPhoton: disconnectPhoton,
+    // 6. ページ遷移
+    GoToWaitingFromCreateJoin: () => go({ path: "/waiting", fromPage: "CreateJoin" }),
 
     // ====================
     // Waiting
     // ====================
     // 1. 前のページへ遷移
-    GoToCreateJoinFromWaiting: () =>
-      go({
-        path: "/create-join",
-        fromPage: "Waiting",
-      }),
-
-    // ガード
-    GuardWaiting: () =>
-      guard({
-        allowedFromPages: ["CreateJoin"],
-        redirectPath: "/create-join",
-      }),
-
-    // 参加者一覧取得
-    GetPhotonPlayers: () => {
-      const client = (window as any).photonClient;
-      if (!client) return [];
-
-      const actors = client.myRoomActorsArray() || [];
-
-      return actors.map((actor: any) => ({
-        actorNr: actor.actorNr,
-        name: actor.name || `Player${actor.actorNr}`,
-        isLocal: actor.isLocal,
-        isMasterClient: actor.actorNr === 1
-      }));
-    },
-
-    // ゲーム開始
-    GoToDesktopFromWaiting: () =>
-      go({
-        path: "/pc-desktop",
-        fromPage: "Waiting",
-      }),
+    GoToCreateJoinFromWaiting: () => go({ path: "/create-join", fromPage: "Waiting" }),
+    // 2. ページガード
+    GuardWaiting: () => guard({
+      allowedFromPages: ["CreateJoin"],
+      redirectPath: "/create-join",
+    }),
+    // 3. 参加者一覧取得
+    GetPhotonPlayers: getPhotonPlayers,
+    // 4. ゲーム開始
+    GoToPCDesktopFromWaiting: () => go({ path: "/pc-desktop", fromPage: "Waiting" }),
 
   };
 };
