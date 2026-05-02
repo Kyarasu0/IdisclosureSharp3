@@ -1,0 +1,123 @@
+/* ===============================
+   Grid
+================================== */
+
+.grid {
+    /* 要素配置設定 */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+    /* 余白設定 */
+    gap: 1rem;
+}
+
+/* ===============================
+   Card
+================================== */
+
+.card {
+    /* バックグラウンド設定 */
+    background: var(--white_opWeak);
+
+    /* 要素配置設定 */
+    display: flex;
+    align-items: center;
+
+    /* 余白設定 */
+    padding: 0.75rem;
+    gap: 0.75rem;
+
+    /* 文字設定 */
+    font-family: var(--secondary);
+
+    /* 装飾設定 */
+    border: 1px solid var(--white_opWeak);
+
+    /* アニメーション設定 */
+    transition: 0.3s;
+}
+
+.card:hover {
+    /* バックグラウンド設定 */
+    background: var(--cyan_opWeak);
+
+    /* 装飾設定 */
+    border-color: var(--cyan);
+
+    /* アニメーション設定 */
+    transform: scale(1.02);
+}
+
+/* 自分 */
+.me {
+    /* バックグラウンド設定 */
+    background: var(--cyan_opWeak);
+
+    /* 装飾設定 */
+    border-color: var(--cyan);
+}
+
+/* ===============================
+   Avatar
+================================== */
+
+.avatar {
+    /* 大きさ設定 */
+    width: 2.25rem;
+    height: 2.25rem;
+
+    /* バックグラウンド設定 */
+    background: var(--black_opWeak);
+
+    /* 要素配置設定 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* 装飾設定 */
+    border-radius: 0.5rem;
+    border: 2px solid var(--cyan_opWeak);
+
+    /* 文字設定 */
+    color: var(--cyan);
+}
+
+/* ===============================
+   Info
+================================== */
+
+.info {
+    /* 要素配置設定 */
+    display: flex;
+    flex-direction: column;
+
+    /* 余白設定 */
+    gap: 0.25rem;
+}
+
+/* 名前 */
+.name {
+    /* 文字設定 */
+    font-size: 0.9rem;
+}
+
+.you {
+    /* 余白設定 */
+    margin-left: 0.3rem;
+
+    /* 文字設定 */
+    color: var(--c-cyan);
+}
+
+/* 役割 */
+.role {
+    /* 文字設定 */
+    font-size: 0.7rem;
+}
+
+/* 空状態 */
+.pending {
+    /* 文字設定 */
+    font-size: 0.8rem;
+    color: var(--lightGray_opMid);
+}

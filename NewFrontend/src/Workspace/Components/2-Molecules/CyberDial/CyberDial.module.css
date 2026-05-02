@@ -1,0 +1,148 @@
+/* ===============================
+   Root
+================================== */
+
+.container {
+    /* 大きさ設定 */
+    box-sizing: border-box;
+
+    /* バックグラウンド設定 */
+    background: var(--black_opWeak);
+
+    /* 要素配置設定 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    /* 装飾設定 */
+    border-radius: 1rem;
+    border: 1px solid var(--cyan);
+
+    /* 詳細設定 */
+    overflow: hidden;
+}
+
+/* 横並び */
+.row {
+    /* 大きさ設定 */
+    width: 100%;
+    height: 80%;
+
+    /* 要素配置設定 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* 余白設定 */
+    gap: 0.5rem;
+}
+
+/* ===============================
+   Circle
+================================== */
+
+.circle {
+    /* 配置基準設定 */
+    position: relative;
+}
+
+.circleSvg{
+    /* 詳細設定 */
+    transform: rotate(-90deg);
+}
+
+.bg {
+    /* 装飾設定 */
+    stroke: var(--lightGray_opWeak);
+}
+
+.progress {
+    /* 装飾設定 */
+    stroke: var(--cyan);
+    transition: stroke-dashoffset 0.3s ease;
+}
+
+/* ===============================
+   Center Text
+================================== */
+
+.center {
+    /* 配置基準設定 */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    /* 文字設定 */
+    text-align: center;
+    font-family: var(--secondary);
+}
+
+.value {
+    /* 文字設定 */
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--c-cyan);
+    text-shadow: 0 0 10px var(--cyan);
+}
+
+.unit {
+    /* 文字設定 */
+    font-size: 0.6rem;
+    color: var(--c-cyan);
+    text-shadow: 0 0 10px var(--cyan);
+}
+
+/* ===============================
+   Label
+================================== */
+
+.label {
+    /* 大きさ設定 */
+    width: 100%;
+    height: 20%;
+
+    /* 要素配置設定 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* 文字設定 */
+    font-size: 0.7rem;
+    color: var(--cyan);
+    text-shadow: 0 0 10px var(--cyan);
+    font-family: var(--secondary);
+    letter-spacing: 1px;
+}
+
+/* ===============================
+   Button
+================================== */
+
+.button {
+    /* 大きさ設定 */
+    width: 100%;
+    height: 100%;
+
+    /* 文字設定 */
+    color: var(--cyan);
+
+    /* 要素配置設定 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* 装飾設定 */
+    cursor: pointer;
+    background: none;
+    border: none;
+
+    /* アニメーション設定 */
+    transition: 0.2s;
+}
+
+.button:hover {
+    /* バックグラウンド設定 */
+    background: var(--cyan_opWeak);
+}

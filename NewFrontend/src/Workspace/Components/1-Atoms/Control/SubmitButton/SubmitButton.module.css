@@ -36,13 +36,13 @@
 }
 
 /* ホバー時 */
-.button:hover {
+.isActive:hover {
     /* 装飾設定 */
     box-shadow: 0 0 20px var(--cyan);
 }
 
 /* 押した瞬間 */
-.button:active {
+.isActive:active {
     /* アニメーション設定 */
     transform: scale(0.97);
 }

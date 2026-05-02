@@ -1,0 +1,63 @@
+.cyberFormCard{
+    /* 要素配置設定 */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.main{
+    /* 大きさ設定 */
+    width: 100%;
+    height: 75%;
+
+    /* 要素配置設定 */
+    display: flex;
+
+    /* 余白設定 */
+    gap: 2rem;
+}
+
+.left{
+    /* 大きさ設定 */
+    width: 70%;
+    height:100%;
+}
+
+.cyberGridList{
+    /* 大きさ設定 */
+    width: 100%;
+    height: 100%;
+}
+
+.right{
+    /* 大きさ設定 */
+    width: 30%;
+    height: 100%;
+
+    /* 要素配置設定 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    /* 余白設定 */
+    gap: 1.5rem;
+}
+
+.durationDisplay{
+    /* 大きさ設定 */
+    width: 100%;
+    height: 35%;
+}
+
+.cyberDial{
+    /* 大きさ設定 */
+    width: 100%;
+    height: 38%;
+}
+
+.submitButton{
+    /* 大きさ設定 */
+    width: 100%;
+}

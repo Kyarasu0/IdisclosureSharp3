@@ -50,7 +50,11 @@ export const SubmitButton = ({
             // disabled または loading中なら押せない
             disabled={disabled || isLoading}
             onClick={onClick}
-            className={`${styles.button} ${className}`}
+            className={`
+                ${styles.button}
+                ${isLoading ? "" : styles.isActive}
+                ${className}
+            `}
             style={{
                 padding: `${scale}rem ${scale * 2}rem`,
                 fontSize: `${scale * 1.5}rem`,

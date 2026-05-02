@@ -1,0 +1,211 @@
+/* ===============================
+Container
+================================== */
+
+.container {
+    font-family: var(--secondary);
+    position: relative;
+    user-select: none;
+}
+
+.panel {
+    /* 大きさ設定 */
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+
+    /* バックグラウンド設定 */
+    background: var(--black_opMid);
+
+    /* 要素配置設定 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* 余白設定 */
+    padding: 0.8rem 1.5rem;
+
+    /* 文字設定 */
+    text-shadow: 0 0 10px var(--cyan);
+
+    /* 装飾設定 */
+    border: 1px solid var(--cyan_opMid);
+    backdrop-filter: blur(6px);
+
+    /* 配置基準設定 */
+    position: relative;
+
+    /* 詳細設定 */
+    overflow: hidden;
+}
+
+/* ===============================
+Clock
+================================== */
+
+.clock {
+    /* 大きさ設定 */
+    width: 90%;
+    height: 100%;
+
+    /* 要素配置設定 */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    /* 余白設定 */
+    gap: 0.5rem;
+}
+
+.label {
+    /* 文字設定 */
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    color: var(--cyan);
+}
+
+.time {
+    /* 大きさ設定 */
+    width: 100%;
+
+    /* 要素配置設定 */
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+
+    /* 文字設定 */
+    text-shadow: 0 0 10px var(--cyan);
+    font-weight: bold;
+}
+
+.min {
+    /* 文字設定 */
+    font-size: 3.5rem;
+}
+
+.colon {
+    /* 余白設定 */
+    margin: 0 4px;
+
+    /* 文字設定 */
+    font-size: 2.5rem;
+
+    /* アニメーション設定 */
+    animation: blink 1s steps(1) infinite;
+}
+
+.sec {
+    /* 余白設定 */
+    margin-left: 0.5rem;
+
+    /* 文字設定 */
+    font-size: 2.5rem;
+}
+
+/* ===============================
+Corner
+================================== */
+
+.corner {
+    /* 大きさ設定 */
+    width: 8px;
+    height: 8px;
+
+    /* 装飾設定 */
+    border: 1px solid var(--cyan);
+
+    /* 配置基準設定 */
+    position: absolute;
+}
+
+.tl { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+.tr { top: 10px; right: 10px; border-left: none; border-bottom: none; }
+.bl { bottom: 10px; left: 10px; border-right: none; border-top: none; }
+.br { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+
+/* ===============================
+Scanline
+================================== */
+
+.scan {
+    /* 大きさ設定 */
+    width: 100%;
+
+    /* バックグラウンド設定 */
+    background:
+    linear-gradient(rgba(0,0,0,0) 50%, rgba(0,0,0,0.25) 50%),
+    linear-gradient(90deg,
+        rgba(255,0,0,0.06),
+        rgba(0,255,0,0.02),
+        rgba(0,0,255,0.06)
+    );
+    background-size: 100% 4px, 3px 100%;
+
+    /* 要素配置設定 */
+    inset: 0;
+
+    /* 配置基準設定 */
+    position: absolute;
+
+    /* 詳細設定 */
+    pointer-events: none;
+}
+
+/* ===============================
+Danger
+================================== */
+
+.danger {
+    /* 文字設定 */
+    color: var(--red);
+    text-shadow: 0 0 10px var(--red);
+
+    /* アニメーション設定 */
+    animation: pulse 1s infinite;
+}
+
+.danger .panel {
+    /* バックグラウンド設定 */
+    background: var(--red_opWeak);
+
+    /* 文字設定 */
+    text-shadow: 0 0 10px var(--red);
+
+    /* 装飾設定 */
+    border: 1px solid var(--red_opMid);
+}
+
+.danger .panel .corner{
+    /* 装飾設定 */
+    border: 1px solid var(--red_opMid);
+}
+
+.danger .panel .tl { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+.danger .panel .tr { top: 10px; right: 10px; border-left: none; border-bottom: none; }
+.danger .panel .bl { bottom: 10px; left: 10px; border-right: none; border-top: none; }
+.danger .panel .br { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+
+.danger .sec { color: var(--red); }
+.danger .colon { color: var(--red); }
+.danger .label { color: var(--red); }
+
+.panel.danger {
+    /* 装飾設定 */
+    border: 1px solid var(--red_opMid);
+}
+
+/* ===============================
+Animation
+================================== */
+
+@keyframes blink {
+0%,100% { opacity:1 }
+50% { opacity:0 }
+}
+
+@keyframes pulse {
+0% { opacity: 0.7; }
+50% { opacity: 1; }
+100% { opacity: 0.7; }
+}
