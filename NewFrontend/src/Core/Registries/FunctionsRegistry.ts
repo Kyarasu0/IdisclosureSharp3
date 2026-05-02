@@ -9,7 +9,9 @@ import { calculateScore } from "../../Workspace/Functions/Utils/calculateScore";
 import { createRoom } from "../../Workspace/Functions/Photon/createRoom";
 import { joinRoom } from "../../Workspace/Functions/Photon/joinRoom";
 import { disconnectPhoton } from "../../Workspace/Functions/Photon/disconnectPhoton";
-import { getPhotonPlayers } from "../../Workspace/Functions/Photon/getPhotonPlayers";
+import { subscribePhotonPlayers } from "../../Workspace/Functions/Photon/subscribePhotonPlayers";
+import { subscribeProperties } from "../../Workspace/Functions/Photon/subscribeProperties";
+import { setProperties } from "../../Workspace/Functions/Photon/setProperties";
 
 export const FunctionsRegistry = () => {
   const go = useSafeNavigate();
@@ -104,9 +106,12 @@ export const FunctionsRegistry = () => {
       redirectPath: "/create-join",
     }),
     // 3. 参加者一覧取得
-    GetPhotonPlayers: getPhotonPlayers,
+    subscribePhotonPlayers: subscribePhotonPlayers,
     // 4. ゲーム開始
     GoToPCDesktopFromWaiting: () => go({ path: "/pc-desktop", fromPage: "Waiting" }),
+    // 5. プロパティの情報を取得/保存
+    subscribeProperties: subscribeProperties,
+    setProperties: setProperties,
 
   };
 };

@@ -79,8 +79,11 @@ export const MainOutline: {
 
       // ローカルストレージから情報を取得
       getLocalStorage: "getLocalStorage",
-      // Photonから参加プレイヤーの情報を取得
-      getPhotonPlayers: "GetPhotonPlayers",
+      // プロパティから情報を取得
+      subscribeProperties: "subscribeProperties",
+      // Photonから参加プレイヤーの情報を取得/保存
+      subscribePhotonPlayers: "subscribePhotonPlayers",
+      setProperties: "setProperties",
     }
   }
 ];

@@ -4,6 +4,7 @@ import { Plus, Minus } from "lucide-react";
 type Props = {
   value: number;
   onChange: (v: number) => void;
+  onChangeProperties?: ((key: string, value: string) => void) | null;
 
   min: number;
   max: number;
@@ -20,6 +21,7 @@ type Props = {
 export const CyberDial = ({
   value,
   onChange,
+  onChangeProperties,
   min,
   max,
   step = 1,
@@ -55,12 +57,14 @@ export const CyberDial = ({
   const dec = () => {
     if (value > min) {
       onChange(Math.max(min, value - step));
+      onChangeProperties && onChangeProperties("duration", String(Math.max(min, value - step)))
     }
   };
 
   const inc = () => {
     if (value < max) {
       onChange(Math.min(max, value + step));
+      onChangeProperties && onChangeProperties("duration", String(Math.min(max, value + step)))
     }
   };
 

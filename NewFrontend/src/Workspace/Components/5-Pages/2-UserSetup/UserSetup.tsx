@@ -13,17 +13,23 @@ import styles from "./UserSetup.module.css";
 import { ArrowBigLeft } from "lucide-react";
 
 type Props = {
-  isNavigationBlocked?: boolean;
-  onGuard?: () => void;
-  onSaveAndMoveClick?: ( userId: string, birthDate: string ) => void;
-  onReturnClick?: () => void;
+  isNavigationBlocked: boolean;
+  // 前ページに遷移
+  onReturnClick: () => void;
+  // ページガード
+  onGuard: () => void;
+  // 次ページに遷移
+  onSaveAndMoveClick: ( userId: string, birthDate: string ) => void;
 };
 
 export const UserSetup = ({
-    isNavigationBlocked = false,
+    isNavigationBlocked,
+    // 前ページに遷移
+    onReturnClick,
+    // ページ遷移
     onGuard,
-    onSaveAndMoveClick = () => alert("onSaveAndMoveClick is not assigned"),
-    onReturnClick = () => alert("onReturnClick is not assigned"),
+    // 次ページに遷移
+    onSaveAndMoveClick,
 }: Props) => {
     // 入力値を管理
     const [userId, setUserId] = useState("");

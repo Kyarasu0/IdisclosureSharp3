@@ -9,11 +9,12 @@ import { RoundedButton } from "./../../1-Atoms/Control/RoundedButton/RoundedButt
 import styles from "./Introduction.module.css";
 
 type Props = {
-  onMoveClick?: () => void;
+    // 次ページに遷移
+    onMoveClick: () => void;
 };
 
 export const Introduction = ({
-    onMoveClick = () => alert("onMoveClick is not assigned"),
+    onMoveClick,
 }: Props) => {
     return (
         <div className={styles.container}>

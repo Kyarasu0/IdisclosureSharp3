@@ -13,11 +13,18 @@ import styles from "./SecretSetup.module.css";
 import { ArrowBigLeft } from "lucide-react";
 
 type Props = {
-  isNavigationBlocked?: boolean;
-  onGuard?: () => void;
-  onConfirmClick?: ( userId: string, birthDate: string, secretId: string, score: number ) => void;
-  onReturnClick?: () => void;
-  calculateScoreFn?: (
+  isNavigationBlocked: boolean;
+  // 前ページに遷移
+  onReturnClick: () => void;
+  // ページガード
+  onGuard: () => void;
+  // 次ページに遷移
+  onConfirmClick: ( userId: string, birthDate: string, secretId: string, score: number ) => void;
+
+  // ローカルストレージから情報を取得
+  getLocalStorage: (key: string) => Record<string, string>;
+  // 点数計算関数
+  calculateScoreFn: (
         secretId: string,
         registrationData: any
     ) => {
@@ -28,14 +35,20 @@ type Props = {
         score: number;
         progress: number;
     };
-  getLocalStorage?: (key: string) => Record<string, string>;
 };
 
 export const SecretSetup = ({
-    isNavigationBlocked = false,
+    isNavigationBlocked,
+    // 前ページに遷移
+    onReturnClick,
+    // ページガード
     onGuard,
-    onConfirmClick = () => alert("onConfirmClick is not assigned"),
-    onReturnClick = () => alert("onReturnClick is not assigned"),
+    // 次ページに遷移
+    onConfirmClick,
+    
+    // ローカルストレージから情報を取得
+    getLocalStorage,
+    // 点数計算関数
     calculateScoreFn = (secretId = "not_found", registrationData) => {
         alert(`${secretId}${registrationData}: calculateScoreFn is not assigned`)
         return {
@@ -47,7 +60,6 @@ export const SecretSetup = ({
             progress: 0,
         }
     },
-    getLocalStorage,
 }: Props) => {
     // 入力値を管理
     const [secretId, setSecretId] = useState("");

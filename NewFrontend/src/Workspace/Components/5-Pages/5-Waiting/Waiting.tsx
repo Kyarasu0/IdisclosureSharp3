@@ -36,8 +36,15 @@ type Props = {
 
   // ローカルストレージから情報を取得
   getLocalStorage: <T>(key: string) => T;
+  // プロパティから情報を取得/保存
+  subscribeProperties: <T>( 
+    key: string, setValue: (value: T) => void, parser: (raw: unknown) => T
+  ) => () => void;
+  setProperties: (key: string) => void;
   // Photonから参加プレイヤーの情報を取得
-  getPhotonPlayers: () => Participant[];
+  subscribePhotonPlayers: (
+    setParticipants: (players: Participant[]) => void
+  ) => () => void;
 };
 
 export const Waiting = ({
@@ -51,8 +58,11 @@ export const Waiting = ({
 
   // ローカルストレージから情報を取得
   getLocalStorage,
+  // プロパティから情報を取得/保存
+  subscribeProperties,
+  setProperties,
   // Photonから参加プレイヤーの情報を取得
-  getPhotonPlayers,
+  subscribePhotonPlayers,
 }: Props) => {
   // ================================
   // 参加者状態
@@ -68,21 +78,23 @@ export const Waiting = ({
   }, [isNavigationBlocked, onGuard]);
 
   // ================================
-  // 参加者更新（500msポーリング）
+  // 初期取得 + Photonイベント購読
   // ================================
   useEffect(() => {
-    const interval = setInterval(() => {
-      setParticipants(getPhotonPlayers());
-    }, 500);
+    const unsubscribe = subscribePhotonPlayers(setParticipants);
 
-    return () => clearInterval(interval);
-  }, [getPhotonPlayers]);
+    return () => {
+      unsubscribe?.();
+    };
+  }, []);
 
   return (
     <Lobby onReturnClick={onReturnClick}>
       <WaitingForm
         participants={participants}
         getLocalStorage={getLocalStorage}
+        subscribeProperties={subscribeProperties}
+        setProperties={setProperties}
         onStartGame={onStartGame}
         className={styles.waitingForm}
       />

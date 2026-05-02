@@ -3,7 +3,7 @@
 // ============================================================
 
 // 基本的な関数をインポート
-import { useState } from "react"; 
+import { useEffect, useState } from "react"; 
 
 // 他のコンポーネントをインポート
 import { CyberFormCard } from "../../../2-Molecules/CyberFormCard/CyberFormCard";
@@ -32,7 +32,14 @@ type Participant = {
 // ================================
 type Props = {
   participants: Participant[];
+  // ローカルストレージから情報を取得
   getLocalStorage: <T>(key: string) => T;
+  // プロパティから情報を取得/保存
+  subscribeProperties: <T>( 
+    key: string, setValue: (value: T) => void, parser: (raw: unknown) => T
+  ) => () => void;
+  setProperties: (key: string, value: string) => void;
+  // 次ページに遷移
   onStartGame: () => void;
   className?: string;
 };
@@ -44,7 +51,12 @@ type PhotonSettings = {
 
 export const WaitingForm = ({
   participants,
+  // ローカルストレージから情報を取得
   getLocalStorage,
+  // プロパティから情報を取得/保存
+  subscribeProperties,
+  setProperties,
+  // 次ページに遷移
   onStartGame,
   className,
 }: Props) => {
@@ -72,6 +84,11 @@ export const WaitingForm = ({
         });
     }
 
+    useEffect(() => {
+      const unsubscribe = subscribeProperties<number>("duration", setDuration, (v) => Number(v),);
+      return () => unsubscribe();
+    }, []);
+
     return(
         <CyberFormCard className={`${styles.cyberFormCard} ${className}`}>
 
@@ -92,7 +109,7 @@ export const WaitingForm = ({
             {/* 右側 */}
             <div className={styles.right}>
               {/* 残り時間の表示 */}
-              <DurationDisplay 
+              <DurationDisplay
                 duration={duration * 60}
                 className={styles.durationDisplay}
               />
@@ -101,6 +118,7 @@ export const WaitingForm = ({
               <CyberDial
                 value={duration}
                 onChange={setDuration}
+                onChangeProperties={isMaster ? setProperties : null}
                 min={5}
                 max={15}
                 label="MISSION DURATION"
@@ -113,6 +131,7 @@ export const WaitingForm = ({
                 type="submit"
                 className={styles.submitButton}
                 isLoading={!isMaster}
+                onClick={onStartGame}
               >
                   Start
                   <ArrowRight />
