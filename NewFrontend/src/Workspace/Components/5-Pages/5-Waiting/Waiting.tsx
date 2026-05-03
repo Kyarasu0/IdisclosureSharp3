@@ -9,6 +9,8 @@ import { useEffect, useState } from "react";
 import { Lobby } from "../../4-Layouts/Lobby/Lobby";
 import { WaitingForm } from "../../3-Organisms/Control/WaitingForm/WaitingForm";
 
+import { useAppearance } from "../../../../Core/Contexts/AppearanceContext";
+
 // デザインに関するファイルをインポート
 import styles from "./Waiting.module.css";
 
@@ -37,13 +39,17 @@ type Props = {
   // ローカルストレージから情報を取得
   getLocalStorage: <T>(key: string) => T;
   // プロパティから情報を取得/保存
-  subscribeProperties: <T>( 
-    key: string, setValue: (value: T) => void, parser: (raw: unknown) => T
-  ) => () => void;
-  setProperties: (key: string) => void;
+  getProperties: (key: string) => string;
+  setProperties: (key: string, value: string) => void;
   // Photonから参加プレイヤーの情報を取得
   subscribePhotonPlayers: (
     setParticipants: (players: Participant[]) => void
+  ) => () => void;
+  // データの送受信
+  sendData: <T>(eventCode: number, data: T, options?: any) => void;
+  receiveData: <T>(
+    eventCode: number,
+    onReceive: (data: T, actorNr: number) => void
   ) => () => void;
 };
 
@@ -59,15 +65,20 @@ export const Waiting = ({
   // ローカルストレージから情報を取得
   getLocalStorage,
   // プロパティから情報を取得/保存
-  subscribeProperties,
+  getProperties,
   setProperties,
+  // データの送受信
+  sendData,
+  receiveData,
   // Photonから参加プレイヤーの情報を取得
   subscribePhotonPlayers,
 }: Props) => {
+  const appearance = useAppearance();
   // ================================
   // 参加者状態
   // ================================
   const [participants, setParticipants] = useState<Participant[]>([]);
+  const [duration, setDuration] = useState(5);
 
   // ================================
   // ページガード
@@ -88,14 +99,45 @@ export const Waiting = ({
     };
   }, []);
 
+  // ================================
+  // 残り時間を送信
+  // ================================
+  const handleChangeDuration = (value: number) => {
+    setDuration(value);
+    // Propertiesにも保存
+    setProperties("duration", String(value));
+    // 全員に変更を通知
+    sendData(appearance.eventMap.EVENT_DURATION, { duration: value }, {
+      receivers: 1, // 全員
+      cache: 4,     // AddToRoomCache
+    });
+  };
+
+  // ================================
+  // 残り時間を受取
+  // ================================
+  useEffect(() => {
+    // Propertiesからも取得
+    const saved = getProperties("duration");
+    if (saved) setDuration(Number(saved));
+    // データの受信購読関数
+    const unsubscribe = receiveData<{ duration: number }>(
+      appearance.eventMap.EVENT_DURATION,
+      (data) => { setDuration(data.duration); }
+    );
+    return () => unsubscribe?.();
+  }, []);
+
   return (
     <Lobby onReturnClick={onReturnClick}>
       <WaitingForm
         participants={participants}
         getLocalStorage={getLocalStorage}
-        subscribeProperties={subscribeProperties}
+        getProperties={getProperties}
         setProperties={setProperties}
         onStartGame={onStartGame}
+        duration={duration}
+        onChangeDuration={handleChangeDuration}
         className={styles.waitingForm}
       />
     </Lobby>

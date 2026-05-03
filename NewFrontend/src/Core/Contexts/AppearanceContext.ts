@@ -11,7 +11,7 @@ export type Appearance = {
     birthYearCost: number,
     birthDayCost: number,
     noiseCost: number
-
+    eventMap: Record<string, number>
 };
 
 export const AppearanceContext = createContext<Appearance | null>(null);

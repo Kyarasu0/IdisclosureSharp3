@@ -32,12 +32,12 @@ type Participant = {
 // ================================
 type Props = {
   participants: Participant[];
+  duration: number;
+  onChangeDuration: (v: number) => void;
   // ローカルストレージから情報を取得
   getLocalStorage: <T>(key: string) => T;
   // プロパティから情報を取得/保存
-  subscribeProperties: <T>( 
-    key: string, setValue: (value: T) => void, parser: (raw: unknown) => T
-  ) => () => void;
+  getProperties: (key: string) => string;
   setProperties: (key: string, value: string) => void;
   // 次ページに遷移
   onStartGame: () => void;
@@ -51,10 +51,12 @@ type PhotonSettings = {
 
 export const WaitingForm = ({
   participants,
+  duration,
+  onChangeDuration,
   // ローカルストレージから情報を取得
   getLocalStorage,
   // プロパティから情報を取得/保存
-  subscribeProperties,
+  getProperties,
   setProperties,
   // 次ページに遷移
   onStartGame,
@@ -64,7 +66,6 @@ export const WaitingForm = ({
     // LocalStorageからroomName取得
     // ================================
     const roomName = getLocalStorage<PhotonSettings>("photonSettings").roomName ?? "UNKNOWN";
-    const [duration, setDuration] = useState(5);
 
     // ================================
     // 自分がマスターか判定
@@ -83,11 +84,6 @@ export const WaitingForm = ({
             isMasterClient: false,
         });
     }
-
-    useEffect(() => {
-      const unsubscribe = subscribeProperties<number>("duration", setDuration, (v) => Number(v),);
-      return () => unsubscribe();
-    }, []);
 
     return(
         <CyberFormCard className={`${styles.cyberFormCard} ${className}`}>
@@ -117,7 +113,7 @@ export const WaitingForm = ({
               {/* 残り時間設定 */}
               <CyberDial
                 value={duration}
-                onChange={setDuration}
+                onChange={onChangeDuration}
                 onChangeProperties={isMaster ? setProperties : null}
                 min={5}
                 max={15}

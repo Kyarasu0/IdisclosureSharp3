@@ -79,11 +79,14 @@ export const MainOutline: {
 
       // ローカルストレージから情報を取得
       getLocalStorage: "getLocalStorage",
-      // プロパティから情報を取得
-      subscribeProperties: "subscribeProperties",
+      // プロパティから情報を取得/保存
+      getProperties: "getProperties",
+      setProperties: "setProperties",
+      // データの送受信
+      sendData: "sendData",
+      receiveData: "receiveData",
       // Photonから参加プレイヤーの情報を取得/保存
       subscribePhotonPlayers: "subscribePhotonPlayers",
-      setProperties: "setProperties",
     }
   }
 ];

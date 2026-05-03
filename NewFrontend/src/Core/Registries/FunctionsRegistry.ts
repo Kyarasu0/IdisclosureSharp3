@@ -10,8 +10,10 @@ import { createRoom } from "../../Workspace/Functions/Photon/createRoom";
 import { joinRoom } from "../../Workspace/Functions/Photon/joinRoom";
 import { disconnectPhoton } from "../../Workspace/Functions/Photon/disconnectPhoton";
 import { subscribePhotonPlayers } from "../../Workspace/Functions/Photon/subscribePhotonPlayers";
-import { subscribeProperties } from "../../Workspace/Functions/Photon/subscribeProperties";
 import { setProperties } from "../../Workspace/Functions/Photon/setProperties";
+import { getProperties } from "../../Workspace/Functions/Photon/getProperties";
+import { sendData } from "../../Workspace/Functions/Photon/sendData";
+import { receiveData } from "../../Workspace/Functions/Photon/receiveData";
 
 export const FunctionsRegistry = () => {
   const go = useSafeNavigate();
@@ -99,7 +101,10 @@ export const FunctionsRegistry = () => {
     // Waiting
     // ====================
     // 1. 前のページへ遷移
-    GoToCreateJoinFromWaiting: () => go({ path: "/create-join", fromPage: "Waiting" }),
+    GoToCreateJoinFromWaiting: () => {
+      disconnectPhoton();
+      go({ path: "/create-join", fromPage: "Waiting" });
+    },
     // 2. ページガード
     GuardWaiting: () => guard({
       allowedFromPages: ["CreateJoin"],
@@ -110,8 +115,11 @@ export const FunctionsRegistry = () => {
     // 4. ゲーム開始
     GoToPCDesktopFromWaiting: () => go({ path: "/pc-desktop", fromPage: "Waiting" }),
     // 5. プロパティの情報を取得/保存
-    subscribeProperties: subscribeProperties,
     setProperties: setProperties,
+    getProperties: getProperties,
+    // 6. データの送受信
+    sendData: sendData,
+    receiveData: receiveData,
 
   };
 };
