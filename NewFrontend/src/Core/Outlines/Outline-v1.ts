@@ -75,7 +75,8 @@ export const MainOutline: {
       // ページガード
       onGuard: "GuardWaiting",
       // 次ページに遷移
-      onStartGame: "GoToPCDesktopFromWaiting",
+      onStartGame: "GoToPCDesktopFromWaitingMaster",
+      getStartGame: "GoToPCDesktopFromWaitingClient",
 
       // ローカルストレージから情報を取得
       getLocalStorage: "getLocalStorage",

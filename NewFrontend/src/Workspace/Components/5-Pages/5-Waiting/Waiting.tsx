@@ -34,7 +34,16 @@ type Props = {
   // ページガード
   onGuard: () => void;
   // 次ページに遷移
-  onStartGame: () => void;
+  onStartGame: (
+    participants: Participant[],
+    getLocalStorage: <T>(key: string) => T,
+    eventCode: number
+  ) => void;
+  getStartGame: (
+    participants: Participant[],
+    getLocalStorage: <T>(key: string) => T,
+    eventCode: number
+  ) => void;
 
   // ローカルストレージから情報を取得
   getLocalStorage: <T>(key: string) => T;
@@ -61,6 +70,7 @@ export const Waiting = ({
   onGuard,
   // 次ページに遷移
   onStartGame,
+  getStartGame,
 
   // ローカルストレージから情報を取得
   getLocalStorage,
@@ -117,16 +127,36 @@ export const Waiting = ({
   // 残り時間を受取
   // ================================
   useEffect(() => {
-    // Propertiesからも取得
+    // 初期値
     const saved = getProperties("duration");
     if (saved) setDuration(Number(saved));
-    // データの受信購読関数
-    const unsubscribe = receiveData<{ duration: number }>(
+
+    // ① duration購読
+    const unsubscribe1 = receiveData<{ duration: number }>(
       appearance.eventMap.EVENT_DURATION,
-      (data) => { setDuration(data.duration); }
+      (data) => {
+        setDuration(data.duration);
+      }
     );
-    return () => unsubscribe?.();
-  }, []);
+
+    // ② start購読（これが重要）
+    const unsubscribe2 = receiveData<{ nextActorNr: number }>(
+      appearance.eventMap.EVENT_START,
+      () => {
+        getStartGame(
+          participants,
+          getLocalStorage,
+          appearance.eventMap.EVENT_START
+        );
+      }
+    );
+
+    // cleanup
+    return () => {
+      unsubscribe1?.();
+      unsubscribe2?.();
+    };
+  }, [participants]);
 
   return (
     <Lobby onReturnClick={onReturnClick}>
@@ -135,11 +165,11 @@ export const Waiting = ({
         getLocalStorage={getLocalStorage}
         getProperties={getProperties}
         setProperties={setProperties}
-        onStartGame={onStartGame}
+        onStartGame={() => onStartGame(participants, getLocalStorage, appearance.eventMap.EVENT_START)}
         duration={duration}
         onChangeDuration={handleChangeDuration}
         className={styles.waitingForm}
       />
     </Lobby>
   );
-}
+};

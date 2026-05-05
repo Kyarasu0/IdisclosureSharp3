@@ -13,6 +13,8 @@ import { CyberDial } from "../../../2-Molecules/CyberDial/CyberDial"
 import { CyberGridList } from "../../../2-Molecules/CyberGridList/CyberGridList";
 import { SubmitButton } from "../../../1-Atoms/Control/SubmitButton/SubmitButton";
 
+import { useAppearance } from "../../../../../Core/Contexts/AppearanceContext";
+
 // デザインに関するファイルをインポート
 import styles from "./WaitingForm.module.css";
 import { ArrowRight, Loader } from "lucide-react";
@@ -40,7 +42,11 @@ type Props = {
   getProperties: (key: string) => string;
   setProperties: (key: string, value: string) => void;
   // 次ページに遷移
-  onStartGame: () => void;
+  onStartGame: (
+    participants: Participant[],
+    getLocalStorage: <T>(key: string) => T,
+    eventCode: number
+  ) => void;
   className?: string;
 };
 
@@ -62,6 +68,7 @@ export const WaitingForm = ({
   onStartGame,
   className,
 }: Props) => {
+    const appearance = useAppearance();
     // ================================
     // LocalStorageからroomName取得
     // ================================
@@ -77,12 +84,12 @@ export const WaitingForm = ({
     // ================================
     const displayParticipants = [...participants];
     while (displayParticipants.length < 8) {
-        displayParticipants.push({
-            actorNr: -displayParticipants.length,
-            name: "",
-            isLocal: false,
-            isMasterClient: false,
-        });
+      displayParticipants.push({
+          actorNr: -displayParticipants.length,
+          name: "",
+          isLocal: false,
+          isMasterClient: false,
+      });
     }
 
     return(
@@ -127,7 +134,7 @@ export const WaitingForm = ({
                 type="submit"
                 className={styles.submitButton}
                 isLoading={!isMaster}
-                onClick={onStartGame}
+                onClick={() => onStartGame(participants, getLocalStorage, appearance.eventMap.EVENT_START)}
               >
                   Start
                   <ArrowRight />

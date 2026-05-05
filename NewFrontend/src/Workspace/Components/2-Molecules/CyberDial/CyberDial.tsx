@@ -57,6 +57,8 @@ export const CyberDial = ({
   const dec = () => {
     if (value > min) {
       onChange(Math.max(min, value - step));
+      // Set Log
+      console.log("duration: ", Math.max(min, value - step));
       onChangeProperties && onChangeProperties("duration", String(Math.max(min, value - step)))
     }
   };
@@ -64,6 +66,8 @@ export const CyberDial = ({
   const inc = () => {
     if (value < max) {
       onChange(Math.min(max, value + step));
+      // Set Log
+      console.log("duration: ", Math.min(max, value + step));
       onChangeProperties && onChangeProperties("duration", String(Math.min(max, value + step)))
     }
   };

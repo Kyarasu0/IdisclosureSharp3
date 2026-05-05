@@ -3,6 +3,8 @@
 
 // Core/Registries/FunctionsRegistry.ts
 
+import type { Participant } from "../../Workspace/Functions/Utils/initGame.ts"
+
 import { useSafeNavigate } from "../../Workspace/Functions/Hooks/useSafeNavigate";
 import { useSafeNavGuard } from "../../Workspace/Functions/Hooks/useSafeNavGuard";
 import { calculateScore } from "../../Workspace/Functions/Utils/calculateScore";
@@ -14,6 +16,7 @@ import { setProperties } from "../../Workspace/Functions/Photon/setProperties";
 import { getProperties } from "../../Workspace/Functions/Photon/getProperties";
 import { sendData } from "../../Workspace/Functions/Photon/sendData";
 import { receiveData } from "../../Workspace/Functions/Photon/receiveData";
+import { initGame, initActor } from "../../Workspace/Functions/Utils/initGame";
 
 export const FunctionsRegistry = () => {
   const go = useSafeNavigate();
@@ -113,7 +116,22 @@ export const FunctionsRegistry = () => {
     // 3. 参加者一覧取得
     subscribePhotonPlayers: subscribePhotonPlayers,
     // 4. ゲーム開始
-    GoToPCDesktopFromWaiting: () => go({ path: "/pc-desktop", fromPage: "Waiting" }),
+    GoToPCDesktopFromWaitingMaster: (
+      participants: Participant[],
+      getLocalStorage: <T>(key: string) => T,
+      eventCode: number,
+    ) => {
+      initGame( participants, getLocalStorage, eventCode );
+      go({ path: "/pc-desktop", fromPage: "Waiting" });
+    },
+    GoToPCDesktopFromWaitingClient: (
+      participants: Participant[],
+      getLocalStorage: <T>(key: string) => T,
+      eventCode: number,
+    ) => {
+      initActor( participants, getLocalStorage, eventCode );
+      go({ path: "/pc-desktop", fromPage: "Waiting" });
+    },
     // 5. プロパティの情報を取得/保存
     setProperties: setProperties,
     getProperties: getProperties,
