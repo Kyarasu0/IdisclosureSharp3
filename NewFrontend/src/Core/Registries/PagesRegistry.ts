@@ -3,7 +3,7 @@ import { UserSetup } from "../../Workspace/Components/5-Pages/2-UserSetup/UserSe
 import { SecretSetup } from "../../Workspace/Components/5-Pages/3-SecretSetup/SecretSetup";
 import { CreateJoin } from "../../Workspace/Components/5-Pages/4-CreateJoin/CreateJoin";
 import { Waiting } from "../../Workspace/Components/5-Pages/5-Waiting/Waiting";
-// import { PCDesktop } from "../../Workspace/Components/5-Pages/6-PCDesktop/PCDesktop";
+import { PCDesktop } from "../../Workspace/Components/5-Pages/6-PCDesktop/PCDesktop";
 
 export const PagesRegistry = {
 
@@ -12,7 +12,7 @@ export const PagesRegistry = {
     SecretSetup,
     CreateJoin,
     Waiting,
-    // PCDesktop,
+    PCDesktop,
 
 } as const;
 

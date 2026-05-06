@@ -1,7 +1,7 @@
 import type { PageKey } from "../Registries/PagesRegistry";
 
 //URL直打ちでの画面遷移の防御を有効にするかどうか
-const isNavigationBlocked: boolean = true;
+const isNavigationBlocked: boolean = false;
 
 export const MainOutline: {
   path: string;
@@ -68,6 +68,31 @@ export const MainOutline: {
   {
     path: "/waiting",
     page: "Waiting",
+    props: {
+      isNavigationBlocked: isNavigationBlocked,
+      // 前ページに遷移
+      onReturnClick: "GoToCreateJoinFromWaiting",
+      // ページガード
+      onGuard: "GuardWaiting",
+      // 次ページに遷移
+      onStartGame: "GoToPCDesktopFromWaitingMaster",
+      getStartGame: "GoToPCDesktopFromWaitingClient",
+
+      // ローカルストレージから情報を取得
+      getLocalStorage: "getLocalStorage",
+      // プロパティから情報を取得/保存
+      getProperties: "getProperties",
+      setProperties: "setProperties",
+      // データの送受信
+      sendData: "sendData",
+      receiveData: "receiveData",
+      // Photonから参加プレイヤーの情報を取得/保存
+      subscribePhotonPlayers: "subscribePhotonPlayers",
+    }
+  },
+  {
+    path: "/pc-desktop",
+    page: "PCDesktop",
     props: {
       isNavigationBlocked: isNavigationBlocked,
       // 前ページに遷移
