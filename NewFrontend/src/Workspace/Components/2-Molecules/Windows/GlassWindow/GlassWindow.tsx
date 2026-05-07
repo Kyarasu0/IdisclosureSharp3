@@ -14,6 +14,7 @@ type Props = {
   title: string;
   subTitle?: string;
   children: ReactNode;
+  contentAlign?: "flex-start" | "center" | "flex-end";
   className?: string;
 };
 
@@ -22,7 +23,8 @@ export const GlassWindow = ({
   title,
   subTitle,
   children,
-  className = "",
+  contentAlign = "center",
+  className,
 }: Props) => {
   return (
     <div className={`${styles.window} ${className}`}>
@@ -63,7 +65,10 @@ export const GlassWindow = ({
         </div>
 
         {/* ===== Content ===== */}
-        <div className={styles.content}>
+        <div 
+            className={styles.content}
+            style={{ alignItems: contentAlign }}
+        >
             {children}
         </div>
 

@@ -4,54 +4,69 @@
 
 /* 全体 */
 .wrapper {
-  width: 80px;
+  width: 88px;
+
   display: flex;
   flex-direction: column;
   align-items: center;
+
   cursor: pointer;
 }
 
-.nonHoverWrapper{
-    width: 80px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.nonHoverWrapper {
+  width: 88px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* アイコン本体 */
 .iconBox {
-  position: relative;
-  width: 56px;
-  height: 56px;
+  /* サイズ固定 */
+  width: 72px;
+  height: 72px;
 
+  /* 配置 */
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
 
-  /* ガラス */
+  /* 余白 */
+  padding: 8px;
+
+  /* 装飾 */
   background: var(--black_opMid);
   backdrop-filter: blur(10px);
+
+  border: 1px solid var(--white_opWeak);
 
   /* 形 */
   clip-path: var(--clip);
 
-  /* 最低限の枠 */
-  border: 1px solid var(--white_opWeak);
-
-  transition: transform 0.2s ease;
+  /* アニメーション */
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-/* ホバーで浮く */
+/* ホバー */
 .wrapper:hover .iconBox {
   transform: translateY(-4px);
+
+  box-shadow:
+    0 0 10px color-mix(in srgb, var(--color) 35%, transparent),
+    0 0 24px color-mix(in srgb, var(--color) 15%, transparent);
 }
 
-/* グラデ枠（疑似ボーダー） */
+/* 疑似グラデ枠 */
 .borderLayer {
   position: absolute;
   inset: 0;
 
   clip-path: var(--clip);
+
   padding: 1px;
 
   background: linear-gradient(
@@ -61,39 +76,103 @@
     var(--color)
   );
 
-  opacity: 0.6;
+  opacity: 0.65;
 }
 
-/* 内側塗りつぶし */
+/* 内側 */
 .borderLayer::before {
   content: "";
+
   display: block;
+
   width: 100%;
   height: 100%;
 
   clip-path: var(--clip);
+
   background: var(--black_opMid);
+}
+
+/* 中身レイヤー */
+.inner {
+  position: relative;
+  z-index: 1;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
 }
 
 /* アイコン */
 .icon {
-  position: relative;
-  z-index: 1;
+  position: absolute;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   color: var(--color);
-  transition: transform 0.2s ease;
+
+  line-height: 0;
+
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
 }
 
-/* ホバーで少し拡大 */
+/* ホバー */
 .wrapper:hover .icon {
-  transform: scale(1.1);
+  transform: scale(1.08);
+}
+
+/* 中央文字 */
+.content {
+  position: relative;
+
+  max-width: 100%;
+  padding: 0 4px;
+
+  color: var(--color);
+
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: 0.08em;
+  line-height: 1.15;
+
+  text-align: center;
+
+  word-break: break-word;
+
+  text-shadow:
+    0 0 4px var(--color),
+    0 0 10px var(--color);
+
+  opacity: 0.95;
+
+  z-index: 2;
+
+  pointer-events: none;
 }
 
 /* ラベル */
 .label {
-  margin-top: 6px;
+  margin-top: 8px;
+
+  width: 100%;
+
+  text-align: center;
+
   font-size: 10px;
   letter-spacing: 0.15em;
+
   opacity: 0.7;
+
   transition: opacity 0.2s ease;
 }
 

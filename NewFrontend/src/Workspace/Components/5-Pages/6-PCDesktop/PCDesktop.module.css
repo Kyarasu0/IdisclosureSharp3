@@ -11,7 +11,7 @@
 
 .left{
     /* 大きさ設定 */
-    width: 33%;
+    width: 25%;
     height: 100%;
     box-sizing: border-box;
 
@@ -24,9 +24,53 @@
     padding: 1rem;
 }
 
+.row{
+    /* 大きさ設定 */
+    width: 100%;
+    box-sizing: border-box;
+
+    /* 要素配置設定 */
+    min-height: 0;
+
+    /* 余白設定 */
+    padding: 0.5rem 0;
+}
+
+.lastRow{
+    /* 要素配置設定 */
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+}
+
+.ip{
+    /* 大きさ設定 */
+    width: 90%;
+
+    /* 要素配置設定 */
+    display: flex;
+
+    /* 余白設定 */
+    margin: 0.5rem 0;
+}
+
+.ipInner{
+    /* 要素配置設定 */
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+}
+
+.systemLog{
+    /* 文字設定 */
+    font-family: var(--secondary);
+    text-shadow: 0 0 10px var(--cyan);
+}
+
 .center{
     /* 大きさ設定 */
-    width: 33%;
+    width: 55%;
     height: 100%;
     box-sizing: border-box;
 
@@ -41,7 +85,7 @@
 
 .right{
     /* 大きさ設定 */
-    width: 33%;
+    width: 20%;
     height: 100%;
     box-sizing: border-box;
 
@@ -52,4 +96,35 @@
 
     /* 余白設定 */
     padding: 1rem;
+}
+
+.battery{
+    /* 大きさ設定 */
+    width: 90%;
+
+    /* 要素配置設定 */
+    display: flex;
+    flex-direction: column;
+
+    /* 余白設定 */
+    margin: 0.3rem 0;
+}
+
+.batteryTitle{
+    /* 要素配置設定 */
+    display: flex;
+    justify-content: space-between;
+}
+
+.batteryInner{
+    /* 要素配置設定 */
+    display: flex;
+    flex-direction: column;
+
+    /* 余白設定 */
+    gap: 0.8rem;
+}
+
+.cyberList{
+    gap: 0.8rem;
 }

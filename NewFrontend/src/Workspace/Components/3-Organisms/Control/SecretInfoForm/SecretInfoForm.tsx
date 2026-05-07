@@ -146,7 +146,7 @@ useEffect(() => {
         <div className={styles.secretSetupMain}>
             {/* 左側 */}
             <div className={styles.scoreDetail}>
-                <CyberList items={ruleItems} />
+                <CyberList items={ruleItems} className={styles.cyberList}/>
             </div>
             {/* 右側 */}
             <form 

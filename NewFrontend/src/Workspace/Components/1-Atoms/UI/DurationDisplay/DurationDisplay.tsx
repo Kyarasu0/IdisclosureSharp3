@@ -62,7 +62,7 @@ export const DurationDisplay = ({
 
             {/* 時計 */}
             <div className={styles.clock}>
-            <div className={styles.label}>{label}</div>
+            <div className={`${styles.label} ${styles.topLabel}`}>{label}</div>
 
             <div className={`${styles.time} ${danger ? styles.danger : ""}`}>
                 <span className={styles.min}>{min}</span>
@@ -70,7 +70,7 @@ export const DurationDisplay = ({
                 <span className={styles.sec}>{sec}</span>
             </div>
 
-            <div className={styles.label}>
+            <div className={`${styles.label} ${styles.bottomLabel}`}>
                 MISSION TIMER ACTIVE
             </div>
             </div>

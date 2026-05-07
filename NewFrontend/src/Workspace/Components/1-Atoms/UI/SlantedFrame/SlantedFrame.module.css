@@ -1,0 +1,84 @@
+/* ==========================================
+   Components/1-Atoms/UI/SlantedFrame/SlantedFrame.module.css
+========================================== */
+
+/* ================================
+   外枠
+================================ */
+.frame {
+  /* 大きさ設定 */
+  box-sizing: border-box;
+
+  /* バックグラウンド設定 */
+  background:
+    linear-gradient(
+      90deg,
+      var(--frame-bg) 0%,
+      transparent 100%
+    );
+
+  /* 要素配置設定 */
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  /* 余白設定 */
+  padding: 1rem;
+
+  /* 文字設定 */
+  color: var(--frame-color);
+  text-shadow: 0 0 10px var(--frame-color);
+  font-family: var(--secondary);
+  font-size: 1rem;
+
+  /* 装飾設定 */
+  transform: skewX(-15deg);
+  border-left: 6px solid var(--frame-color);
+  border-right: 3px solid var(--frame-color);
+
+  /* isolation: isolate; */
+
+  /* 詳細設定 */
+  overflow: hidden;
+}
+
+/* ================================
+   斜線
+================================ */
+.frame::after {
+  content: "";
+
+  /* バックグラウンド設定 */
+  background:
+    repeating-linear-gradient(
+      45deg,
+      transparent 0px,
+      transparent 8px,
+      var(--white_opWeak) 0.5rem,
+      var(--white_opWeak) 1rem
+    );
+
+  /* 要素配置設定 */
+  position: absolute;
+  inset: 0;
+
+  /* 詳細設定 */
+  pointer-events: none;
+
+  /* 配置基準設定 */
+  z-index: 0;
+}
+
+/* ================================
+   中身だけ角度を戻す
+================================ */
+.inner {
+  /* 大きさ設定 */
+  width: 100%;
+
+  /* 装飾設定 */
+  transform: skewX(15deg);
+
+  /* 配置基準設定 */
+  z-index: 1;
+}

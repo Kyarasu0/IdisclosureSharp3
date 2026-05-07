@@ -2,13 +2,14 @@
 // Components/Atoms/CyberIcon/CyberIcon.tsx
 // ============================================================
 
-import type { ReactNode } from "react";
+import type { ReactNode, CSSProperties } from "react";
 import styles from "./ApplicationIcon.module.css";
 
 type Variant = "diamond" | "hex" | "cut" | "square";
 
 type Props = {
-  icon: ReactNode;
+  icon?: ReactNode;
+  content?: string;
   label: string;
   hover?: boolean;
   variant?: Variant;
@@ -18,6 +19,7 @@ type Props = {
 
 export const ApplicationIcon = ({
   icon,
+  content,
   label,
   hover = true,
   variant = "cut",
@@ -32,20 +34,37 @@ export const ApplicationIcon = ({
   };
 
   return (
-    <div className={ hover ? styles.wrapper : styles.nonHoverWrapper} onClick={onClick}>
+    <div
+      className={hover ? styles.wrapper : styles.nonHoverWrapper}
+      onClick={onClick}
+    >
       <div
         className={styles.iconBox}
         style={
           {
             "--clip": clipMap[variant],
             "--color": color,
-          } as React.CSSProperties
+          } as CSSProperties
         }
       >
+        {/* 枠 */}
         <div className={styles.borderLayer} />
-        <div className={styles.icon}>{icon}</div>
+
+        {/* 中身 */}
+        <div className={styles.inner}>
+          {/* アイコン */}
+          {icon && <div className={styles.icon}>{icon}</div>}
+
+          {/* 文字 */}
+          {content && (
+            <div className={styles.content}>
+              {content}
+            </div>
+          )}
+        </div>
       </div>
 
+      {/* ラベル */}
       <span className={styles.label}>{label}</span>
     </div>
   );
