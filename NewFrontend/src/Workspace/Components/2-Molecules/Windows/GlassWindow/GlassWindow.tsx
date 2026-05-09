@@ -8,12 +8,15 @@ import type { ReactNode } from "react";
 // デザインに関するファイルをインポート
 import type { LucideIcon } from "lucide-react";
 import styles from "./GlassWindow.module.css";
+import { main } from "framer-motion/client";
 
 type Props = {
   icon: LucideIcon;
   title: string;
   subTitle?: string;
   children: ReactNode;
+  mainColor?: string;
+  subColor?: string;
   contentAlign?: "flex-start" | "center" | "flex-end";
   className?: string;
 };
@@ -23,36 +26,73 @@ export const GlassWindow = ({
   title,
   subTitle,
   children,
+  mainColor = "var(--cyan)",
+  subColor = "var(--pink)",
   contentAlign = "center",
   className,
 }: Props) => {
   return (
-    <div className={`${styles.window} ${className}`}>
+    <div 
+        className={`${styles.window} ${className}`}
+        style={{
+            borderRight: `1px solid ${mainColor}`,
+            borderLeft: `1px solid ${mainColor}`
+        }}
+    >
 
         {/* 四つ角飾り */}
-        <div className={styles.rightTop}></div>
-        <div className={styles.rightBottom}></div>
-        <div className={styles.leftTop}></div>
-        <div className={styles.leftBottom}></div>
+        <div className={styles.rightTop} style={{ borderColor: mainColor }} ></div>
+        <div className={styles.rightBottom} style={{ borderColor: mainColor }} ></div>
+        <div className={styles.leftTop} style={{ borderColor: mainColor }} ></div>
+        <div className={styles.leftBottom} style={{ borderColor: mainColor }} ></div>
 
         {/* スキャンライン(上) */}
         <div 
             className={styles.scanLine} 
             style={{ 
                 top: 0,
-                "--deg": "90deg",
+                /* バックグラウンド設定 */
+                background: `linear-gradient(
+                    90deg,
+                    ${mainColor},
+                    ${subColor},
+                    ${mainColor},
+                    ${mainColor}
+                )`,
             } as React.CSSProperties}
         />
 
         {/* ===== Header ===== */}
-        <div className={styles.header}>
+        <div 
+            className={styles.header}
+            style={{
+                /* 装飾設定 */
+                borderBottom: `1px solid ${mainColor}`
+            }}
+        >
             
             {/* 左：アイコン＋タイトル */}
             <div className={styles.titleBlock}>
-                <Icon size={16} className={styles.icon} />
+                <Icon 
+                    size={16} 
+                    className={styles.icon}
+                    style={{
+                        /* 文字設定 */
+                        color: mainColor,
+                        /* 装飾設定 */
+                        filter: `drop-shadow(0 0 5px ${mainColor})`
+                    }}
+                />
 
                 <div>
-                    <div className={styles.title}>{title}</div>
+                    <div 
+                        className={styles.title}
+                        style={{
+                            /* 文字設定 */
+                            color: mainColor,
+                            textShadow: `0 0 10px ${mainColor}`
+                        }}
+                    >{title}</div>
                 </div>
             </div>
             {/* 右：ウィンドウボタン */}
@@ -67,7 +107,11 @@ export const GlassWindow = ({
         {/* ===== Content ===== */}
         <div 
             className={styles.content}
-            style={{ alignItems: contentAlign }}
+            style={{ 
+                alignItems: contentAlign,
+                 /* 文字設定 */
+                color: mainColor
+            }}
         >
             {children}
         </div>
@@ -77,7 +121,14 @@ export const GlassWindow = ({
             className={styles.scanLine} 
             style={{ 
                 bottom: 0,
-                "--deg": "-90deg",
+                /* バックグラウンド設定 */
+                background: `linear-gradient(
+                    -90deg,
+                    ${mainColor},
+                    ${subColor},
+                    ${mainColor},
+                    ${mainColor}
+                )`,
             } as React.CSSProperties}
         />
     </div>

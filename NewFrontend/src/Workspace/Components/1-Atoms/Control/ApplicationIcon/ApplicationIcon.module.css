@@ -4,48 +4,48 @@
 
 /* 全体 */
 .wrapper {
-  width: 88px;
+  /* 大きさ設定 */
+  width: 100%;
+  box-sizing: border-box;
 
+  /* 要素配置設定 */
   display: flex;
   flex-direction: column;
   align-items: center;
+  
+  /* 余白設定 */
+  padding: 1rem;
 
+  /* 詳細設定 */
   cursor: pointer;
-}
-
-.nonHoverWrapper {
-  width: 88px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 /* アイコン本体 */
 .iconBox {
-  /* サイズ固定 */
-  width: 72px;
-  height: 72px;
+  /* 大きさ設定 */
+  width: 3rem;
+  height: 3rem;
 
-  /* 配置 */
+  /* バックグラウンド設定 */
+  background: var(--black_opMid);
+
+  /* 要素配置設定 */
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
 
-  /* 余白 */
+  /* 余白設定 */
   padding: 8px;
 
-  /* 装飾 */
-  background: var(--black_opMid);
+  /* 装飾設定 */
   backdrop-filter: blur(10px);
-
   border: 1px solid var(--white_opWeak);
 
   /* 形 */
   clip-path: var(--clip);
 
-  /* アニメーション */
+  /* アニメーション設定 */
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
@@ -83,10 +83,11 @@
 .borderLayer::before {
   content: "";
 
-  display: block;
-
+  /* 大きさ設定 */
   width: 100%;
   height: 100%;
+
+  display: block;
 
   clip-path: var(--clip);
 
@@ -95,31 +96,36 @@
 
 /* 中身レイヤー */
 .inner {
-  position: relative;
-  z-index: 1;
-
+  /* 大きさ設定 */
   width: 100%;
   height: 100%;
 
+  /* 要素配置設定 */
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
 
+  /* 配置基準設定 */
+  z-index: 1;
+
+  /* 詳細設定 */
   overflow: hidden;
 }
 
 /* アイコン */
 .icon {
+  /* 大きさ設定 */
   position: absolute;
-
   display: flex;
   align-items: center;
   justify-content: center;
 
+  /* 文字設定 */
   color: var(--color);
-
   line-height: 0;
 
+  /* アニメーション設定 */
   transition:
     transform 0.2s ease,
     opacity 0.2s ease;
@@ -127,55 +133,60 @@
 
 /* ホバー */
 .wrapper:hover .icon {
+  /* アニメーション設定 */
   transform: scale(1.08);
 }
 
 /* 中央文字 */
 .content {
+  /* 大きさ設定 */
+  max-width: 100%;
+
+  /* 配置基準設定 */
   position: relative;
 
-  max-width: 100%;
-  padding: 0 4px;
+  /* 余白設定 */
+  padding: 0 0.25rem;
 
+  /* 文字設定 */
   color: var(--color);
-
-  font-size: 11px;
+  font-size: 0.75rem;
   font-weight: 700;
-
   letter-spacing: 0.08em;
   line-height: 1.15;
-
   text-align: center;
-
   word-break: break-word;
-
   text-shadow:
     0 0 4px var(--color),
     0 0 10px var(--color);
-
   opacity: 0.95;
 
+  /* 配置基準設定 */
   z-index: 2;
 
+  /* 詳細設定 */
   pointer-events: none;
 }
 
 /* ラベル */
 .label {
-  margin-top: 8px;
-
+  /* 大きさ設定 */
   width: 100%;
 
-  text-align: center;
+  /* 余白設定 */
+  margin-top: 0.5rem;
 
+  /* 文字設定 */
+  text-align: center;
   font-size: 10px;
   letter-spacing: 0.15em;
-
   opacity: 0.7;
 
+  /* アニメーション設定 */
   transition: opacity 0.2s ease;
 }
 
 .wrapper:hover .label {
+  /* 文字設定 */
   opacity: 1;
 }

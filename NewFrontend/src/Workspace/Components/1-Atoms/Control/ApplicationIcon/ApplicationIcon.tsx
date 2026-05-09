@@ -11,7 +11,6 @@ type Props = {
   icon?: ReactNode;
   content?: string;
   label: string;
-  hover?: boolean;
   variant?: Variant;
   color?: string;
   onClick?: () => void;
@@ -21,9 +20,8 @@ export const ApplicationIcon = ({
   icon,
   content,
   label,
-  hover = true,
   variant = "cut",
-  color = "#00f0ff",
+  color = "var(--cyan)",
   onClick,
 }: Props) => {
   const clipMap: Record<Variant, string> = {
@@ -35,7 +33,7 @@ export const ApplicationIcon = ({
 
   return (
     <div
-      className={hover ? styles.wrapper : styles.nonHoverWrapper}
+      className={styles.wrapper}
       onClick={onClick}
     >
       <div
@@ -65,7 +63,12 @@ export const ApplicationIcon = ({
       </div>
 
       {/* ラベル */}
-      <span className={styles.label}>{label}</span>
+      <span 
+        className={styles.label}
+        style={{
+          color: color,
+        }}
+      >{label}</span>
     </div>
   );
 };

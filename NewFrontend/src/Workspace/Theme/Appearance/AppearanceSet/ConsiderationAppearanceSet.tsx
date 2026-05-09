@@ -2,6 +2,7 @@
 import { PALETTE } from "../ColorPalettes/ColorCertificationPalette";
 import { FONT } from "../FontPalettes/MajorFontPalette/MajorFontPalette";
 import { EventMap } from "../EventMaps/AsNeededEventMap";
+import { SimpleWifiSet } from "../WiFis/SimpleWifiSet";
 
 export const ConsiderationAppearanceSet = {
 
@@ -19,6 +20,8 @@ export const ConsiderationAppearanceSet = {
     noiseCost: 5,
     // イベントマップ
     eventMap: EventMap,
+    // WiFiセット
+    wifiSet: SimpleWifiSet,
 
     // ----- CustomPropertiesMemo -----
     // duration: 残り時間(初期設定)

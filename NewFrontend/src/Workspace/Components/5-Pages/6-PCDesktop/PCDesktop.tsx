@@ -11,38 +11,28 @@ import { DurationDisplay } from "../../1-Atoms/UI/DurationDisplay/DurationDispla
 import { CyberList } from "../../2-Molecules/CyberList/CyberList";
 import { ProgressBar } from "../../1-Atoms/UI/ProgressBar/ProgressBar";
 
+// ページ用のアウトラインをインポート
+import { SharpOneAppOutline } from "../../../../Core/Outlines/AppOutlines/SharpOneAppOutline";
+
+import { useAppearance } from "../../../../Core/Contexts/AppearanceContext";
+
 // デザインに関するファイルをインポート
 import styles from "./PCDesktop.module.css";
-import { Terminal, Router, UserRound, Globe, BatteryCharging, Wifi } from "lucide-react";
+import { Terminal, Router, UserRound, Globe, BatteryCharging, Wifi, AppWindow } from "lucide-react";
 
 export const PCDesktop = () => {
+    const appearance = useAppearance();
+    const appOutline = SharpOneAppOutline;
+
     const [activeWifi, setActiveWifi] = useState("WiFi_1");
-    const ruleItems = [
-        {
-            id: "WiFi_1",
-            label: "WiFi_1",
-            valid: activeWifi === "WiFi_1",
-            onClick: () => { setActiveWifi("WiFi_1"); }
-        },
-        {
-            id: "WiFi_2",
-            label: "WiFi_2",
-            valid: activeWifi === "WiFi_2",
-            onClick: () => { setActiveWifi("WiFi_2"); }
-        },
-        {
-            id: "WiFi_3",
-            label: "WiFi_3",
-            valid: activeWifi === "WiFi_3",
-            onClick: () => { setActiveWifi("WiFi_3"); }
-        },
-        {
-            id: "WiFi_4",
-            label: "WiFi_4",
-            valid: activeWifi === "WiFi_4",
-            onClick: () => { setActiveWifi("WiFi_4"); }
-        },
-    ];
+    const [currentDevice, setCurrentDevice] = useState("PC");
+
+    const wifis = appearance.wifiSet.map(wifi => ({
+        id: wifi,
+        label: wifi,
+        valid: activeWifi === wifi,
+        onClick: () => { setActiveWifi(wifi); },
+    }))
     return(
         <div className={styles.pcDesktopContainer}>
             {/*==========  LEFT ========== */}
@@ -64,8 +54,9 @@ export const PCDesktop = () => {
                             color="var(--cyan)"
                             backgroundColor="var(--cyan_opWeak)"
                             className={styles.ip}
+                            classNameInner={styles.ipInner}
                         >
-                            <span>Blue Shard:</span>
+                            <span>{appearance.scoreName}:</span>
                             <span>30</span>
                         </SlantedFrame>
 
@@ -126,10 +117,14 @@ export const PCDesktop = () => {
 
             {/*==========  CENTER ========== */}
             <div className={styles.center}>
-                <div className={styles.row}>
+                <div className={`${styles.row} ${styles.centerRow}`}>
                     <GlassWindow
                         icon={Globe}
                         title="Browser"
+                        mainColor="var(--cyan)"
+                        subColor="var(--pink)"
+                        /* MultiFunctionWindow */
+                        className={styles.MFW}
                     >
                         <Logo />
                         <Logo />
@@ -141,6 +136,46 @@ export const PCDesktop = () => {
                         <Logo />
                         <Logo />
                         <Logo />
+                    </ GlassWindow>
+
+                    <GlassWindow
+                        icon={AppWindow}
+                        title="App"
+                        mainColor="var(--cyan)"
+                        subColor="var(--pink)"
+                        /* ApplicationSelectionWindow */
+                        className={styles.ASW}
+                    >
+                        {appOutline
+                        .filter(app => app.isVisible.includes(currentDevice))
+                        .map((app, index) => {
+                            const Icon = app.icon;
+
+                            if (app.isVisible.includes(currentDevice)) {
+
+                                const color =
+                                    index === 0
+                                        ? currentDevice === "PC"
+                                            ? "var(--pink)"
+                                            : "var(--cyan)"
+                                        : currentDevice === "PC"
+                                            ? "var(--cyan)"
+                                            : "var(--pink)";
+
+                                return (
+                                    <ApplicationIcon 
+                                        key={app.appName}
+                                        icon={<Icon size={28} />}
+                                        label={app.appName}
+                                        color={color}
+                                        variant="cut"
+                                    />
+                                );
+
+                            }
+
+                            return null;
+                        })}
                     </ GlassWindow>
                 </div>
             </div>
@@ -203,7 +238,7 @@ export const PCDesktop = () => {
                         icon={Wifi}
                         title="WiFi"
                     >
-                        <CyberList items={ruleItems} className={styles.cyberList}/>
+                        <CyberList items={wifis} className={styles.cyberList} mode={"button"}/>
 
                     </GlassWindow>
                 </div>

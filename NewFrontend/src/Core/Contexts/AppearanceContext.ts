@@ -10,8 +10,9 @@ export type Appearance = {
     userIdCost: number,
     birthYearCost: number,
     birthDayCost: number,
-    noiseCost: number
-    eventMap: Record<string, number>
+    noiseCost: number,
+    eventMap: Record<string, number>,
+    wifiSet: string[],
 };
 
 export const AppearanceContext = createContext<Appearance | null>(null);
