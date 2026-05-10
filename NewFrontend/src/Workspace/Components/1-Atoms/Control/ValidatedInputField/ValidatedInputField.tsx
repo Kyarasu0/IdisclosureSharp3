@@ -19,6 +19,7 @@ type ValidatedInputFieldProps = {
   htmlPattern?: string;               // HTML側バリデーション
   showStatusDot?: boolean;            // 入力値が正しいかのチェック
   className?: string;
+  mainColor?: string;
 };
 
 export const ValidatedInputField = ({
@@ -33,6 +34,7 @@ export const ValidatedInputField = ({
   htmlPattern,
   showStatusDot = false,
   className,
+  mainColor = "var(--cyan)",
 }: ValidatedInputFieldProps) => {
 
   // 入力値のバリデーション判定
@@ -48,7 +50,8 @@ export const ValidatedInputField = ({
         className={styles.label}
         style={{
           fontSize: `${1 * fontSize}rem`,
-        }}
+          "--color": mainColor,
+        } as React.CSSProperties }
       >
         {icon} {label}
       </label>
@@ -67,6 +70,7 @@ export const ValidatedInputField = ({
           style={{ 
             colorScheme: 'dark',
             fontSize: `${1 * fontSize}rem`,
+            "--color": mainColor,
           } as React.CSSProperties}
         />
 

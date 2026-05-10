@@ -25,6 +25,7 @@ type SubmitButtonProps = {
   size?: "sm" | "md" | "lg";
   // CSSの適応
   className?: string;
+  mainColor?: string;
 };
 
 // ===============================================
@@ -38,6 +39,7 @@ export const SubmitButton = ({
     children,
     size,
     className,
+    mainColor = "var(--cyan)",
 }: SubmitButtonProps) => {
     let scale = 0.75;
     switch(size){
@@ -58,6 +60,7 @@ export const SubmitButton = ({
             style={{
                 padding: `${scale}rem ${scale * 2}rem`,
                 fontSize: `${scale * 1.5}rem`,
+                "--color": mainColor,
             } as React.CSSProperties}
         >
             {/* 通常時：文字やアイコンを表示 */}

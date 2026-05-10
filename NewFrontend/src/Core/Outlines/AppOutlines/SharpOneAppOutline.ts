@@ -19,7 +19,7 @@ export const SharpOneAppOutline: {
     icon: HardDrive,
   },
   {
-    appName: "BrowserHome",
+    appName: "Browser",
     isVisible: ["PC", "Server"],
     icon: Globe,
   },
@@ -34,7 +34,7 @@ export const SharpOneAppOutline: {
     icon: BrickWallFire,
   },
   {
-    appName: "PhishingHome",
+    appName: "Phishing",
     isVisible: ["Server"],
     icon: FishingHook,
   },

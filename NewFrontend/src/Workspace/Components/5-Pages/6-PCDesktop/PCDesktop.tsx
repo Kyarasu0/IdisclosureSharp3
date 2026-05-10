@@ -13,6 +13,8 @@ import { ProgressBar } from "../../1-Atoms/UI/ProgressBar/ProgressBar";
 
 // ページ用のアウトラインをインポート
 import { SharpOneAppOutline } from "../../../../Core/Outlines/AppOutlines/SharpOneAppOutline";
+import { AppsRegistry } from "../../../../Core/Registries/AppsRegistry";
+import type { AppKey } from "../../../../Core/Registries/AppsRegistry";
 
 import { useAppearance } from "../../../../Core/Contexts/AppearanceContext";
 
@@ -26,6 +28,9 @@ export const PCDesktop = () => {
 
     const [activeWifi, setActiveWifi] = useState("WiFi_1");
     const [currentDevice, setCurrentDevice] = useState("PC");
+    const [currentApp, setCurrentApp] = useState<AppKey>("Browser");
+
+    const CurrentAppComponent = AppsRegistry[currentApp];
 
     const wifis = appearance.wifiSet.map(wifi => ({
         id: wifi,
@@ -119,30 +124,24 @@ export const PCDesktop = () => {
             <div className={styles.center}>
                 <div className={`${styles.row} ${styles.centerRow}`}>
                     <GlassWindow
-                        icon={Globe}
-                        title="Browser"
-                        mainColor="var(--cyan)"
-                        subColor="var(--pink)"
+                        icon={SharpOneAppOutline.find(app => app.appName === currentApp)?.icon ?? Globe}
+                        title={`${currentDevice} ${currentApp}`}
+                        mainColor={currentDevice === "PC" ? "var(--cyan)" : "var(--pink)"}
+                        subColor={currentDevice === "PC" ? "var(--pink)" : "var(--cyan)"}
                         /* MultiFunctionWindow */
                         className={styles.MFW}
                     >
-                        <Logo />
-                        <Logo />
-                        <Logo />
-                        <Logo />
-                        <Logo />
-                        <Logo />
-                        <Logo />
-                        <Logo />
-                        <Logo />
-                        <Logo />
+                        <CurrentAppComponent 
+                            tools={currentApp === "Browser" ? [{toolName: "SNSServer", toolWebIp: "124.124.124.124"}] : []}
+                            mainColor={currentDevice === "PC" ? "var(--cyan)" : "var(--pink)"}
+                        />
                     </ GlassWindow>
 
                     <GlassWindow
                         icon={AppWindow}
                         title="App"
-                        mainColor="var(--cyan)"
-                        subColor="var(--pink)"
+                        mainColor={currentDevice === "PC" ? "var(--cyan)" : "var(--pink)"}
+                        subColor={currentDevice === "PC" ? "var(--pink)" : "var(--cyan)"}
                         /* ApplicationSelectionWindow */
                         className={styles.ASW}
                     >
@@ -162,12 +161,27 @@ export const PCDesktop = () => {
                                             ? "var(--cyan)"
                                             : "var(--pink)";
 
+                                const onClick =
+                                    index === 0
+                                        ? () => {
+                                            setCurrentDevice(
+                                                currentDevice === "PC"
+                                                    ? "Server"
+                                                    : "PC"
+                                            );
+                                            setCurrentApp("Browser");
+                                        }
+                                        : () => {
+                                            setCurrentApp(app.appName as AppKey);
+                                        };
+
                                 return (
                                     <ApplicationIcon 
                                         key={app.appName}
                                         icon={<Icon size={28} />}
                                         label={app.appName}
                                         color={color}
+                                        onClick={onClick}
                                         variant="cut"
                                     />
                                 );

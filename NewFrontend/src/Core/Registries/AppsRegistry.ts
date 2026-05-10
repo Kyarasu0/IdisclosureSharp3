@@ -1,14 +1,14 @@
-import { BrowserHome } from "../../Workspace/Components/3-Organisms/Control/Apps/Browser/BrowserHome/BrowserHome";
+import { Browser } from "../../Workspace/Components/3-Organisms/Control/Apps/Browser/Browser/Browser";
 import { Terminal } from "../../Workspace/Components/3-Organisms/Control/Apps/Terminal/Terminal";
 import { Firewall } from "../../Workspace/Components/3-Organisms/Control/Apps/Firewall/Firewall";
-import { PhishingHome } from "../../Workspace/Components/3-Organisms/Control/Apps/Phishing/PhishingHome/PhishingHome";
+import { Phishing } from "../../Workspace/Components/3-Organisms/Control/Apps/Phishing/Phishing/Phishing";
 
 export const AppsRegistry = {
 
-    BrowserHome,
+    Browser,
     Terminal,
     Firewall,
-    PhishingHome,
+    Phishing,
 
 } as const;
 

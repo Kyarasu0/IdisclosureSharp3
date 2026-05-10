@@ -19,12 +19,12 @@
   background: var(--black);
 
   /* 文字設定 */
-  color: var(--cyan);
+  color: var(--color);
   font-weight: bold;
   font-family: var(--primary);
 
   /* 装飾設定 */
-  border: 1px solid var(--cyan);
+  border: 1px solid var(--color);
   border-radius: 12px;
   cursor: pointer;
 
@@ -38,7 +38,7 @@
 /* ホバー時 */
 .isActive:hover {
     /* 装飾設定 */
-    box-shadow: 0 0 20px var(--cyan);
+    box-shadow: 0 0 20px var(--color);
 }
 
 /* 押した瞬間 */
@@ -89,7 +89,7 @@
     /* 装飾設定 */
     border-radius: 50%;
     border: 2px solid var(--darkGray);
-    border-top: 2px solid var(--cyan);
+    border-top: 2px solid var(--color);
 
     /* アニメーション設定 */
     animation: spin 0.8s linear infinite;

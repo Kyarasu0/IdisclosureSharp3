@@ -1,11 +1,11 @@
 // 他のコンポーネントをインポート
 import { Logo } from "../../../../UI/Logo/Logo";
 
-export const PhishingHome = () => {
+export const Phishing = () => {
     return(
         <>
             <Logo />
-            PhishingHome
+            Phishing
             <Logo />
             <Logo />
             <Logo />

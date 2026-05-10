@@ -216,7 +216,7 @@ useEffect(() => {
                     + result.birthDayTotalCost 
                     + result.noiseTotalCost
                 }</p>
-                <p>Blue Shard : 100000 / Total Cost</p>
+                <p>{appearance.scoreName} : {appearance.initialScore} / Total Cost</p>
             </div>
             <div className={styles.info}>
                 <p>UserID : {registrationData.userId}</p>

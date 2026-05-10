@@ -17,11 +17,16 @@
     align-items: center;
 
     /* 文字設定 */
-    font-family: var(--primary);
-    color: var(--cyan);
+    font-family: var(--secondary);
 
     /* 余白設定 */
     gap: 0.5rem;
+
+    /* 文字設定 */
+    color: var(--color);
+    
+    /* 装飾設定 */
+    filter: drop-shadow(0 0 10px var(--color));
 }
 
 .inputWrapper {
@@ -47,11 +52,11 @@
 
     /* 文字設定 */
     font-family: var(--secondary);
-    color: var(--cyan);
+    color: var(--color);
 
     /* 装飾設定 */
     border-radius: 12px;
-    border: 1px solid var(--cyan);
+    border: 1px solid var(--color);
 
     /* アニメーション設定 */
     transition: all 0.3s ease;
@@ -60,9 +65,9 @@
 .input:focus {
     /* 装飾設定 */
     outline: none;
-    border-color: var(--cyan);
-    box-shadow: 0 0 20px var(--cyan);
-    border: 1px solid var(--cyan);
+    border-color: var(--color);
+    box-shadow: 0 0 20px var(--color);
+    border: 1px solid var(--color);
 }
 
 .dot {
