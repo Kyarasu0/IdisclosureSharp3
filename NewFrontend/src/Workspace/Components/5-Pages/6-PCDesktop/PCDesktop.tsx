@@ -50,6 +50,7 @@ export const PCDesktop = () => {
     useEffect(() => {
         const timer = setTimeout(() => {
             setMfwState("opened");
+            setAswState("opened");
         }, 700);
 
         return () => clearTimeout(timer);
