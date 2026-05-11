@@ -19,7 +19,14 @@ type Props = {
   subColor?: string;
   contentAlign?: "flex-start" | "center" | "flex-end";
   className?: string;
+  state?: WindowState;
 };
+
+type WindowState =
+  | "closed"
+  | "opening"
+  | "opened"
+  | "closing";
 
 export const GlassWindow = ({
   icon: Icon,
@@ -30,10 +37,11 @@ export const GlassWindow = ({
   subColor = "var(--pink)",
   contentAlign = "center",
   className,
+  state = "opened",
 }: Props) => {
   return (
     <div 
-        className={`${styles.window} ${className}`}
+        className={`${styles.window} ${className} ${styles[state]}`}
         style={{
             borderRight: `1px solid ${mainColor}`,
             borderLeft: `1px solid ${mainColor}`
@@ -41,14 +49,14 @@ export const GlassWindow = ({
     >
 
         {/* 四つ角飾り */}
-        <div className={styles.rightTop} style={{ borderColor: mainColor }} ></div>
-        <div className={styles.rightBottom} style={{ borderColor: mainColor }} ></div>
-        <div className={styles.leftTop} style={{ borderColor: mainColor }} ></div>
-        <div className={styles.leftBottom} style={{ borderColor: mainColor }} ></div>
+        <div className={`${styles.rightTop} ${styles.windowParts}`} style={{ borderColor: mainColor }} ></div>
+        <div className={`${styles.rightBottom} ${styles.windowParts}`} style={{ borderColor: mainColor }} ></div>
+        <div className={`${styles.leftTop} ${styles.windowParts}`} style={{ borderColor: mainColor }} ></div>
+        <div className={`${styles.leftBottom} ${styles.windowParts}`} style={{ borderColor: mainColor }} ></div>
 
         {/* スキャンライン(上) */}
         <div 
-            className={styles.scanLine} 
+            className={`${styles.scanLine} ${styles.windowParts}`} 
             style={{ 
                 top: 0,
                 /* バックグラウンド設定 */
@@ -118,7 +126,7 @@ export const GlassWindow = ({
 
         {/* スキャンライン(下) */}
         <div 
-            className={styles.scanLine} 
+            className={`${styles.scanLine} ${styles.windowParts}`} 
             style={{ 
                 bottom: 0,
                 /* バックグラウンド設定 */

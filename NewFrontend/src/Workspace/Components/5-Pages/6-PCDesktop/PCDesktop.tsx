@@ -1,6 +1,6 @@
 
 // 基本的な関数をインポート
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // 他のコンポーネントをインポート
 import { Logo } from "./../../3-Organisms/UI/Logo/Logo";
@@ -22,13 +22,20 @@ import { useAppearance } from "../../../../Core/Contexts/AppearanceContext";
 import styles from "./PCDesktop.module.css";
 import { Terminal, Router, UserRound, Globe, BatteryCharging, Wifi, AppWindow } from "lucide-react";
 
+type WindowState =
+  | "closed"
+  | "opening"
+  | "opened"
+  | "closing";
+
 export const PCDesktop = () => {
     const appearance = useAppearance();
     const appOutline = SharpOneAppOutline;
 
     const [activeWifi, setActiveWifi] = useState("WiFi_1");
-    const [currentDevice, setCurrentDevice] = useState("PC");
+    const [currentDevice, setCurrentDevice] = useState<"PC" | "Server">("PC");
     const [currentApp, setCurrentApp] = useState<AppKey>("Browser");
+    const [windowState, setWindowState] = useState<WindowState>("opening");
 
     const CurrentAppComponent = AppsRegistry[currentApp];
 
@@ -38,6 +45,53 @@ export const PCDesktop = () => {
         valid: activeWifi === wifi,
         onClick: () => { setActiveWifi(wifi); },
     }))
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setWindowState("opened");
+        }, 700);
+
+        return () => clearTimeout(timer);
+    }, []);
+
+    const changeApp = (nextApp: AppKey) => {
+        setWindowState("closing");
+
+        setTimeout(() => {
+
+            setCurrentApp(nextApp);
+
+            setWindowState("opening");
+
+            setTimeout(() => {
+                setWindowState("opened");
+            }, 700);
+
+        }, 400);
+    };
+
+    const changeDevice = (nextDevice: "PC" | "Server") => {
+        setWindowState("closing");
+
+        setTimeout(() => {
+
+            setCurrentDevice(
+                nextDevice === "PC"
+                    ? "Server"
+                    : "PC"
+            );
+
+            setCurrentApp("Browser");
+
+            setWindowState("opening");
+
+            setTimeout(() => {
+                setWindowState("opened");
+            }, 700);
+
+        }, 400);
+    }
+
     return(
         <div className={styles.pcDesktopContainer}>
             {/*==========  LEFT ========== */}
@@ -123,74 +177,74 @@ export const PCDesktop = () => {
             {/*==========  CENTER ========== */}
             <div className={styles.center}>
                 <div className={`${styles.row} ${styles.centerRow}`}>
-                    <GlassWindow
-                        icon={SharpOneAppOutline.find(app => app.appName === currentApp)?.icon ?? Globe}
-                        title={`${currentDevice} ${currentApp}`}
-                        mainColor={currentDevice === "PC" ? "var(--cyan)" : "var(--pink)"}
-                        subColor={currentDevice === "PC" ? "var(--pink)" : "var(--cyan)"}
-                        /* MultiFunctionWindow */
-                        className={styles.MFW}
-                    >
-                        <CurrentAppComponent 
-                            tools={currentApp === "Browser" ? [{toolName: "SNSServer", toolWebIp: "124.124.124.124"}] : []}
+                    <div className={styles.MFWWrapper}>
+                        <GlassWindow
+                            icon={SharpOneAppOutline.find(app => app.appName === currentApp)?.icon ?? Globe}
+                            title={`${currentDevice} ${currentApp}`}
                             mainColor={currentDevice === "PC" ? "var(--cyan)" : "var(--pink)"}
-                        />
-                    </ GlassWindow>
+                            subColor={currentDevice === "PC" ? "var(--pink)" : "var(--cyan)"}
+                            /* MultiFunctionWindow */
+                            className={styles.MFW}
+                            state={windowState}
+                        >
+                            <CurrentAppComponent 
+                                tools={currentApp === "Browser" ? [{toolName: "SNSServer", toolWebIp: "124.124.124.124"}] : []}
+                                mainColor={currentDevice === "PC" ? "var(--cyan)" : "var(--pink)"}
+                            />
+                        </ GlassWindow>
+                    </div>
+                    
+                    <div className={styles.ASWWrapper}>
+                        <GlassWindow
+                            icon={AppWindow}
+                            title="App"
+                            mainColor={currentDevice === "PC" ? "var(--cyan)" : "var(--pink)"}
+                            subColor={currentDevice === "PC" ? "var(--pink)" : "var(--cyan)"}
+                            /* ApplicationSelectionWindow */
+                            className={styles.ASW}
+                        >
+                            {appOutline
+                            .filter(app => app.isVisible.includes(currentDevice))
+                            .map((app, index) => {
+                                const Icon = app.icon;
 
-                    <GlassWindow
-                        icon={AppWindow}
-                        title="App"
-                        mainColor={currentDevice === "PC" ? "var(--cyan)" : "var(--pink)"}
-                        subColor={currentDevice === "PC" ? "var(--pink)" : "var(--cyan)"}
-                        /* ApplicationSelectionWindow */
-                        className={styles.ASW}
-                    >
-                        {appOutline
-                        .filter(app => app.isVisible.includes(currentDevice))
-                        .map((app, index) => {
-                            const Icon = app.icon;
+                                if (app.isVisible.includes(currentDevice)) {
 
-                            if (app.isVisible.includes(currentDevice)) {
+                                    const color =
+                                        index === 0
+                                            ? currentDevice === "PC"
+                                                ? "var(--pink)"
+                                                : "var(--cyan)"
+                                            : currentDevice === "PC"
+                                                ? "var(--cyan)"
+                                                : "var(--pink)";
 
-                                const color =
-                                    index === 0
-                                        ? currentDevice === "PC"
-                                            ? "var(--pink)"
-                                            : "var(--cyan)"
-                                        : currentDevice === "PC"
-                                            ? "var(--cyan)"
-                                            : "var(--pink)";
+                                    const onClick =
+                                        index === 0
+                                            ? () => {
+                                                changeDevice(currentDevice);
+                                            }
+                                            : () => {
+                                                changeApp(app.appName as AppKey);
+                                            };
 
-                                const onClick =
-                                    index === 0
-                                        ? () => {
-                                            setCurrentDevice(
-                                                currentDevice === "PC"
-                                                    ? "Server"
-                                                    : "PC"
-                                            );
-                                            setCurrentApp("Browser");
-                                        }
-                                        : () => {
-                                            setCurrentApp(app.appName as AppKey);
-                                        };
+                                    return (
+                                        <ApplicationIcon 
+                                            key={app.appName}
+                                            icon={<Icon size={28} />}
+                                            label={app.appName}
+                                            color={color}
+                                            onClick={onClick}
+                                            variant="cut"
+                                        />
+                                    );
 
-                                return (
-                                    <ApplicationIcon 
-                                        key={app.appName}
-                                        icon={<Icon size={28} />}
-                                        label={app.appName}
-                                        color={color}
-                                        onClick={onClick}
-                                        variant="cut"
-                                    />
-                                );
+                                }
 
-                            }
-
-                            return null;
-                        })}
-                    </ GlassWindow>
+                                return null;
+                            })}
+                        </ GlassWindow>
+                    </div>
                 </div>
             </div>
 

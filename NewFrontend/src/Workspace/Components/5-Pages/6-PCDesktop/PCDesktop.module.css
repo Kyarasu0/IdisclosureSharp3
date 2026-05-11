@@ -44,6 +44,34 @@
     min-height: 0;
 }
 
+.MFWWrapper{
+    /* 大きさ設定 */
+    width: calc(80% - 0.75rem);
+    height: 100%;
+
+    /* 要素配置設定 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* 余白設定 */
+    margin-right: 0.75rem;
+}
+
+.ASWWrapper{
+    /* 大きさ設定 */
+    width: calc(20% - 0.75rem);
+    height: 100%;
+
+    /* 要素配置設定 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* 余白設定 */
+    margin-left: 0.75rem;
+}
+
 .centerRow{
     /* 大きさ設定 */
     width: 100%;
@@ -95,13 +123,13 @@
 
 .MFW{
     /* 大きさ設定 */
-    width: 75%;
+    width: 100%;
     height: 100%;
 }
 
 .ASW{
     /* 大きさ設定 */
-    width: 20%;
+    width: 100%;
     height: 100%;
 }
 

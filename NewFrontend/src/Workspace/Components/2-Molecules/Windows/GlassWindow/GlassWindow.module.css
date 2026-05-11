@@ -5,8 +5,8 @@
 /* メインコンテナ */
 .window {
     /* 大きさ設定 */
-    width: 100%;
-    height: 100%;
+    width: 0%;
+    height: 1px;
 
     /* 要素配置設定 */
     display: flex;
@@ -14,10 +14,53 @@
     position: relative;
 
     /* 装飾設定 */
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(0px);
     background: var(--black_opWeak);
 
-    overflow-y: hidden;
+    overflow: hidden;
+}
+
+/* ========================================
+   中身
+======================================== */
+
+.header,
+.content {
+    opacity: 1;
+    transition:
+        opacity 0.2s ease,
+        filter 0.2s ease;
+
+    filter: blur(0);
+}
+
+.opening .header,
+.opening .content,
+.closed .header,
+.closed .content {
+    opacity: 0;
+    filter: blur(1rem);
+}
+
+.opening {
+    animation:
+        openWidth 0.35s ease-out forwards,
+        openHeight 0.35s ease-out forwards 0.35s;
+}
+
+.opened {
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(16px);
+}
+
+.closing {
+    animation: closeWindow 0.4s ease forwards;
+}
+
+.closed {
+    opacity: 0;
+    pointer-events: none;
 }
 
 .scanLine {
@@ -35,6 +78,10 @@
 
     /* アニメーション設定 */
     animation: gradientMove 3s linear infinite;
+}
+
+.windowParts{
+    z-index: 10;
 }
 
 /* ================= HEADER ================= */
@@ -184,4 +231,64 @@
   right: 0px;
   border-bottom: 3px solid;
   border-right: 3px solid;
+}
+
+/* ==========================
+   起動アニメーション
+========================== */
+/* 横幅展開 */
+@keyframes openWidth {
+    from {
+        width: 0%;
+        height: 1px;
+    }
+
+    to {
+        width: 100%;
+        height: 1px;
+    }
+}
+/* 縦幅展開 */
+@keyframes openHeight {
+    from {
+        width: 100%;
+        height: 1px;
+    }
+
+    to {
+        width: 100%;
+        height: 100%;
+    }
+}
+/* ==========================
+   終了アニメーション
+========================== */
+@keyframes closeWindow {
+    from {
+        opacity: 1;
+        transform: scale(1);
+        backdrop-filter: blur(16px);
+    }
+
+    to {
+        opacity: 0;
+        transform: scale(0.97);
+        backdrop-filter: blur(0px);
+    }
+}
+
+/* ========================================
+   中身表示
+======================================== */
+
+@keyframes showInner {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

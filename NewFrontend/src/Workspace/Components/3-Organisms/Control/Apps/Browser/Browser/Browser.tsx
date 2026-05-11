@@ -8,7 +8,6 @@ import { SubmitButton } from "../../../../../1-Atoms/Control/SubmitButton/Submit
 // デザインに関するファイルをインポート
 import styles from "./Browser.module.css";
 import { Search } from "lucide-react";
-import { main } from "framer-motion/client";
 
 type Tool = {
     toolName: string;
