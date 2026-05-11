@@ -35,7 +35,8 @@ export const PCDesktop = () => {
     const [activeWifi, setActiveWifi] = useState("WiFi_1");
     const [currentDevice, setCurrentDevice] = useState<"PC" | "Server">("PC");
     const [currentApp, setCurrentApp] = useState<AppKey>("Browser");
-    const [windowState, setWindowState] = useState<WindowState>("opening");
+    const [mfwState, setMfwState] = useState<WindowState>("opening");
+    const [aswState, setAswState] = useState<WindowState>("opening");
 
     const CurrentAppComponent = AppsRegistry[currentApp];
 
@@ -48,30 +49,31 @@ export const PCDesktop = () => {
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            setWindowState("opened");
+            setMfwState("opened");
         }, 700);
 
         return () => clearTimeout(timer);
     }, []);
 
     const changeApp = (nextApp: AppKey) => {
-        setWindowState("closing");
+        setMfwState("closing");
 
         setTimeout(() => {
 
             setCurrentApp(nextApp);
 
-            setWindowState("opening");
+            setMfwState("opening");
 
             setTimeout(() => {
-                setWindowState("opened");
+                setMfwState("opened");
             }, 700);
 
         }, 400);
     };
 
     const changeDevice = (nextDevice: "PC" | "Server") => {
-        setWindowState("closing");
+        setMfwState("closing");
+        setAswState("closing");
 
         setTimeout(() => {
 
@@ -83,10 +85,14 @@ export const PCDesktop = () => {
 
             setCurrentApp("Browser");
 
-            setWindowState("opening");
+            setAswState("opening");
 
             setTimeout(() => {
-                setWindowState("opened");
+                setAswState("opened");
+                setMfwState("opening");
+                setTimeout(() => {
+                    setMfwState("opened");
+                }, 700);
             }, 700);
 
         }, 400);
@@ -185,7 +191,7 @@ export const PCDesktop = () => {
                             subColor={currentDevice === "PC" ? "var(--pink)" : "var(--cyan)"}
                             /* MultiFunctionWindow */
                             className={styles.MFW}
-                            state={windowState}
+                            state={mfwState}
                         >
                             <CurrentAppComponent 
                                 tools={currentApp === "Browser" ? [{toolName: "SNSServer", toolWebIp: "124.124.124.124"}] : []}
@@ -202,6 +208,7 @@ export const PCDesktop = () => {
                             subColor={currentDevice === "PC" ? "var(--pink)" : "var(--cyan)"}
                             /* ApplicationSelectionWindow */
                             className={styles.ASW}
+                            state={aswState}
                         >
                             {appOutline
                             .filter(app => app.isVisible.includes(currentDevice))
