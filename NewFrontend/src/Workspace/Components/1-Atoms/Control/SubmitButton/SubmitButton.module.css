@@ -25,7 +25,6 @@
 
   /* 装飾設定 */
   border: 1px solid var(--color);
-  border-radius: 12px;
   cursor: pointer;
 
   /* 配置基準設定 */

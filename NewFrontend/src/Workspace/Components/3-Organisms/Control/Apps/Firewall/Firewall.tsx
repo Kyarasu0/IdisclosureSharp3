@@ -8,17 +8,20 @@
 // ============================================================================
 
 import { useEffect, useState } from 'react';
+
+// 他のコンポーネントをインポート
+import { ValidatedInputField } from "../../../../1-Atoms/Control/ValidatedInputField/ValidatedInputField";
+import { CyberMessageBox } from "../../../../2-Molecules/CyberMessageBox/CyberMessageBox";
+
+// デザインに関するファイルをインポート
 import {
   Shield,
   ShieldAlert,
-  Activity,
   X,
-  Server,
-  Lock,
-  AlertTriangle,
-  Plus
+  TriangleAlert,
+  Plus,
+  ListEnd
 } from 'lucide-react';
-
 import styles from './Firewall.module.css';
 
 // =======================================================
@@ -72,7 +75,7 @@ function IPSlot({ ip, onRemove }: IPSlotProps) {
       {/* 情報 */}
       <div className={styles.blockedInfo}>
         <span className={styles.blockedLabel}>
-          BLOCKED_NODE
+          BLOCKED IP
         </span>
 
         <span className={styles.blockedIP}>
@@ -96,22 +99,11 @@ function IPSlot({ ip, onRemove }: IPSlotProps) {
 // Main Component
 // ============================================================================
 export const Firewall = () => {
-
-  // ==========================================================================
-  // 定数
-  // ==========================================================================
   const MAX_IPS = 3;
 
-  // ==========================================================================
-  // State
-  // ==========================================================================
-
   const [inputIP, setInputIP] = useState('');
-
   const [blockedIPs, setBlockedIPs] = useState<string[]>([]);
-
   const [threatCount, setThreatCount] = useState(0);
-
   const [alertMode, setAlertMode] = useState(false);
 
   // ==========================================================================
@@ -146,9 +138,10 @@ export const Firewall = () => {
 
   }, [blockedIPs]);
 
-  // ==========================================================================
-  // IP追加
-  // ==========================================================================
+  // ===============
+  // IPの追加/削除
+  // ===============
+  // IPの追加
   const handleAddIP = (
     e: React.FormEvent<HTMLFormElement>
   ) => {
@@ -158,261 +151,123 @@ export const Firewall = () => {
     const cleanIP = inputIP.trim();
 
     if (!isValidIP(cleanIP)) return;
-
     if (blockedIPs.includes(cleanIP)) return;
-
     if (blockedIPs.length >= MAX_IPS) return;
 
     setBlockedIPs((prev) => [...prev, cleanIP]);
-
     setInputIP('');
   };
 
-  // ==========================================================================
+  
   // IP削除
-  // ==========================================================================
   const handleRemoveIP = (targetIP: string) => {
-
     setBlockedIPs((prev) =>
       prev.filter((ip) => ip !== targetIP)
     );
   };
 
+  const mainColor="var(--cyan)";
+
   // ==========================================================================
   // Render
   // ==========================================================================
   return (
-    <div className={styles.container}>
+    <div className={styles.firewallContainer}>
 
-      {/* 背景グリッド */}
-      <div className={styles.grid}></div>
+      {/* ============================================================ */}
+      {/* FrontLayer */}
+      {/* ============================================================ */}
+      <div className={styles.frontLayer}>
 
-      {/* メインパネル */}
-      <div
-        className={`
-          ${styles.panel}
-          ${alertMode ? styles.alertMode : ''}
-        `}
-      >
+        {/* Form */}
+        <form
+          className={styles.form}
+          onSubmit={handleAddIP}
+        >
+          <ValidatedInputField
+                label="TARGET IPv4 ADDRESS"
+                value={inputIP}
+                onChange={setInputIP}
+                required={true}
+                placeholder="ENTER TARGET IPv4 ADDRESS "
+                icon={<ListEnd size={18} />}
+                className={styles.firewallInput}
+                mainColor={mainColor}
+            />
+        </form>
 
-        {/* コーナー装飾 */}
-        <div className={`${styles.corner} ${styles.tl}`}></div>
-        <div className={`${styles.corner} ${styles.tr}`}></div>
-        <div className={`${styles.corner} ${styles.bl}`}></div>
-        <div className={`${styles.corner} ${styles.br}`}></div>
+        {/* 警告 */}
+        {blockedIPs.length >= MAX_IPS && (
+          <CyberMessageBox
+            title="WARNING"
+            message="Maximum block capacity reached."
+            icon={<TriangleAlert size={16} />}
+            variant="warning"
+            className={styles.warning}
+          />
+        )}
 
-        {/* 中身 */}
-        <div className={styles.content}>
+        {/* IP一覧 */}
+        <div className={styles.list}>
 
-          {/* ================================================================ */}
-          {/* Header */}
-          {/* ================================================================ */}
-          <div className={styles.header}>
-
-            <div className={styles.headerLeft}>
-              <Lock size={16} className={styles.icon} />
-
-              <span className={styles.title}>
-                FIREWALL_NEXUS_v7.2
-              </span>
-            </div>
-
-            <div className={styles.headerRight}>
-
-              <div className={styles.headerItem}>
-                <span className={styles.headerLabel}>
-                  STATUS:
-                </span>
-
-                <span className={styles.status}>
-                  {alertMode
-                    ? 'BREACH_ATTEMPT'
-                    : 'SECURE'}
-                </span>
-              </div>
-
-              <div className={styles.headerItem}>
-                <span className={styles.headerLabel}>
-                  UPTIME:
-                </span>
-
-                <span>99.99%</span>
-              </div>
-
-            </div>
-
-          </div>
-
-          {/* ================================================================ */}
-          {/* Main */}
-          {/* ================================================================ */}
-          <div className={styles.main}>
-
-            {/* ============================================================ */}
-            {/* Left Visualizer */}
-            {/* ============================================================ */}
-            <div className={styles.visualizer}>
-
-              {/* 上 */}
-              <div className={styles.visualTop}>
-
-                <Activity
-                  size={22}
-                  className={styles.icon}
-                />
-
-                <span className={styles.sectionLabel}>
-                  NETWORK_CORE_VISUALIZER
-                </span>
-
-              </div>
-
-              {/* 中央Shield */}
-              <div className={styles.shieldArea}>
-
-                <div className={`${styles.ring} ${styles.ringOuter}`}></div>
-
-                <div className={`${styles.ring} ${styles.ringInner}`}></div>
-
-                <div className={styles.shieldCore}>
-
-                  {alertMode ? (
-                    <ShieldAlert size={84} strokeWidth={1.5} />
-                  ) : (
-                    <Shield size={84} strokeWidth={1.2} />
-                  )}
-
-                </div>
-
-              </div>
-
-              {/* 下Stats */}
-              <div className={styles.stats}>
-
-                <div className={styles.statBox}>
-
-                  <span className={styles.sectionLabel}>
-                    BLOCKED_NODES
-                  </span>
-
-                  <span className={styles.statNumber}>
-                    {blockedIPs.length}/{MAX_IPS}
-                  </span>
-
-                </div>
-
-                <div className={styles.statBox}>
-
-                  <span className={styles.sectionLabel}>
-                    THREATS_PREVENTED
-                  </span>
-
-                  <span className={styles.statNumber}>
-                    {threatCount}
-                  </span>
-
-                </div>
-
-              </div>
-
-            </div>
-
-            {/* ============================================================ */}
-            {/* Right Controls */}
-            {/* ============================================================ */}
-            <div className={styles.controls}>
-
-              {/* Header */}
-              <div className={styles.controlsHeader}>
-
-                <Server size={16} />
-
-                <span className={styles.controlsTitle}>
-                  THREAT_ISOLATION
-                </span>
-
-              </div>
-
-              {/* Form */}
-              <form
-                className={styles.form}
-                onSubmit={handleAddIP}
-              >
-
-                <span className={styles.sectionLabel}>
-                  TARGET IPv4 ADDRESS
-                </span>
-
-                <div className={styles.inputRow}>
-
-                  <input
-                    type="text"
-                    value={inputIP}
-                    placeholder="192.168.1.100"
-                    onChange={(e) =>
-                      setInputIP(e.target.value)
-                    }
-                    className={styles.input}
-                    disabled={
-                      blockedIPs.length >= MAX_IPS
-                    }
-                  />
-
-                  <button
-                    type="submit"
-                    className={styles.addBtn}
-                    disabled={
-                      blockedIPs.length >= MAX_IPS
-                    }
-                  >
-                    <Plus size={18} />
-                  </button>
-
-                </div>
-
-                {/* 警告 */}
-                {blockedIPs.length >= MAX_IPS && (
-                  <div className={styles.warning}>
-
-                    <AlertTriangle size={12} />
-
-                    <span>
-                      MAXIMUM BLOCK CAPACITY REACHED
-                    </span>
-
-                  </div>
-                )}
-
-              </form>
-
-              {/* IP一覧 */}
-              <div className={styles.list}>
-
-                <span className={styles.sectionLabel}>
-                  ACTIVE_BLOCK_RULES
-                </span>
-
-                {[0, 1, 2].map((index) => (
-                  <IPSlot
-                    key={index}
-                    ip={blockedIPs[index]}
-                    onRemove={handleRemoveIP}
-                  />
-                ))}
-
-              </div>
-
-            </div>
-
-          </div>
-
-          {/* Footer */}
-          <div className={styles.footer}></div>
+          {[0, 1, 2].map((index) => (
+            <IPSlot
+              key={index}
+              ip={blockedIPs[index]}
+              onRemove={handleRemoveIP}
+            />
+          ))}
 
         </div>
 
+        {/* 下統計情報 */}
+        <div className={styles.stats}>
+
+          <div className={styles.statBox}>
+            <span className={styles.sectionLabel}>
+              BLOCKED_NODES
+            </span>
+            <span className={styles.statNumber}>
+              {blockedIPs.length}/{MAX_IPS}
+            </span>
+          </div>
+
+          <div className={styles.statBox}>
+            <span className={styles.sectionLabel}>
+              THREATS_PREVENTED
+            </span>
+            <span className={styles.statNumber}>
+              {threatCount}
+            </span>
+          </div>
+
+        </div>
       </div>
 
+      {/* ============================================================ */}
+      {/* BackLayer */}
+      {/* ============================================================ */}
+      <div className={styles.backLayer}>
+
+        {/* 中央Shield */}
+        <div className={styles.shieldArea}>
+
+          {/* リング群 */}
+          <div className={`${styles.ring} ${styles.ringOuter}`}></div>
+          <div className={`${styles.ring} ${styles.ringInner}`}></div>
+
+          {/* シールド */}
+          <div className={styles.shieldCore}>
+
+            {alertMode ? (
+              <ShieldAlert size={84} strokeWidth={1.5} />
+            ) : (
+              <Shield size={84} strokeWidth={1.2} />
+            )}
+
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
