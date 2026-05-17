@@ -197,6 +197,7 @@ export const PCDesktop = () => {
                             <CurrentAppComponent 
                                 tools={currentApp === "Browser" ? [{toolName: "SNSServer", toolWebIp: "124.124.124.124"}] : []}
                                 mainColor={currentDevice === "PC" ? "var(--cyan)" : "var(--pink)"}
+                                userId={"Kyarasu"}
                             />
                         </ GlassWindow>
                     </div>

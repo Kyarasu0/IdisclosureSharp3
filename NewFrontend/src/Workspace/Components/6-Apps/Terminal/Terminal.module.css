@@ -1,12 +1,16 @@
-.container{
+.terminalContainer{
+    /* 大きさ設定 */
     width: 100%;
     height: 100%;
 
+    /* 要素配置設定 */
     display: flex;
 
+    /* 文字設定 */
     color: var(--cyan);
     font-family: var(--secondary);
 
+    /* 詳細設定 */
     overflow: hidden;
 }
 
@@ -14,28 +18,40 @@
    Left
 ========================================================================== */
 
-.left{
-    flex: 1;
+.terminalLeft{
+    /* 大きさ設定 */
+    width: 80%;
+    height: 100%;
 
+    /* 要素配置設定 */
     display: flex;
+    flex: 1;
     flex-direction: column;
 
+    /* 余白設定 */
     gap: 1rem;
-    padding: 1rem;
+    padding-right: 0.75rem;
 }
 
 /* ==========================================================================
    Header
 ========================================================================== */
 
-.header{
+.terminalHeader{
+    /* 要素配置設定 */
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
 
+    /* 余白設定 */
     gap: 0.5rem;
 
-    font-size: 0.9rem;
+    /* 文字設定 */
+    font-size: 1rem;
     letter-spacing: 0.2em;
+    color: var(--blue);
+    text-shadow: 0 0 10px var(--blue);
 }
 
 /* ==========================================================================
@@ -43,14 +59,41 @@
 ========================================================================== */
 
 .logs{
-    flex: 1;
-
-    overflow-y: auto;
-
+    /* 要素配置設定 */
     display: flex;
+    flex: 1;
     flex-direction: column;
 
+    /* 余白設定 */
     gap: 0.5rem;
+
+    /* 詳細設定 */
+    overflow-y: auto;
+}
+
+/* =======================================================
+   Custom Scrollbar
+======================================================= */
+
+/* Chrome / Edge / Safari */
+.logs::-webkit-scrollbar{
+    width: 20px;
+}
+
+/* 背景 */
+.logs::-webkit-scrollbar-track{
+    background: transparent;
+}
+
+/* スクロールバー本体 */
+.logs::-webkit-scrollbar-thumb{
+    background: var(--darkGray_opMid);
+
+    border-radius: 999px;
+
+    border: 7px solid transparent;
+
+    background-clip: content-box;
 }
 
 /* ==========================================================================
@@ -62,36 +105,54 @@
 .error,
 .success,
 .system{
+    /* 要素配置設定 */
     display: flex;
     align-items: center;
 
+    /* 余白設定 */
     gap: 0.5rem;
 
+    /* 文字設定 */
     word-break: break-all;
 }
 
 .prompt{
-    color: var(--cyan);
+    /* 文字設定 */
+    color: var(--green);
+    text-shadow: 0 0 10px var(--green);
+}
+
+.directory{
+    /* 文字設定 */
+    color: var(--blue);
+    text-shadow: 0 0 10px var(--blue);
+}
+
+.system{
+    /* 文字設定 */
+    color: var(--main-color);
+    text-shadow: 0 0 10px var(--main-color);
 }
 
 .cmd{
-    color: white;
+    /* 文字設定 */
+    color: var(--main-color);
+    text-shadow: 0 0 10px var(--main-color);
 }
 
 .info{
-    color: #94a3b8;
+    /* 文字設定 */
+    color: var(--lightGray);
 }
 
 .error{
+    /* 文字設定 */
     color: var(--red);
+    text-shadow: 0 0 10px var(--red);
 }
 
 .success{
     color: var(--green);
-}
-
-.system{
-    color: var(--pink);
 }
 
 /* ==========================================================================
@@ -99,40 +160,57 @@
 ========================================================================== */
 
 .inputRow{
+    /* 大きさ設定 */
+    width: 100%;
+    height: 7%;
+    box-sizing: border-box;
+
+    /* 要素配置設定 */
     display: flex;
     align-items: center;
 
+    /* 余白設定 */
     gap: 0.5rem;
+    padding: 0.75rem 0.5rem 0rem 0.5rem;
+
+    /* 装飾設定 */
+    border-top: 1px solid var(--cyan_opWeak);
 }
 
 .input{
+    /* 大きさ設定 */
     flex: 1;
 
+    /* バックグラウンド設定 */
     background: transparent;
-    border: none;
-    outline: none;
 
-    color: var(--cyan);
-
+    /* 文字設定 */
+    color: var(--main-color);
+    caret-color: var(--main-color);
     font-family: inherit;
     font-size: inherit;
 
-    caret-color: var(--cyan);
+    /* 装飾設定 */
+    border: none;
+    outline: none;
 }
 
 /* ==========================================================================
    Right
 ========================================================================== */
 
-.right{
-    width: 220px;
+.terminalRight{
+    /* 大きさ設定 */
+    width: 20%;
 
+    /* 要素配置設定 */
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
 
-    padding: 1rem;
+    /* 余白設定 */
+    padding: 1rem 0.25rem 1rem 1rem;
 
-    border-left:
-        1px solid var(--cyan_opWeak);
+    /* 装飾設定 */
+    border-left: 1px solid var(--cyan_opWeak);
 }

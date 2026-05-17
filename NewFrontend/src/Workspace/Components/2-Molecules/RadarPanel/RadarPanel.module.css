@@ -7,7 +7,7 @@
     border-radius: 999px;
     overflow: hidden;
 
-    border: 1px solid var(--cyan_opMid);
+    border: 1px solid var(--main-color);
 }
 
 .grid{
@@ -20,7 +20,7 @@
         radial-gradient(
             circle,
             transparent 60%,
-            var(--cyan_opWeak) 61%,
+            var(--main-color-opWeak) 61%,
             transparent 62%
         );
 }
@@ -40,7 +40,7 @@
         linear-gradient(
             to right,
             transparent,
-            var(--cyan_opMid)
+            var(--main-color-opMid)
         );
 
     animation: rotate 4s linear infinite;

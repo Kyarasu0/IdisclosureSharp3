@@ -25,11 +25,9 @@ export const RadarPanel = ({
 
         return targets.map((target, index) => {
 
-            const angle =
-                (360 / targets.length) * index;
+            const angle = (360 / targets.length) * index;
 
-            const distance =
-                25 + Math.random() * 30;
+            const distance = 150 + Math.random() * 300;
 
             return {
                 ...target,
@@ -40,8 +38,21 @@ export const RadarPanel = ({
 
     }, [targets]);
 
+    const text = mainColor;
+    const chars = text.split("");
+    chars.pop();
+    const mainColor_opMid = `${chars.join("")}_opMid)`;
+    const mainColor_opWeak = `${chars.join("")}_opWeak)`;
+
     return (
-        <div className={styles.radar}>
+        <div 
+            className={styles.radar}
+            style={{ 
+                "--main-color": mainColor,
+                "--main-color-opMid": mainColor_opMid,
+                "--main-color-opWeak": mainColor_opWeak
+            } as React.CSSProperties }
+        >
 
             <div className={styles.grid} />
 
