@@ -1,9 +1,9 @@
-import type { PageKey } from "../Registries/PagesRegistry";
+import type { PageKey } from "../../Registries/AxisRegistries/PagesRegistry";
 
 //URL直打ちでの画面遷移の防御を有効にするかどうか
 const isNavigationBlocked: boolean = false;
 
-export const MainOutline: {
+export const SharpOneAxisOutline: {
   path: string;
   page: PageKey;
   props?: Record<string, unknown>;

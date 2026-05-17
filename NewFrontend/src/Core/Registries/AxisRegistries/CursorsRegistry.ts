@@ -1,4 +1,4 @@
-import { TapRipple } from "../../Workspace/Theme/CursorEffects/TapRipple/TapRipple";
+import { TapRipple } from "../../../Workspace/Theme/CursorEffects/TapRipple/TapRipple";
 
 export const CursorsRegistry = {
 

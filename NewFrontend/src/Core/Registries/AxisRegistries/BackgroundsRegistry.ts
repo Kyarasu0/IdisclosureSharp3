@@ -1,4 +1,4 @@
-import { MajorCyberBackground } from "../../Workspace/Theme/Backgrounds/MajorCyberBackground/MajorCyberBackground";
+import { MajorCyberBackground } from "../../../Workspace/Theme/Backgrounds/MajorCyberBackground/MajorCyberBackground";
 
 export const BackgroundsRegistry = {
 

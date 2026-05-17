@@ -12,9 +12,9 @@ import { CyberList } from "../../2-Molecules/CyberList/CyberList";
 import { ProgressBar } from "../../1-Atoms/UI/ProgressBar/ProgressBar";
 
 // ページ用のアウトラインをインポート
-import { SharpOneAppOutline } from "../../../../Core/Outlines/AppOutlines/SharpOneAppOutline";
-import { AppsRegistry } from "../../../../Core/Registries/AppsRegistry";
-import type { AppKey } from "../../../../Core/Registries/AppsRegistry";
+import { SharpOneAppOutline } from "../../../../Core/Outlines/DesktopOutlines/SharpOneAppOutline";
+import { AppsRegistry } from "../../../../Core/Registries/DesktopRegistries/AppsRegistry";
+import type { AppKey } from "../../../../Core/Registries/DesktopRegistries/AppsRegistry";
 
 import { useAppearance } from "../../../../Core/Contexts/AppearanceContext";
 

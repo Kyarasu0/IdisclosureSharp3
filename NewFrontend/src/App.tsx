@@ -2,16 +2,16 @@
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 // 各Registryをインポート
-import { PagesRegistry } from "./Core/Registries/PagesRegistry";
-import { BackgroundsRegistry } from "./Core/Registries/BackgroundsRegistry";
-import { CursorsRegistry } from "./Core/Registries/CursorsRegistry";
-import { AppearancesRegistry } from "./Core/Registries/AppearancesRegistry";
-import { TransitionsRegistry } from "./Core/Registries/TransitionsRegistry";
-import { FunctionsRegistry } from "./Core/Registries/FunctionsRegistry";
+import { PagesRegistry } from "./Core/Registries/AxisRegistries/PagesRegistry";
+import { BackgroundsRegistry } from "./Core/Registries/AxisRegistries/BackgroundsRegistry";
+import { CursorsRegistry } from "./Core/Registries/AxisRegistries/CursorsRegistry";
+import { AppearancesRegistry } from "./Core/Registries/AxisRegistries/AppearancesRegistry";
+import { TransitionsRegistry } from "./Core/Registries/AxisRegistries/TransitionsRegistry";
+import { FunctionsRegistry } from "./Core/Registries/AxisRegistries/FunctionsRegistry";
 // Contextをインポート
 import { AppearanceContext } from "./Core/Contexts/AppearanceContext";
 // ページ用のアウトラインをインポート
-import { MainOutline } from "./Core/Outlines/Outline-v1";
+import { SharpOneAxisOutline } from "./Core/Outlines/AxisOutlines/SharpOneAxisOutline";
 // デザインに関するファイルをインポート
 import styles from "./App.module.css";
 
@@ -30,7 +30,7 @@ function AnimatedRoutes({
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        {MainOutline.map((route) => {
+        {SharpOneAxisOutline.map((route) => {
           const Page = PagesRegistry[route.page] as React.ComponentType<any>;
 
           // --- 関数差し替え処理 ---

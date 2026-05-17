@@ -1,4 +1,4 @@
-import { FadeBlurTransition } from "../../Workspace/Theme/Transitions/FadeBlurTransition/FadeBlurTransition";
+import { FadeBlurTransition } from "../../../Workspace/Theme/Transitions/FadeBlurTransition/FadeBlurTransition";
 
 export const TransitionsRegistry = {
 

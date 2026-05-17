@@ -1,4 +1,4 @@
-import type { AppKey } from "../../Registries/AppsRegistry";
+import type { AppKey } from "../../Registries/DesktopRegistries/AppsRegistry";
 import { Monitor, HardDrive, Globe, Terminal, BrickWallFire, FishingHook } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 

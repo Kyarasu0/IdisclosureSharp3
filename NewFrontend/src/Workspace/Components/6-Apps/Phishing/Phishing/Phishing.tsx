@@ -1,5 +1,5 @@
 // 他のコンポーネントをインポート
-import { Logo } from "../../../../UI/Logo/Logo";
+import { Logo } from "../../../3-Organisms/UI/Logo/Logo";
 
 export const Phishing = () => {
     return(

@@ -2,8 +2,8 @@
 import { useState } from "react";
 
 // 他のコンポーネントをインポート
-import { ValidatedInputField } from "../../../../../1-Atoms/Control/ValidatedInputField/ValidatedInputField";
-import { SubmitButton } from "../../../../../1-Atoms/Control/SubmitButton/SubmitButton";
+import { ValidatedInputField } from "../../../1-Atoms/Control/ValidatedInputField/ValidatedInputField";
+import { SubmitButton } from "../../../1-Atoms/Control/SubmitButton/SubmitButton";
 
 // デザインに関するファイルをインポート
 import styles from "./Browser.module.css";

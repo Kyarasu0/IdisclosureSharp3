@@ -1,9 +1,9 @@
 // ======================================
 // Functions/Photon/initGame.ts
 // ======================================
-import { getProperties } from "../Photon/getProperties";
-import { setProperties } from "../Photon/setProperties";
-import { sendData } from "../Photon/sendData";
+import { getProperties } from "../3-Photon/getProperties";
+import { setProperties } from "../3-Photon/setProperties";
+import { sendData } from "../3-Photon/sendData";
 
 // ================================
 // 型

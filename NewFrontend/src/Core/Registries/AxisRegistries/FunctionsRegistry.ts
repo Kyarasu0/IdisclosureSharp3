@@ -1,22 +1,22 @@
 // 型読み込み
-/// <reference path="../../types/photon.d.ts" />
+/// <reference path="../../../types/photon.d.ts" />
 
 // Core/Registries/FunctionsRegistry.ts
 
-import type { Participant } from "../../Workspace/Functions/Utils/initGame.ts"
+import type { Participant } from "../../../Workspace/Functions/2-Utils/initGame.ts"
 
-import { useSafeNavigate } from "../../Workspace/Functions/Hooks/useSafeNavigate";
-import { useSafeNavGuard } from "../../Workspace/Functions/Hooks/useSafeNavGuard";
-import { calculateScore } from "../../Workspace/Functions/Utils/calculateScore";
-import { createRoom } from "../../Workspace/Functions/Photon/createRoom";
-import { joinRoom } from "../../Workspace/Functions/Photon/joinRoom";
-import { disconnectPhoton } from "../../Workspace/Functions/Photon/disconnectPhoton";
-import { subscribePhotonPlayers } from "../../Workspace/Functions/Photon/subscribePhotonPlayers";
-import { setProperties } from "../../Workspace/Functions/Photon/setProperties";
-import { getProperties } from "../../Workspace/Functions/Photon/getProperties";
-import { sendData } from "../../Workspace/Functions/Photon/sendData";
-import { receiveData } from "../../Workspace/Functions/Photon/receiveData";
-import { initGame, initActor } from "../../Workspace/Functions/Utils/initGame";
+import { useSafeNavigate } from "../../../Workspace/Functions/1-Hooks/useSafeNavigate.ts";
+import { useSafeNavGuard } from "../../../Workspace/Functions/1-Hooks/useSafeNavGuard.ts";
+import { calculateScore } from "../../../Workspace/Functions/2-Utils/calculateScore.ts";
+import { createRoom } from "../../../Workspace/Functions/3-Photon/createRoom.ts";
+import { joinRoom } from "../../../Workspace/Functions/3-Photon/joinRoom.ts";
+import { disconnectPhoton } from "../../../Workspace/Functions/3-Photon/disconnectPhoton.ts";
+import { subscribePhotonPlayers } from "../../../Workspace/Functions/3-Photon/subscribePhotonPlayers.ts";
+import { setProperties } from "../../../Workspace/Functions/3-Photon/setProperties.ts";
+import { getProperties } from "../../../Workspace/Functions/3-Photon/getProperties.ts";
+import { sendData } from "../../../Workspace/Functions/3-Photon/sendData.ts";
+import { receiveData } from "../../../Workspace/Functions/3-Photon/receiveData.ts";
+import { initGame, initActor } from "../../../Workspace/Functions/2-Utils/initGame.ts";
 
 export const FunctionsRegistry = () => {
   const go = useSafeNavigate();

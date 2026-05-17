@@ -1,0 +1,74 @@
+.radar{
+    width: 180px;
+    aspect-ratio: 1;
+
+    position: relative;
+
+    border-radius: 999px;
+    overflow: hidden;
+
+    border: 1px solid var(--cyan_opMid);
+}
+
+.grid{
+    position: absolute;
+    inset: 0;
+
+    border-radius: 999px;
+
+    background:
+        radial-gradient(
+            circle,
+            transparent 60%,
+            var(--cyan_opWeak) 61%,
+            transparent 62%
+        );
+}
+
+.sweep{
+    position: absolute;
+
+    width: 50%;
+    height: 50%;
+
+    left: 50%;
+    top: 0;
+
+    transform-origin: bottom left;
+
+    background:
+        linear-gradient(
+            to right,
+            transparent,
+            var(--cyan_opMid)
+        );
+
+    animation: rotate 4s linear infinite;
+}
+
+.blip{
+    width: 8px;
+    height: 8px;
+
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    margin-left: -4px;
+    margin-top: -4px;
+
+    border-radius: 999px;
+
+    box-shadow: 0 0 12px currentColor;
+}
+
+@keyframes rotate{
+    from{
+        transform: rotate(0deg);
+    }
+
+    to{
+        transform: rotate(360deg);
+    }
+}

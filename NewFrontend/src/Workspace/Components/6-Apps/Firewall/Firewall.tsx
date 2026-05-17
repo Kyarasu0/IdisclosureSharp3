@@ -10,17 +10,14 @@
 import { useEffect, useState } from 'react';
 
 // 他のコンポーネントをインポート
-import { ValidatedInputField } from "../../../../1-Atoms/Control/ValidatedInputField/ValidatedInputField";
-import { CyberMessageBox } from "../../../../2-Molecules/CyberMessageBox/CyberMessageBox";
+import { ValidatedInputField } from "../../1-Atoms/Control/ValidatedInputField/ValidatedInputField";
 
 // デザインに関するファイルをインポート
 import {
   Shield,
   ShieldAlert,
   X,
-  TriangleAlert,
-  Plus,
-  ListEnd
+  Crosshair
 } from 'lucide-react';
 import styles from './Firewall.module.css';
 
@@ -51,15 +48,23 @@ const isValidIP = (ip: string) => {
 // =========================
 type IPSlotProps = {
   ip?: string;
+  mainColor?: string;
   onRemove: (ip: string) => void;
 };
 
-function IPSlot({ ip, onRemove }: IPSlotProps) {
+function IPSlot({ ip, mainColor, onRemove }: IPSlotProps) {
 
   // 空スロット
   if (!ip) {
     return (
-      <div className={`${styles.ipSlot} ${styles.empty}`}>
+      <div 
+        className={`${styles.ipSlot} ${styles.empty}`}
+        style={{ 
+          border: `1px solid ${mainColor}`, 
+          color: mainColor,
+          backgroundColor: `${mainColor}_opWeak`,
+        }}
+      >
         <span className={styles.emptyText}>[ EMPTY_SLOT ]</span>
       </div>
     );
@@ -67,20 +72,22 @@ function IPSlot({ ip, onRemove }: IPSlotProps) {
 
   // ブロック済みスロット
   return (
-    <div className={`${styles.ipSlot} ${styles.blocked}`}>
+    <div className={styles.ipWrapper}>
+      <div className={`${styles.ipSlot} ${styles.blocked}`}>
 
-      {/* 左ライン */}
-      <div className={styles.blockedLine}></div>
+        {/* 左ライン */}
+        <div className={styles.blockedLine}></div>
 
-      {/* 情報 */}
-      <div className={styles.blockedInfo}>
-        <span className={styles.blockedLabel}>
-          BLOCKED IP
-        </span>
+        {/* 情報 */}
+        <div className={styles.blockedInfo}>
+          <span className={styles.blockedLabel}>
+            BLOCKED IP
+          </span>
 
-        <span className={styles.blockedIP}>
-          {ip}
-        </span>
+          <span className={styles.blockedIP}>
+            {ip}
+          </span>
+        </div>
       </div>
 
       {/* 削除ボタン */}
@@ -90,16 +97,21 @@ function IPSlot({ ip, onRemove }: IPSlotProps) {
       >
         <X size={18} />
       </button>
-
     </div>
   );
+}
+
+type FirewallProps = {
+  mainColor: string;
 }
 
 // ============================================================================
 // Main Component
 // ============================================================================
-export const Firewall = () => {
-  const MAX_IPS = 3;
+export const Firewall = ({
+  mainColor,
+}: FirewallProps) => {
+  const MAX_IPS = 4;
 
   const [inputIP, setInputIP] = useState('');
   const [blockedIPs, setBlockedIPs] = useState<string[]>([]);
@@ -166,8 +178,6 @@ export const Firewall = () => {
     );
   };
 
-  const mainColor="var(--cyan)";
-
   // ==========================================================================
   // Render
   // ==========================================================================
@@ -190,30 +200,20 @@ export const Firewall = () => {
                 onChange={setInputIP}
                 required={true}
                 placeholder="ENTER TARGET IPv4 ADDRESS "
-                icon={<ListEnd size={18} />}
+                icon={<Crosshair size={18} />}
                 className={styles.firewallInput}
                 mainColor={mainColor}
             />
         </form>
 
-        {/* 警告 */}
-        {blockedIPs.length >= MAX_IPS && (
-          <CyberMessageBox
-            title="WARNING"
-            message="Maximum block capacity reached."
-            icon={<TriangleAlert size={16} />}
-            variant="warning"
-            className={styles.warning}
-          />
-        )}
-
         {/* IP一覧 */}
         <div className={styles.list}>
 
-          {[0, 1, 2].map((index) => (
+          {Array.from({ length: MAX_IPS }).map((_, index) => (
             <IPSlot
               key={index}
               ip={blockedIPs[index]}
+              mainColor={mainColor}
               onRemove={handleRemoveIP}
             />
           ))}
@@ -223,7 +223,14 @@ export const Firewall = () => {
         {/* 下統計情報 */}
         <div className={styles.stats}>
 
-          <div className={styles.statBox}>
+          <div 
+            className={styles.statBox}
+            style={{ 
+              border: `1px solid ${mainColor}` ,
+              color: mainColor,
+              textShadow: `0 0 10px ${mainColor}`
+            }}  
+          >
             <span className={styles.sectionLabel}>
               BLOCKED_NODES
             </span>
@@ -232,7 +239,14 @@ export const Firewall = () => {
             </span>
           </div>
 
-          <div className={styles.statBox}>
+          <div 
+            className={styles.statBox}
+            style={{ 
+              border: `1px solid ${mainColor}` ,
+              color: mainColor,
+              textShadow: `0 0 10px ${mainColor}`
+            }}  
+          >
             <span className={styles.sectionLabel}>
               THREATS_PREVENTED
             </span>
