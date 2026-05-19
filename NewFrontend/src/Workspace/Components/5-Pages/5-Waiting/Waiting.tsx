@@ -48,8 +48,8 @@ type Props = {
   // ローカルストレージから情報を取得
   getLocalStorage: <T>(key: string) => T;
   // プロパティから情報を取得/保存
-  getProperties: (key: string) => string;
-  setProperties: (key: string, value: string) => void;
+  getCustomProperties: (key: string) => string;
+  setCustomProperties: (key: string, value: string) => void;
   // Photonから参加プレイヤーの情報を取得
   subscribePhotonPlayers: (
     setParticipants: (players: Participant[]) => void
@@ -75,8 +75,8 @@ export const Waiting = ({
   // ローカルストレージから情報を取得
   getLocalStorage,
   // プロパティから情報を取得/保存
-  getProperties,
-  setProperties,
+  getCustomProperties,
+  setCustomProperties,
   // データの送受信
   sendData,
   receiveData,
@@ -115,7 +115,7 @@ export const Waiting = ({
   const handleChangeDuration = (value: number) => {
     setDuration(value);
     // Propertiesにも保存
-    setProperties("duration", String(value));
+    setCustomProperties("duration", String(value));
     // 全員に変更を通知
     sendData(appearance.eventMap.EVENT_DURATION, { duration: value }, {
       receivers: 1, // 全員
@@ -128,7 +128,7 @@ export const Waiting = ({
   // ================================
   useEffect(() => {
     // 初期値
-    const saved = getProperties("duration");
+    const saved = getCustomProperties("duration");
     if (saved) setDuration(Number(saved));
 
     // ① duration購読
@@ -163,8 +163,8 @@ export const Waiting = ({
       <WaitingForm
         participants={participants}
         getLocalStorage={getLocalStorage}
-        getProperties={getProperties}
-        setProperties={setProperties}
+        getCustomProperties={getCustomProperties}
+        setCustomProperties={setCustomProperties}
         onStartGame={() => onStartGame(participants, getLocalStorage, appearance.eventMap.EVENT_START)}
         duration={duration}
         onChangeDuration={handleChangeDuration}

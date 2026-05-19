@@ -24,34 +24,44 @@ export const ConsiderationAppearanceSet = {
     wifiSet: SimpleWifiSet,
 
     // ----- CustomPropertiesMemo -----
+    // 全体
     // duration: 残り時間(初期設定)
     // startTime: 開始時間
-    // IPHashList: IPがかぶっていないかを確認するList
-    // → 順番シャッフルしないとね
-    // ActiveWebList: 現在有効になっているWebとそのIPのリスト
+    // ipList: IPがかぶっていないかを確認するList
+    // playerList: ゲーム開始時点で作成されたプレイヤーのList
+    // activeWebList: 現在有効になっているWebとそのIPのリスト
     // → 支払いはそのIPの人を探していたらその人に支払いと失敗通知、いなかったら成功通知で行くか
-    // WiFi_X: 各WiFiに保存されている通信履歴のリスト(duration, IP:IP)
+    // wifi_X: 各WiFiに保存されている通信履歴のオブジェクト{duration, IP:IP}
 
-    // ----- ActorPropertiesMemo -----
-    // playerInfo: {
-    //  isAlive: 生存しているか(boolean)
-    //  pcIp: PCのIPアドレス
-    //  serverIp: ServerのIPアドレス
-    //  
-    //  userId: 
-    //  birthDate:
-    //  secretId:
-    //  score:
+    // 個人
+    // internalUserId: {
+    //      === 個人ステータス ===
+    //      isAlive: 生存しているか(boolean)
+    //      postLimit: SNSServerに投稿できる上限回数
+    //      hasTools: 各アイテムを何個持っているかのオブジェクト
+    //      malwareCondition: 現在自分が仕掛けたウイルスが感染しているIPの配列
+    //      pcIp: PCのIP
+    //      serverIp: ServerのIP
+    //      wifi: 現在使用しているwifi
+    //      systemLog: PCに表示するSystemLogの配列
     //
-    //  pcBatteryNow: PCのバッテリー
-    //  serverBatteryNow: Serverのバッテリー
+    //      === 個人プロフィール ===
+    //      birthDate:
+    //      secretId:
+    //      score:
+    // }
     //
-    //  WiFi: 現在使用しているWiFi
-    //  hasItems: 各アイテムを何個持っているかのオブジェクト
-    //  isPhishingNow: 現在Phishing中かどうか
-    //  pcBlockedIPList: PCで現在ブロックしているIPの配列
-    //  serverBlockedIPList: Serverで現在ブロックしているIPの配列
-    //  malwareCondition: 現在感染しているウイルスの配列
+    // pcIp: PCのIPアドレス: {
+    //     batteryNow: PCのバッテリー
+    //     blockedIpList: PCで現在ブロックしているIPの配列
+    //     terminalLog: PCのターミナルでの実行結果のログ
+    // }
+    //
+    // serverIp: ServerのIPアドレス: {
+    //     batteryNow: Serverのバッテリー
+    //     isPhishingNow: 現在Phishing中かどうか
+    //     blockedIpList: Serverで現在ブロックしているIPの配列
+    //     terminalLog: Serverのターミナルでの実行結果のログ
     // }
     
 };

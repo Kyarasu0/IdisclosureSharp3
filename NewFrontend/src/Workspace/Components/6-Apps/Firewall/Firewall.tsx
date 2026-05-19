@@ -12,6 +12,9 @@ import { useEffect, useState } from 'react';
 // 他のコンポーネントをインポート
 import { ValidatedInputField } from "../../1-Atoms/Control/ValidatedInputField/ValidatedInputField";
 
+// 自作関数のインポート
+import { getCustomProperties } from '../../../Functions/3-Photon/getCustomProperties';
+
 // デザインに関するファイルをインポート
 import {
   Shield,
@@ -20,27 +23,28 @@ import {
   Crosshair
 } from 'lucide-react';
 import styles from './Firewall.module.css';
+import { setCustomProperties } from '../../../Functions/3-Photon/setCustomProperties';
 
 // =======================================================
 // IPv4 バリデーション(IPv4かを確認してOKかどうかを判別する)
 // =======================================================
 const isValidIP = (ip: string) => {
-    // "."で分割する
-    const parts = ip.split('.');
-    // 4つの部分があるかを確認
-    if (parts.length !== 4) return false;
-    // それぞれの桁の形式確認
-    return parts.every((part) => {
-        // 数字かどうか
-        const num = Number(part);
-        // 整数かつ0~255に収まっているか
-        return (
-            Number.isInteger(num) &&
-            num >= 0 &&
-            num <= 255 &&
-            part === String(num)
-        );
-    });
+  // "."で分割する
+  const parts = ip.split('.');
+  // 4つの部分があるかを確認
+  if (parts.length !== 4) return false;
+  // それぞれの桁の形式確認
+  return parts.every((part) => {
+      // 数字かどうか
+      const num = Number(part);
+      // 整数かつ0~255に収まっているか
+      return (
+          Number.isInteger(num) &&
+          num >= 0 &&
+          num <= 255 &&
+          part === String(num)
+      );
+  });
 };
 
 // =========================
@@ -103,52 +107,95 @@ function IPSlot({ ip, mainColor, onRemove }: IPSlotProps) {
 
 type FirewallProps = {
   mainColor: string;
+  currentDevice: "PC" | "Server";
 }
+
+type DeviceInfo = {
+  batteryNow: number;
+  blockedIpList: string[];
+  terminalLog?: string[];
+  isPhishingNow?: boolean;
+};
 
 // ============================================================================
 // Main Component
 // ============================================================================
 export const Firewall = ({
   mainColor,
+  currentDevice
 }: FirewallProps) => {
-  const MAX_IPS = 4;
+  const MAX_IPS = JSON.parse(getCustomProperties("playerList") || '[]').length;
 
   const [inputIP, setInputIP] = useState('');
-  const [blockedIPs, setBlockedIPs] = useState<string[]>([]);
   const [threatCount, setThreatCount] = useState(0);
   const [alertMode, setAlertMode] = useState(false);
 
-  // ==========================================================================
-  // 疑似攻撃シミュレーション
-  // ==========================================================================
+  const internalUserId = String(localStorage.getItem("internalUserId"));
+  const playerInfo = JSON.parse(getCustomProperties(internalUserId) || '{}');
+  const [pcInfo, setPcInfo] = useState<DeviceInfo>({
+    batteryNow: 100,
+    blockedIpList: [],
+  });
+  const [serverInfo, setServerInfo] = useState<DeviceInfo>({
+    batteryNow: 100,
+    blockedIpList: [],
+  });
+
+  // 表示したとき
   useEffect(() => {
 
-    const interval = setInterval(() => {
+    // 最新情報の読み出し
+    const pcData = JSON.parse(getCustomProperties(playerInfo.pcIp) || '{}');
+    const serverData = JSON.parse(getCustomProperties(playerInfo.serverIp) || '{}');
 
-      // Block中IPが存在し
-      // 25%で攻撃発生
-      const shouldAttack =
-        blockedIPs.length > 0 &&
-        Math.random() < 0.25;
+    // 情報のセット
+    setPcInfo({
+      batteryNow: pcData.batteryNow ?? 100,
+      blockedIpList: pcData.blockedIpList ?? [],
+      terminalLog: pcData.terminalLog ?? [],
+    });
+    setServerInfo({
+      batteryNow: serverData.batteryNow ?? 100,
+      blockedIpList: serverData.blockedIpList ?? [],
+      terminalLog: serverData.terminalLog ?? [],
+      isPhishingNow: serverData.isPhishingNow ?? false,
+    });
 
-      if (!shouldAttack) return;
+  }, [currentDevice]);
 
-      // Alert開始
-      setAlertMode(true);
+  const currentInfo = currentDevice === "PC" ? pcInfo : serverInfo;
 
-      // Threat加算
-      setThreatCount((prev) => prev + 1);
+  // // ==========================================================================
+  // // 疑似攻撃シミュレーション
+  // // ==========================================================================
+  // useEffect(() => {
 
-      // 2秒後に解除
-      setTimeout(() => {
-        setAlertMode(false);
-      }, 2000);
+  //   const interval = setInterval(() => {
 
-    }, 2500);
+  //     // Block中IPが存在し
+  //     // 25%で攻撃発生
+  //     const shouldAttack =
+  //       blockedIPs.length > 0 &&
+  //       Math.random() < 0.25;
 
-    return () => clearInterval(interval);
+  //     if (!shouldAttack) return;
 
-  }, [blockedIPs]);
+  //     // Alert開始
+  //     setAlertMode(true);
+
+  //     // Threat加算
+  //     setThreatCount((prev) => prev + 1);
+
+  //     // 2秒後に解除
+  //     setTimeout(() => {
+  //       setAlertMode(false);
+  //     }, 2000);
+
+  //   }, 2500);
+
+  //   return () => clearInterval(interval);
+
+  // }, [blockedIPs]);
 
   // ===============
   // IPの追加/削除
@@ -163,19 +210,57 @@ export const Firewall = ({
     const cleanIP = inputIP.trim();
 
     if (!isValidIP(cleanIP)) return;
-    if (blockedIPs.includes(cleanIP)) return;
-    if (blockedIPs.length >= MAX_IPS) return;
+    if (currentInfo.blockedIpList.includes(cleanIP)) return;
+    if (currentInfo.blockedIpList.length >= MAX_IPS) return;
 
-    setBlockedIPs((prev) => [...prev, cleanIP]);
+    const updatedInfo = {
+      ...currentInfo,
+      blockedIpList: [
+        ...currentInfo.blockedIpList,
+        cleanIP
+      ]
+    };
+
+    if (currentDevice === "PC") {
+      setPcInfo(updatedInfo);
+      setCustomProperties(
+        playerInfo.pcIp,
+        JSON.stringify(updatedInfo)
+      );
+    } else {
+      setServerInfo(updatedInfo);
+      setCustomProperties(
+        playerInfo.serverIp,
+        JSON.stringify(updatedInfo)
+      );
+    }
+
     setInputIP('');
   };
-
   
   // IP削除
   const handleRemoveIP = (targetIP: string) => {
-    setBlockedIPs((prev) =>
-      prev.filter((ip) => ip !== targetIP)
-    );
+
+    const updatedInfo = {
+      ...currentInfo,
+      blockedIpList: currentInfo.blockedIpList.filter(
+        ip => ip !== targetIP
+      )
+    };
+
+    if (currentDevice === "PC") {
+      setPcInfo(updatedInfo);
+      setCustomProperties(
+        playerInfo.pcIp,
+        JSON.stringify(updatedInfo)
+      );
+    } else {
+      setServerInfo(updatedInfo);
+      setCustomProperties(
+        playerInfo.serverIp,
+        JSON.stringify(updatedInfo)
+      );
+    }
   };
 
   // ==========================================================================
@@ -195,15 +280,15 @@ export const Firewall = ({
           onSubmit={handleAddIP}
         >
           <ValidatedInputField
-                label="TARGET IPv4 ADDRESS"
-                value={inputIP}
-                onChange={setInputIP}
-                required={true}
-                placeholder="ENTER TARGET IPv4 ADDRESS "
-                icon={<Crosshair size={18} />}
-                className={styles.firewallInput}
-                mainColor={mainColor}
-            />
+            label="TARGET IPv4 ADDRESS"
+            value={inputIP}
+            onChange={setInputIP}
+            required={true}
+            placeholder="ENTER TARGET IPv4 ADDRESS "
+            icon={<Crosshair size={18} />}
+            className={styles.firewallInput}
+            mainColor={mainColor}
+          />
         </form>
 
         {/* IP一覧 */}
@@ -212,7 +297,7 @@ export const Firewall = ({
           {Array.from({ length: MAX_IPS }).map((_, index) => (
             <IPSlot
               key={index}
-              ip={blockedIPs[index]}
+              ip={currentInfo.blockedIpList[index]}
               mainColor={mainColor}
               onRemove={handleRemoveIP}
             />
@@ -235,7 +320,7 @@ export const Firewall = ({
               BLOCKED_NODES
             </span>
             <span className={styles.statNumber}>
-              {blockedIPs.length}/{MAX_IPS}
+              {currentInfo.blockedIpList.length}/{MAX_IPS}
             </span>
           </div>
 

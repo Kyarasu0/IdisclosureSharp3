@@ -17,6 +17,10 @@ import type { TerminalLog } from "./TerminalFunctions/terminalTypes";
 // 他のコンポーネントをインポート
 import { RadarPanel } from "../../2-Molecules/RadarPanel/RadarPanel";
 
+// 自作の関数をインポート
+import { getCustomProperties } from "../../../Functions/3-Photon/getCustomProperties";
+import { setCustomProperties } from "../../../Functions/3-Photon/setCustomProperties";
+
 // デザインに関するファイルをインポート
 import { ShieldAlert, TriangleAlert } from "lucide-react";
 import styles from "./Terminal.module.css";
@@ -27,6 +31,14 @@ import styles from "./Terminal.module.css";
 type TerminalProps = {
     mainColor: string;
     userId?: string;
+    currentDevice: "PC" | "Server";
+};
+
+type DeviceInfo = {
+    batteryNow: number;
+    blockedIpList: string[];
+    terminalLog: TerminalLog[];
+    isPhishingNow?: boolean;
 };
 
 // =======================================================
@@ -35,6 +47,7 @@ type TerminalProps = {
 export const Terminal = ({
     mainColor,
     userId,
+    currentDevice,
 }: TerminalProps) => {
 
     const navigate = useNavigate();
@@ -47,14 +60,22 @@ export const Terminal = ({
     // ===================================================
     const [input, setInput] = useState("");
     const [cwd, setCwd] = useState<string[]>([]);
-    const [logs, setLogs] =
-        useState<TerminalLog[]>([
-            {
-                id: crypto.randomUUID(),
-                type: "system",
-                content: "=== IDEN TERMINAL [v3.2.0] ===",
-            },
-        ]);
+    const internalUserId = String(localStorage.getItem("internalUserId"));
+    const playerInfo = JSON.parse(getCustomProperties(internalUserId) || '{}');
+    const [pcInfo, setPcInfo] = useState<DeviceInfo>({
+        batteryNow: 100,
+        blockedIpList: [],
+        terminalLog: [],
+    });
+    const [serverInfo, setServerInfo] = useState<DeviceInfo>({
+        batteryNow: 100,
+        blockedIpList: [],
+        terminalLog: [],
+    });
+    const currentInfo = currentDevice === "PC" ? pcInfo : serverInfo;
+
+    // 描画バグ対策
+    const [showInput, setShowInput] = useState(false);
 
     // ===================================================
     // command list
@@ -76,16 +97,38 @@ export const Terminal = ({
         type: TerminalLog["type"],
         content: React.ReactNode
     ) => {
+        const newLog: TerminalLog = {
+            id: crypto.randomUUID(),
+            type,
+            content,
+            cwd: `/${cwd.join("/")}`,
+        };
 
-        setLogs((prev) => [
-            ...prev,
-            {
-                id: crypto.randomUUID(),
-                type,
-                content,
-                cwd: `/${cwd.join("/")}`,
-            },
-        ]);
+        if (currentDevice === "PC") {
+            setPcInfo((prev) => {
+                const updated = {
+                    ...prev,
+                    terminalLog: [
+                        ...prev.terminalLog,
+                        newLog,
+                    ],
+                };
+                setCustomProperties(playerInfo.pcIp, JSON.stringify(updated));
+                return updated;
+            });
+        } else {
+            setServerInfo((prev) => {
+                const updated = {
+                    ...prev,
+                    terminalLog: [
+                        ...prev.terminalLog,
+                        newLog,
+                    ],
+                };
+                setCustomProperties(playerInfo.serverIp, JSON.stringify(updated));
+                return updated;
+            });
+        }
     };
 
     // ===================================================
@@ -93,11 +136,39 @@ export const Terminal = ({
     // ===================================================
     useEffect(() => {
 
+        const pcData = JSON.parse(getCustomProperties(playerInfo.pcIp) || '{}');
+        const serverData = JSON.parse(getCustomProperties(playerInfo.serverIp) || '{}');
+
+        setPcInfo({
+            batteryNow: pcData.batteryNow ?? 100,
+            blockedIpList: pcData.blockedIpList ?? [],
+            terminalLog: pcData.terminalLog ?? [],
+        });
+        setServerInfo({
+            batteryNow: serverData.batteryNow ?? 100,
+            blockedIpList: serverData.blockedIpList ?? [],
+            terminalLog: serverData.terminalLog ?? [],
+            isPhishingNow: serverData.isPhishingNow ?? false,
+        });
+
+        setCwd([]);
+    }, [currentDevice]);
+
+    // 描画バグ対策
+    useEffect(() => {
+        setShowInput(false);
+
+        const timer = setTimeout(() => {
+            setShowInput(true);
+        }, 700);
+
+        return () => clearTimeout(timer);
+    }, [currentDevice]);
+
+    useEffect(() => {
         if (!logRef.current) return;
-
         logRef.current.scrollTop = logRef.current.scrollHeight;
-
-    }, [logs]);
+    }, [currentInfo.terminalLog]);
 
     // ===================================================
     // command execute
@@ -146,7 +217,27 @@ export const Terminal = ({
                 navigate,
                 availableCommands,
                 addLog,
-                clearLogs: () => setLogs([]),
+                clearLogs: () => {
+                    if (currentDevice === "PC") {
+                        setPcInfo((prev) => {
+                            const updated = {
+                                ...prev,
+                                terminalLog: [],
+                            };
+                            setCustomProperties(playerInfo.pcIp, JSON.stringify(updated));
+                            return updated;
+                        });
+                    } else {
+                        setServerInfo((prev) => {
+                            const updated = {
+                                ...prev,
+                                terminalLog: [],
+                            };
+                            setCustomProperties(playerInfo.serverIp, JSON.stringify(updated));
+                            return updated;
+                        });
+                    }
+                },
                 setCwd,
             },
             args.slice(1)
@@ -173,14 +264,17 @@ export const Terminal = ({
                         <span>
                             [SYS] ENCRYPTED LINK ESTABLISHED
                         </span>
+                        <span className={styles.cmd}>
+                            === IdOS TERMINAL [v3.2.0] ===
+                        </span>
                     </div>
 
-                    {logs.map((log) => (
+                    {currentInfo.terminalLog.map((log) => (
                         <div key={log.id} className={styles[log.type]}>
                             {log.type === "cmd" && (
                                 <div>
                                     <span className={styles.prompt}>
-                                        {`${userId}@IdisPC:`}
+                                        {`${userId}@${currentDevice === "PC" ? "IdisPC" : "IdisServer"}:`}
                                     </span>
                                     <span className={styles.directory}>
                                         ~
@@ -209,7 +303,7 @@ export const Terminal = ({
 
                     <div>
                         <span className={styles.prompt}>
-                            {`${userId}@IdisPC:`}
+                            {`${userId}@${currentDevice === "PC" ? "IdisPC" : "IdisServer"}:`}
                         </span>
                         <span className={styles.directory}>
                             ~/
@@ -218,17 +312,17 @@ export const Terminal = ({
                         </span>
                     </div>
 
-                    <input
-                        ref={inputRef}
-                        value={input}
-                        onChange={(e) =>
-                            setInput(
-                                e.target.value
-                            )
-                        }
-                        className={styles.input}
-                        autoFocus
-                    />
+                    {showInput && (
+                        <input
+                            ref={inputRef}
+                            value={input}
+                            onChange={(e) =>
+                                setInput(e.target.value)
+                            }
+                            className={styles.input}
+                            autoFocus
+                        />
+                    )}
 
                 </form>
             </div>

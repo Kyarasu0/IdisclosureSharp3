@@ -39,8 +39,8 @@ type Props = {
   // ローカルストレージから情報を取得
   getLocalStorage: <T>(key: string) => T;
   // プロパティから情報を取得/保存
-  getProperties: (key: string) => string;
-  setProperties: (key: string, value: string) => void;
+  getCustomProperties: (key: string) => string;
+  setCustomProperties: (key: string, value: string) => void;
   // 次ページに遷移
   onStartGame: (
     participants: Participant[],
@@ -62,8 +62,8 @@ export const WaitingForm = ({
   // ローカルストレージから情報を取得
   getLocalStorage,
   // プロパティから情報を取得/保存
-  getProperties,
-  setProperties,
+  getCustomProperties,
+  setCustomProperties,
   // 次ページに遷移
   onStartGame,
   className,
@@ -121,7 +121,7 @@ export const WaitingForm = ({
               <CyberDial
                 value={duration}
                 onChange={onChangeDuration}
-                onChangeProperties={isMaster ? setProperties : null}
+                onChangeProperties={isMaster ? setCustomProperties : null}
                 min={5}
                 max={15}
                 label="MISSION DURATION"

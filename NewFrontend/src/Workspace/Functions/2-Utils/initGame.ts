@@ -1,8 +1,8 @@
 // ======================================
 // Functions/Photon/initGame.ts
 // ======================================
-import { getProperties } from "../3-Photon/getProperties";
-import { setProperties } from "../3-Photon/setProperties";
+import { getCustomProperties } from "../3-Photon/getCustomProperties";
+import { setCustomProperties } from "../3-Photon/setCustomProperties";
 import { sendData } from "../3-Photon/sendData";
 
 // ================================
@@ -20,6 +20,11 @@ type registrationData = {
   birthDate: string;
   secretId: string;
   score: number;
+};
+
+type ActiveWeb = {
+  toolName: string;
+  toolWebIp: string;
 };
 
 // ================================
@@ -59,7 +64,7 @@ export const initActor = (
 
   const registrationData = getLocalStorage<registrationData>("registrationData");
 
-  const raw = getProperties("IPList");
+  const raw = getCustomProperties("ipList");
   let ipList: string[] = raw ? JSON.parse(raw) : [];
 
   // PC / Server IP生成（重複回避）
@@ -86,32 +91,87 @@ export const initActor = (
     }
   }
 
+  // 個人
+  // internalUserId: {
+  //      === 個人ステータス ===
+  //      isAlive: 生存しているか(boolean)
+  //      postLimit: SNSServerに投稿できる上限回数
+  //      hasTools: 各アイテムを何個持っているかのオブジェクト
+  //      malwareCondition: 現在自分が仕掛けたウイルスが感染しているIPの配列
+  //      pcIp: PCのIP
+  //      serverIp: ServerのIP
+  //      wifi: 現在使用しているwifi
+  //      systemLog: PCに表示するSystemLogの配列
+  //
+  //      === 個人プロフィール ===
+  //      birthDate:
+  //      secretId:
+  //      score:
+  // }
+  //
+  // pcIp: PCのIPアドレス: {
+  //     batteryNow: PCのバッテリー
+  //     blockedIpList: PCで現在ブロックしているIPの配列
+  //     terminalLog: PCのターミナルでの実行結果のログ
+  // }
+  //
+  // serverIp: ServerのIPアドレス: {
+  //     batteryNow: Serverのバッテリー
+  //     isPhishingNow: 現在Phishing中かどうか
+  //     blockedIpList: Serverで現在ブロックしているIPの配列
+  //     terminalLog: Serverのターミナルでの実行結果のログ
+  // }
+
   // Set Log(本番は消す)
-  console.log("IPList: ", ipList);
-  setProperties("IPList", JSON.stringify(ipList));
+  console.log("ipList: ", ipList);
+  setCustomProperties("ipList", JSON.stringify(ipList));
 
-  client.myActor().setCustomProperties({
-    playerInfo: {
-      isAlive: true,
-      pcIp,
-      serverIp,
-
-      userId: registrationData.userId,
-      birthDate: registrationData.birthDate,
-      secretId: registrationData.secretId,
-      score: registrationData.score,
-
-      pcBatteryNow: 100,
-      serverBatteryNow: 100,
-
-      WiFi: "WiFi_1",
-      hasItems: {},
-      isPhishingNow: false,
-      pcBlockedIPList: [],
-      serverBlockedIPList: [],
-      malwareCondition: [],
-    }
-  });
+  // ==============================
+  // 最新構成でプレイヤー情報を保存
+  // ==============================
+  // 1. プレイヤー情報の登録
+  const internalUserId = crypto.randomUUID();
+  const playerInfo = {
+    // ステータス
+    isAlive: true,
+    postLimit: 3,
+    // 状態
+    wifi: "",
+    hasTools: {},
+    malwareCondition: [],
+    systemLog: ["[root] System Log initialized."],
+    // IPs
+    pcIp: pcIp,
+    serverIp: serverIp,
+    // プロフィール
+    userId: registrationData.userId,
+    birthDate: registrationData.birthDate,
+    secretId: registrationData.secretId,
+    score: registrationData.score,
+  }
+  setCustomProperties(internalUserId, JSON.stringify(playerInfo));
+  // 2. PCのIPに関する情報の登録
+  const pcIpInfo = {
+    internalUserId: internalUserId,
+    batteryNow: 100,
+    blockedIpList: [],
+    terminalLog: []
+  }
+  setCustomProperties(pcIp, JSON.stringify(pcIpInfo));
+  // 3. ServerのIPに関する情報の登録
+  const serverIpInfo = {
+    internalUserId: internalUserId,
+    batteryNow: 100,
+    blockedIpList: [],
+    terminalLog: []
+  }
+  setCustomProperties(serverIp, JSON.stringify(serverIpInfo));
+  // 4. ゲーム開始時点でのプレイヤーのリスト登録
+  const playerList = JSON.parse(getCustomProperties("playerList") || "[]");
+  playerList.push(internalUserId);
+  setCustomProperties("playerList", JSON.stringify(playerList));
+  // 5. 内部的なuserIdをローカルストレージに保存
+  localStorage.setItem("internalUserId", internalUserId);
 
   // ================================
   // 🔥 ターン進行（追加）
@@ -172,29 +232,21 @@ export const initGame = (
   if (local.isMasterClient) {
 
     // 初期時間・開始時間
-    setProperties("startTime", String(Date.now()));
+    setCustomProperties("startTime", String(Date.now()));
 
     // ActiveWebList生成
     let ipList: string[] = [];
-    const activeWebList: Record<string, string> = {};
+    const activeWebList: ActiveWeb[] = [];
 
     // SNSServerの初期化
     const ip = generateIP();
     ipList.push(ip);
-    activeWebList["SNSServer"] = ip;
-    setProperties("IPList", JSON.stringify(ipList));
-    setProperties("ActiveWebList", JSON.stringify(activeWebList));
+    activeWebList.push({toolName: "SNSServer", toolWebIp: ip});
+    setCustomProperties("ipList", JSON.stringify(ipList));
+    setCustomProperties("activeWebList", JSON.stringify(activeWebList));
 
     // 自分のActor初期化
-    initActor(participants, getLocalStorage);
-
-    // 次に回す
-    const next = sorted[index + 1];
-    if (next) {
-      sendData(eventCode, { nextActorNr: next.actorNr }, {
-        targetActors: [next.actorNr],
-      });
-    }
+    initActor(participants, getLocalStorage, eventCode);
   }
 
   // Shutdown Log

@@ -12,8 +12,8 @@ import { createRoom } from "../../../Workspace/Functions/3-Photon/createRoom.ts"
 import { joinRoom } from "../../../Workspace/Functions/3-Photon/joinRoom.ts";
 import { disconnectPhoton } from "../../../Workspace/Functions/3-Photon/disconnectPhoton.ts";
 import { subscribePhotonPlayers } from "../../../Workspace/Functions/3-Photon/subscribePhotonPlayers.ts";
-import { setProperties } from "../../../Workspace/Functions/3-Photon/setProperties.ts";
-import { getProperties } from "../../../Workspace/Functions/3-Photon/getProperties.ts";
+import { setCustomProperties } from "../../../Workspace/Functions/3-Photon/setCustomProperties.ts";
+import { getCustomProperties } from "../../../Workspace/Functions/3-Photon/getCustomProperties.ts";
 import { sendData } from "../../../Workspace/Functions/3-Photon/sendData.ts";
 import { receiveData } from "../../../Workspace/Functions/3-Photon/receiveData.ts";
 import { initGame, initActor } from "../../../Workspace/Functions/2-Utils/initGame.ts";
@@ -133,8 +133,8 @@ export const FunctionsRegistry = () => {
       go({ path: "/pc-desktop", fromPage: "Waiting" });
     },
     // 5. プロパティの情報を取得/保存
-    setProperties: setProperties,
-    getProperties: getProperties,
+    setCustomProperties: setCustomProperties,
+    getCustomProperties: getCustomProperties,
     // 6. データの送受信
     sendData: sendData,
     receiveData: receiveData,

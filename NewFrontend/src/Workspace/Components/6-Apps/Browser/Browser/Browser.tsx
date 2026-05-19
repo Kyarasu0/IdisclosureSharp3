@@ -1,9 +1,12 @@
 // 基本的な関数をインポート
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // 他のコンポーネントをインポート
 import { ValidatedInputField } from "../../../1-Atoms/Control/ValidatedInputField/ValidatedInputField";
 import { SubmitButton } from "../../../1-Atoms/Control/SubmitButton/SubmitButton";
+
+// 自作関数のインポート
+import { getCustomProperties } from "../../../../Functions/3-Photon/getCustomProperties";
 
 // デザインに関するファイルをインポート
 import styles from "./Browser.module.css";
@@ -15,12 +18,18 @@ type Tool = {
 }
 
 type Props = {
-    tools?: Tool[];
     mainColor?: string;
+    currentDevice: "PC" | "Server";
 }
 
-export const Browser = ({ tools = [], mainColor = "var(--cyan)" }: Props) => {
+export const Browser = ({ currentDevice, mainColor = "var(--cyan)" }: Props) => {
     const [searchResults, setSearchResults] = useState("");
+    const [activeWebList, setActiveWebList] = useState(JSON.parse(getCustomProperties("activeWebList") || '[]'));
+    // 表示時
+    useEffect(() => {
+        setActiveWebList(JSON.parse(getCustomProperties("activeWebList") || '[]'));
+    }, []);
+    
     return(
         <div className={styles.browserContainer}>
             <div className={styles.browserHeader}>
@@ -46,7 +55,7 @@ export const Browser = ({ tools = [], mainColor = "var(--cyan)" }: Props) => {
                 className={styles.browserMain}
                 style={{ color: mainColor, textShadow: `0 0 10px ${mainColor}`}}
             >
-                {tools.map(tool => { return (<span>{`${tool.toolName}: ${tool.toolWebIp}`}</span>)})}
+                {activeWebList.map((activeWeb: Tool) => { return (<span>{`${activeWeb.toolName}: ${activeWeb.toolWebIp}`}</span>)})}
             </div>
         </div>
     )

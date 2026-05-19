@@ -81,8 +81,8 @@ export const SharpOneAxisOutline: {
       // ローカルストレージから情報を取得
       getLocalStorage: "getLocalStorage",
       // プロパティから情報を取得/保存
-      getProperties: "getProperties",
-      setProperties: "setProperties",
+      getCustomProperties: "getCustomProperties",
+      setCustomProperties: "setCustomProperties",
       // データの送受信
       sendData: "sendData",
       receiveData: "receiveData",
@@ -106,8 +106,8 @@ export const SharpOneAxisOutline: {
       // ローカルストレージから情報を取得
       getLocalStorage: "getLocalStorage",
       // プロパティから情報を取得/保存
-      getProperties: "getProperties",
-      setProperties: "setProperties",
+      getCustomProperties: "getCustomProperties",
+      setCustomProperties: "setCustomProperties",
       // データの送受信
       sendData: "sendData",
       receiveData: "receiveData",

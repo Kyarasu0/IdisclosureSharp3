@@ -28,23 +28,133 @@ type WindowState =
   | "opened"
   | "closing";
 
-export const PCDesktop = () => {
+  type Participant = {
+  actorNr: number;
+  name: string;
+  isLocal: boolean;
+  isMasterClient: boolean;
+};
+
+export type Props = {
+  // =========================
+  // State Access Layer
+  // =========================
+  getLocalStorage: (key: string) => Record<string, string>;
+  // 情報の保存
+  getCustomProperties: (key: string) => string;
+  // 情報の取得
+  setCustomProperties: ( key: string, value: string ) => void;
+
+  // =========================
+  // Photon Event Layer
+  // =========================
+
+  sendData: <T>(
+    eventCode: number,
+    data: T,
+    options?: any
+  ) => void;
+
+  receiveData: <T>(
+    eventCode: number,
+    cb: (data: T, actorNr: number) => void
+  ) => () => void;
+
+  // =========================
+  // Player Sync Layer
+  // =========================
+
+  subscribePhotonPlayers: (
+    cb: (players: {
+      actorNr: number;
+      name: string;
+      isLocal: boolean;
+      isMasterClient: boolean;
+    }[]) => void
+  ) => () => void;
+};
+
+export const PCDesktop = ({
+    getLocalStorage,
+    getCustomProperties,
+    setCustomProperties,
+    sendData,
+    receiveData,
+    subscribePhotonPlayers,
+}: Props) => {
+    /* ==================================
+        Waitingで保存したデータの読み出し
+  　================================== */
+    const internalUserId = String(localStorage.getItem("internalUserId"));
+    
+    /* =========================
+        UI State
+  　========================= */
+    const [participants, setParticipants] = useState<Participant[]>([]);
+    const [duration, setDuration] = useState(0);
+
     const appearance = useAppearance();
     const appOutline = SharpOneAppOutline;
 
+    // プレイヤー情報の取得
+    const [playerInfo, setPlayerInfo] = useState(JSON.parse(getCustomProperties(internalUserId)));
+    // PCのIPとその情報を取得
+    const pcIp = playerInfo.pcIp || "123.123.123.123";
+    const [pcIpInfo, setPcIpInfo] = useState(JSON.parse(getCustomProperties(pcIp)));
+    // ServerのIPとその情報を取得
+    const serverIp = playerInfo.serverIp || "123.123.123.123";
+    const [serverIpInfo, setServerIpInfo] = useState(JSON.parse(getCustomProperties(serverIp)));
+    // WiFiの初期化
     const [activeWifi, setActiveWifi] = useState("WiFi_1");
+    playerInfo.wifi = activeWifi;
+    setCustomProperties(internalUserId, JSON.stringify(playerInfo));
+    // デバイスの設定
     const [currentDevice, setCurrentDevice] = useState<"PC" | "Server">("PC");
+    // アプリの設定
     const [currentApp, setCurrentApp] = useState<AppKey>("Browser");
+    // スコアの設定
+    const [score, setScore] = useState(playerInfo.score);
+    // システムログの表示
+    const [systemLog, setSystemLog] = useState(playerInfo.systemLog || ["Not found..."]);
+
+    // Windowの状態遷移の管理
     const [mfwState, setMfwState] = useState<WindowState>("opening");
     const [aswState, setAswState] = useState<WindowState>("opening");
 
     const CurrentAppComponent = AppsRegistry[currentApp];
 
+    /* =========================================
+     初期：Photon接続
+    ========================================= */
+    useEffect(() => {
+        const unsubscribe = subscribePhotonPlayers(setParticipants);
+        return () => unsubscribe?.();
+    }, []);
+
+    /* =========================================
+     初期：保存値ロード
+    ========================================= */
+    useEffect(() => {
+        const saved = getCustomProperties("duration");
+        if (saved) setDuration(Number(saved));
+    }, []);
+
+    /* =========================================
+     WiFiリスト生成
+    ========================================= */
     const wifis = appearance.wifiSet.map(wifi => ({
         id: wifi,
         label: wifi,
         valid: activeWifi === wifi,
-        onClick: () => { setActiveWifi(wifi); },
+        onClick: () => { 
+            setActiveWifi(wifi);
+            // 最新版を再取得
+            setPlayerInfo(JSON.parse(getCustomProperties(internalUserId)));
+            // 書き換え
+            playerInfo.wifi = activeWifi;
+            // 保存
+            setCustomProperties(internalUserId, JSON.stringify(playerInfo));
+        },
     }))
 
     useEffect(() => {
@@ -56,6 +166,9 @@ export const PCDesktop = () => {
         return () => clearTimeout(timer);
     }, []);
 
+    /* =========================================
+     アプリ切替
+    ========================================= */
     const changeApp = (nextApp: AppKey) => {
         setMfwState("closing");
 
@@ -72,6 +185,9 @@ export const PCDesktop = () => {
         }, 400);
     };
 
+    /* =========================================
+     デバイス切替
+    ========================================= */
     const changeDevice = (nextDevice: "PC" | "Server") => {
         setMfwState("closing");
         setAswState("closing");
@@ -113,7 +229,7 @@ export const PCDesktop = () => {
                 <div className={styles.row}>
                     <GlassWindow
                         icon={UserRound}
-                        title="Kyarasu Device"
+                        title={`${playerInfo.userId} Device`}
                     >
                         {/* Score表示 */}
                         <SlantedFrame
@@ -123,7 +239,7 @@ export const PCDesktop = () => {
                             classNameInner={styles.ipInner}
                         >
                             <span>{appearance.scoreName}:</span>
-                            <span>30</span>
+                            <span>{score}</span>
                         </SlantedFrame>
 
                     </GlassWindow>
@@ -143,7 +259,7 @@ export const PCDesktop = () => {
                             classNameInner={styles.ipInner}
                         >
                             <span>PC IP:</span>
-                            <span>123.123.123.123</span>
+                            <span>{playerInfo.pcIp}</span>
                         </SlantedFrame>
 
                         {/* Server IP */}
@@ -154,7 +270,7 @@ export const PCDesktop = () => {
                             classNameInner={styles.ipInner}
                         >
                             <span>Server IP:</span>
-                            <span>123.123.123.123</span>
+                            <span>{playerInfo.serverIp}</span>
                         </SlantedFrame>
 
                     </GlassWindow>
@@ -168,14 +284,9 @@ export const PCDesktop = () => {
                         contentAlign="flex-start"
                         className={styles.systemLog}
                     >
-                        <span>[root] System Log</span>
-                        <span>[root] System Log</span>
-                        <span>[root] System Log</span>
-                        <span>[root] System Log</span>
-                        <span>[root] System Log</span>
-                        <span>[root] System Log</span>
-                        <span>[root] System Log</span>
-                        <span>[root] System Log</span>
+                        {systemLog.map((line: string, index: number) => (
+                            <span key={index}>{line}</span>
+                        ))}
                     </GlassWindow>
                 </div>
             </div>
@@ -195,9 +306,10 @@ export const PCDesktop = () => {
                             state={mfwState}
                         >
                             <CurrentAppComponent 
-                                tools={currentApp === "Browser" ? [{toolName: "SNSServer", toolWebIp: "124.124.124.124"}] : []}
+                                // tools={currentApp === "Browser" ? [{toolName: "SNSServer", toolWebIp: "124.124.124.124"}] : []}
+                                currentDevice={currentDevice}
                                 mainColor={currentDevice === "PC" ? "var(--cyan)" : "var(--pink)"}
-                                userId={"Kyarasu"}
+                                userId={playerInfo.userId}
                             />
                         </ GlassWindow>
                     </div>
@@ -282,10 +394,10 @@ export const PCDesktop = () => {
                             classNameInner={styles.batteryInner}
                         >
                             <div className={styles.batteryTitle}>
-                                <span>PC Battery: </span><span>80%</span>
+                                <span>PC Battery: </span><span>{`${pcIpInfo.batteryNow}%`}</span>
                             </div>
                             <ProgressBar
-                                progress={80}
+                                progress={pcIpInfo.batteryNow}
                                 color="linear-gradient(90deg, var(--cyan), var(--green))"
                             />
                         </SlantedFrame>
@@ -298,10 +410,10 @@ export const PCDesktop = () => {
                             classNameInner={styles.batteryInner}
                         >
                             <div className={styles.batteryTitle}>
-                                <span>Server Battery: </span><span>80%</span>
+                                <span>Server Battery: </span><span>{`${serverIpInfo.batteryNow}%`}</span>
                             </div>
                             <ProgressBar
-                                progress={80}
+                                progress={serverIpInfo.batteryNow}
                                 color="linear-gradient(90deg, var(--cyan), var(--pink))"
                             />
                         </SlantedFrame>
