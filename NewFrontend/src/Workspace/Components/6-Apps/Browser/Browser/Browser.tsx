@@ -106,7 +106,12 @@ export const Browser = ({
       {/* ================================================= */}
       {/* Header */}
       {/* ================================================= */}
-      <div className={styles.browserHeader}>
+      <form 
+        className={styles.browserHeader} 
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSearch();
+        }}>
 
         <ValidatedInputField
           label="SEARCH"
@@ -139,7 +144,7 @@ export const Browser = ({
             Confirm
           </SubmitButton>
         </div>
-      </div>
+      </form>
 
       {/* ================================================= */}
       {/* Main */}
