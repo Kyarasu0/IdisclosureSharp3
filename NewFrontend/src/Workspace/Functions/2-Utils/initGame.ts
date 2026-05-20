@@ -241,7 +241,7 @@ export const initGame = (
     // SNSServerの初期化
     const ip = generateIP();
     ipList.push(ip);
-    activeWebList.push({toolName: "SNSServer", toolWebIp: ip});
+    activeWebList.push({toolName: "SNSSite", toolWebIp: ip});
     setCustomProperties("ipList", JSON.stringify(ipList));
     setCustomProperties("activeWebList", JSON.stringify(activeWebList));
 

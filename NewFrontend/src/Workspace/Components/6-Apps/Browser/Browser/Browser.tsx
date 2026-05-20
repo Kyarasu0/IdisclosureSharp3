@@ -1,62 +1,170 @@
-// 基本的な関数をインポート
-import { useState, useEffect } from "react";
+// ============================================================================
+// Browser.tsx
+// Browser Main Component
+// ============================================================================
 
-// 他のコンポーネントをインポート
+import { useEffect, useState } from "react";
+
+// Components
 import { ValidatedInputField } from "../../../1-Atoms/Control/ValidatedInputField/ValidatedInputField";
 import { SubmitButton } from "../../../1-Atoms/Control/SubmitButton/SubmitButton";
+import { BrowserHome } from "./../BrowserHome/BrowserHome";
 
-// 自作関数のインポート
+// Registry
+import { ToolsRegistry } from "../../../../../Core/Registries/DesktopRegistries/ToolsRegistry";
+
+// Functions
 import { getCustomProperties } from "../../../../Functions/3-Photon/getCustomProperties";
 
-// デザインに関するファイルをインポート
+// Styles
 import styles from "./Browser.module.css";
+
+// Icons
 import { Search } from "lucide-react";
 
+// =========================
+// Types
+// =========================
 type Tool = {
-    toolName: string;
-    toolWebIp: string;
-}
+  toolName: string;
+  toolWebIp: string;
+};
 
 type Props = {
-    mainColor?: string;
-    currentDevice: "PC" | "Server";
-}
+  mainColor?: string;
+  subColor?: string;
+  currentDevice: "PC" | "Server";
+};
 
-export const Browser = ({ currentDevice, mainColor = "var(--cyan)" }: Props) => {
-    const [searchResults, setSearchResults] = useState("");
-    const [activeWebList, setActiveWebList] = useState(JSON.parse(getCustomProperties("activeWebList") || '[]'));
-    // 表示時
-    useEffect(() => {
-        setActiveWebList(JSON.parse(getCustomProperties("activeWebList") || '[]'));
-    }, []);
-    
-    return(
-        <div className={styles.browserContainer}>
-            <div className={styles.browserHeader}>
-                <ValidatedInputField
-                    label="SEARCH"
-                    value={searchResults}
-                    onChange={setSearchResults}
-                    required={true}
-                    placeholder="ENTER TARGET WEB NAME"
-                    icon={<Search size={18} />}
-                    className={styles.browserInput}
-                    mainColor={mainColor}
-                />
-                <SubmitButton 
-                    type="button"
-                    className={styles.browserSubmitButton}
-                    mainColor={mainColor}
-                >
-                    Comfirm
-                </SubmitButton>
-            </div>
-            <div 
-                className={styles.browserMain}
-                style={{ color: mainColor, textShadow: `0 0 10px ${mainColor}`}}
-            >
-                {activeWebList.map((activeWeb: Tool) => { return (<span>{`${activeWeb.toolName}: ${activeWeb.toolWebIp}`}</span>)})}
-            </div>
+// ============================================================================
+// Main Component
+// ============================================================================
+export const Browser = ({
+  currentDevice,
+  mainColor = "var(--cyan)",
+  subColor = "var(--pink)"
+}: Props) => {
+
+  // 検索文字列
+  const [searchWord, setSearchWord] = useState("");
+
+  // 現在表示中Tool
+  const [activeTool, setActiveTool] = useState("");
+
+  // 接続可能Web一覧
+  const [activeWebList, setActiveWebList] = useState<Tool[]>([]);
+
+  // =========================================================
+  // 初期ロード
+  // =========================================================
+  useEffect(() => {
+    setActiveWebList(JSON.parse(getCustomProperties("activeWebList") || "[]"));
+  }, []);
+
+  // =========================================================
+  // 検索
+  // =========================================================
+  // =========================================================
+// 検索
+// =========================================================
+  const handleSearch = () => {
+
+    // 検索文字列を正規化
+    const normalizedSearch = searchWord.trim().toLowerCase();
+
+    // 一致するWebが存在するか
+    const exists = activeWebList.find((web) =>
+      web.toolName.toLowerCase() === normalizedSearch ||
+      web.toolWebIp.toLowerCase() === normalizedSearch
+    );
+
+    // 無ければ戻る
+    if (!exists) {
+      setActiveTool("");
+      return;
+    }
+
+    // Registryに存在するか
+    const matchedToolKey = Object.keys(ToolsRegistry).find(
+      (key) => key.toLowerCase() === exists.toolName.toLowerCase()
+    );
+
+    if (matchedToolKey) {
+      setActiveTool(matchedToolKey);
+    }
+  };
+
+  // =========================================================
+  // 現在表示Tool
+  // =========================================================
+  const CurrentTool =
+    ToolsRegistry[activeTool as keyof typeof ToolsRegistry];
+
+  return (
+    <div className={styles.browserContainer}>
+
+      {/* ================================================= */}
+      {/* Header */}
+      {/* ================================================= */}
+      <div className={styles.browserHeader}>
+
+        <ValidatedInputField
+          label="SEARCH"
+          value={searchWord}
+          onChange={setSearchWord}
+          required={true}
+          placeholder="ENTER TARGET WEB NAME"
+          icon={<Search size={18} />}
+          className={styles.browserInput}
+          mainColor={mainColor}
+        />
+
+        <div className={styles.browserController}>
+
+          <SubmitButton
+            type="button"
+            className={styles.browserSubmitButton}
+            mainColor={mainColor}
+            onClick={() => setActiveTool("")}
+          >
+            Home
+          </SubmitButton>
+
+          <SubmitButton
+            type="button"
+            className={styles.browserSubmitButton}
+            mainColor={mainColor}
+            onClick={handleSearch}
+          >
+            Confirm
+          </SubmitButton>
         </div>
-    )
-}
+      </div>
+
+      {/* ================================================= */}
+      {/* Main */}
+      {/* ================================================= */}
+      <div className={styles.browserContent}>
+
+        {/* Tool表示 */}
+        {CurrentTool ? (
+
+          <CurrentTool
+            currentDevice={currentDevice}
+            mainColor={mainColor}
+            subColor={subColor}
+          />
+
+        ) : (
+
+          <BrowserHome
+            activeWebList={activeWebList}
+            mainColor={mainColor}
+          />
+
+        )}
+
+      </div>
+    </div>
+  );
+};

@@ -1,0 +1,74 @@
+/* ==========================================================================
+   BrowserHome.module.css
+   Browserホーム画面
+========================================================================== */
+
+/* ==========================================================================
+   Container
+========================================================================== */
+
+.browserHome {
+  width: 100%;
+  height: 100%;
+
+  padding: 16px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  overflow-y: auto;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(15, 23, 42, 0.65),
+      rgba(2, 6, 23, 0.8)
+    );
+
+  backdrop-filter: blur(10px);
+}
+
+/* ==========================================================================
+   Tool Item
+========================================================================== */
+
+.toolItem {
+  padding: 10px 14px;
+
+  border-left: 2px solid currentColor;
+
+  background: rgba(255, 255, 255, 0.04);
+
+  font-size: 13px;
+  font-family: monospace;
+
+  letter-spacing: 0.04em;
+
+  transition: 0.2s;
+}
+
+/* Hover */
+.toolItem:hover {
+  transform: translateX(4px);
+
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ==========================================================================
+   Scrollbar
+========================================================================== */
+
+.browserHome::-webkit-scrollbar {
+  width: 6px;
+}
+
+.browserHome::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.browserHome::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}

@@ -309,6 +309,7 @@ export const PCDesktop = ({
                                 // tools={currentApp === "Browser" ? [{toolName: "SNSServer", toolWebIp: "124.124.124.124"}] : []}
                                 currentDevice={currentDevice}
                                 mainColor={currentDevice === "PC" ? "var(--cyan)" : "var(--pink)"}
+                                subColor={currentDevice === "PC" ? "var(--pink)" : "var(--cyan)"}
                                 userId={playerInfo.userId}
                             />
                         </ GlassWindow>

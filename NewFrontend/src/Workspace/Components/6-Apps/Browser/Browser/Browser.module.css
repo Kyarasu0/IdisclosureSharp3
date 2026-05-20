@@ -1,47 +1,90 @@
-.browserContainer{
+/* ==========================================================================
+   Browser.module.css
+   Browser本体用
+========================================================================== */
+
+/* ==========================================================================
+   Container
+========================================================================== */
+
+.browserContainer {
     /* 大きさ設定 */
     width: 100%;
     height: 100%;
 
-    /* 大きさ設定 */
+    /* 要素配置設定 */
     display: flex;
     flex-direction: column;
 }
 
-.browserHeader{
-    /* 大きさ設定 */
-    width: 100%;
-    height: 15%;
+/* ==========================================================================
+   Header
+========================================================================== */
 
-    /* 要素配置設定 */
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
+.browserHeader {
+   /* 大きさ設定 */
+   width: 100%;
+   height: 27%;
+   box-sizing: border-box;
 
-    /* 余白設定 */
-    gap: 5%;
+   /* 要素配置設定 */
+   display: flex;
+   flex-direction: column;
+
+   /* 余白設定 */
+   gap: 1rem;
+   padding: 1rem;
 }
 
-.browserInput{
-    /* 大きさ設定 */
-    width: 70%;
-    height: 100%;
+.browserController{
+   /* 大きさ設定 */
+   width: 100%;
+   height: 50%;
+   box-sizing: border-box;
+
+   /* 要素配置設定 */
+   display: flex;
+   justify-content: space-between;
 }
 
-.browserSubmitButton{
+/* ==========================================================================
+   Input
+========================================================================== */
+
+.browserInput {
+   /* 大きさ設定 */
+   flex: 1;
+}
+
+/* ==========================================================================
+   Button
+========================================================================== */
+
+.browserSubmitButton {
     /* 大きさ設定 */
     width: 20%;
     height: 100%;
 }
 
-.browserMain{
-    /* 大きさ設定 */
-    width: 100%;
-    flex: 1;
+/* ==========================================================================
+   Main
+========================================================================== */
 
-    /* 余白設定 */
-    padding: 2rem;
-    
-    /* 文字設定 */
-    font-family: var(--secondary);
+.browserContent {
+   /* 大きさ設定 */
+   width: 100%;
+   height: 73%;
+   flex: 1;
+   box-sizing: border-box;
+
+   /* 余白設定 */
+   padding: 1rem 1rem 0rem 1rem;
+   
+   /* 要素配置設定 */
+   display: flex;
+   flex-direction: column;
+
+   /* 文字設定 */
+   font-family: var(--secondary);
+   font-size: 1.2rem;
 }
