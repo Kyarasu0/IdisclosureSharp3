@@ -15,12 +15,12 @@
   /* 文字設定 */
   font-weight: bold;
   letter-spacing: 0.15em;
-  color: var(--cyan);
+  color: var(--main-color);
   font-family: var(--primary);
 
   /* 装飾設定 */
   border-radius: 9999px;
-  border: 1px solid var(--cyan);
+  border: 1px solid var(--main-color);
   backdrop-filter: blur(4px);
   cursor: pointer;
 
@@ -37,8 +37,8 @@
 /* ===== HOVER ===== */
 .roundedButton:hover {
   transform: scale(1.05);
-  color: var(--cyan);
-  box-shadow: 0 0 15px var(--cyan);
+  color: var(--main-color);
+  box-shadow: 0 0 15px var(--main-color);
 }
 
 /* ===== ACTIVE ===== */

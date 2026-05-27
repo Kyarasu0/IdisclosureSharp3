@@ -33,14 +33,12 @@ type Tool = {
 type Props = {
   mainColor?: string;
   subColor?: string;
-  currentDevice: "PC" | "Server";
 };
 
 // ============================================================================
 // Main Component
 // ============================================================================
 export const Browser = ({
-  currentDevice,
   mainColor = "var(--cyan)",
   subColor = "var(--pink)"
 }: Props) => {
@@ -97,8 +95,7 @@ export const Browser = ({
   // =========================================================
   // 現在表示Tool
   // =========================================================
-  const CurrentTool =
-    ToolsRegistry[activeTool as keyof typeof ToolsRegistry];
+  const CurrentTool = ToolsRegistry[activeTool as keyof typeof ToolsRegistry]?.Component;
 
   return (
     <div className={styles.browserContainer}>
@@ -155,7 +152,6 @@ export const Browser = ({
         {CurrentTool ? (
 
           <CurrentTool
-            currentDevice={currentDevice}
             mainColor={mainColor}
             subColor={subColor}
           />

@@ -66,7 +66,6 @@ import styles from "./SNSSite.module.css";
 // Browser 共通Props
 // =========================
 type Props = {
-  currentDevice: "PC" | "Server";
   mainColor: string;
   subColor?: string;
 };
@@ -91,7 +90,6 @@ export type Post = {
 // Main Component
 // ============================================================================
 export const SNSSite = ({
-  currentDevice,
   mainColor,
   subColor,
 }: Props) => {

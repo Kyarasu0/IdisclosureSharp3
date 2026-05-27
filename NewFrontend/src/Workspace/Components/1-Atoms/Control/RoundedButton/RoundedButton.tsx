@@ -11,13 +11,15 @@ type RoundedButtonProps = {
     icon?: LucideIcon;
     onClick?: () => void;
     size?: "sm" | "md" | "lg";
+    mainColor?: string;
 }
 
 export const RoundedButton = ({
     label = "",
     icon: Icon,
     onClick = () => { alert("RoundedButton!") },
-    size = "md"
+    size = "md",
+    mainColor = "var(--cyan)"
 }: RoundedButtonProps ) => {
     let scale = 0.75;
     switch(size){
@@ -31,6 +33,7 @@ export const RoundedButton = ({
             style={{
                 padding: `${scale}rem ${scale * 2}rem`,
                 fontSize: `${scale * 4/5}rem`,
+                "--main-color": mainColor
             } as React.CSSProperties}
         >
             <span className={styles.content}>
