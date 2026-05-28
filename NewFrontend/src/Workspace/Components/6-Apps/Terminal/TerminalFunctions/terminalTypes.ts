@@ -47,6 +47,11 @@ export type TerminalContext = {
     setCwd: React.Dispatch<
         React.SetStateAction<string[]>
     >;
+
+    showSOF: (
+        result: "success" | "failed",
+        title?: string
+    ) => void;
 };
 
 // =======================================================

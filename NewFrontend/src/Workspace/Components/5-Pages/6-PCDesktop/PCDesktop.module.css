@@ -58,6 +58,17 @@
     margin-right: 0.75rem;
 }
 
+.overlayLayer {
+    position: absolute;
+    inset: 0;
+
+    z-index: 9999;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .ASWWrapper{
     /* 大きさ設定 */
     width: calc(20% - 0.75rem);

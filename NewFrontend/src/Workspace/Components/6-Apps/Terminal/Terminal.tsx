@@ -32,6 +32,10 @@ type TerminalProps = {
     mainColor: string;
     userId?: string;
     currentDevice: "PC" | "Server";
+    showSOF: (
+        result: "success" | "failed",
+        title?: string
+    ) => void;
 };
 
 type DeviceInfo = {
@@ -48,6 +52,7 @@ export const Terminal = ({
     mainColor,
     userId,
     currentDevice,
+    showSOF
 }: TerminalProps) => {
 
     const navigate = useNavigate();
@@ -238,6 +243,7 @@ export const Terminal = ({
                         });
                     }
                 },
+                showSOF,
                 setCwd,
             },
             args.slice(1)
@@ -265,7 +271,7 @@ export const Terminal = ({
                             [SYS] ENCRYPTED LINK ESTABLISHED
                         </span>
                         <span className={styles.cmd}>
-                            === IdOS TERMINAL [v3.2.0] ===
+                            === IdiOS TERMINAL [v3.2.0] ===
                         </span>
                     </div>
 

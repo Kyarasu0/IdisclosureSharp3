@@ -169,6 +169,7 @@
 
     /* 詳細設定 */
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 /* ================= CUSTOM SCROLL ================= */

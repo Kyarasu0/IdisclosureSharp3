@@ -33,6 +33,10 @@ type Tool = {
 type Props = {
   mainColor?: string;
   subColor?: string;
+  showSOF: (
+      result: "success" | "failed",
+      title?: string
+  ) => void;
 };
 
 // ============================================================================
@@ -40,7 +44,8 @@ type Props = {
 // ============================================================================
 export const Browser = ({
   mainColor = "var(--cyan)",
-  subColor = "var(--pink)"
+  subColor = "var(--pink)",
+  showSOF
 }: Props) => {
 
   // 検索文字列
@@ -154,6 +159,7 @@ export const Browser = ({
           <CurrentTool
             mainColor={mainColor}
             subColor={subColor}
+            showSOF={showSOF}
           />
 
         ) : (

@@ -1,0 +1,147 @@
+.overlay {
+    /* 大きさ設定 */
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+
+    /* バックグラウンド設定 */
+    background: var(--black_opWeak);
+
+    /* 余白設定 */
+    padding: 1.5rem;
+
+    /* 要素配置設定 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    /* 配置基準設定 */
+    position: absolute;
+    inset: 0;
+    z-index: 9999;
+
+    /* 文字設定 */
+    font-family: var(--secondary);
+
+    /* 装飾設定 */
+    backdrop-filter: blur(3px);
+
+    /* アニメーション設定 */
+    opacity: 1;
+    filter: blur(0px);
+    transform: scale(1);
+    transition:
+        opacity 0.5s ease,
+        filter 0.5s ease,
+        transform 0.5s ease;
+}
+
+.closing {
+    /* アニメーション設定 */
+    opacity: 0;
+    filter: blur(10px);
+    transform: scale(0.95);
+    pointer-events: none;
+}
+
+.header {
+    /* 大きさ設定 */
+    height: 10%;
+    width: 70%;
+
+    /* 要素配置設定 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* 余白設定 */
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+
+    /* 文字設定 */
+    color: var(--cyan);
+    text-shadow: 0 0 10px var(--cyan);
+
+    /* 装飾設定 */
+    border-bottom: 2px solid var(--green);
+}
+
+.spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.logArea {
+    /* 大きさ設定 */
+    width: 70%;
+    min-height: 0;
+
+    /* 要素配置設定 */
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+
+    /* 余白設定 */
+    gap: 0.25rem;
+    padding: 1rem 1rem 1rem 0rem;
+
+    /* 文字設定 */
+    font-family: var(--secondary);
+    font-size: 0.75rem;
+    color: var(--green);
+    text-shadow: 0 0 10px var(--green);
+
+    /* 詳細設定 */
+    overflow: hidden;
+}
+
+.logArea::-webkit-scrollbar {
+    display: none;
+}
+
+.result {
+    /* 大きさ設定 */
+    height: 100%;
+
+    /* 要素配置設定 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    /* 余白設定 */
+    gap: 1rem;
+
+    animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.success {
+    /* 文字設定 */
+    color: var(--green);
+    filter: drop-shadow(0 0 5px var(--green));
+}
+
+.failed {
+    /* 文字設定 */
+    color: var(--red);
+    filter: drop-shadow(0 0 5px var(--red));
+}

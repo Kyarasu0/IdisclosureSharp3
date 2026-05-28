@@ -10,6 +10,7 @@ import { SlantedFrame } from "../../1-Atoms/UI/SlantedFrame/SlantedFrame";
 import { DurationDisplay } from "../../1-Atoms/UI/DurationDisplay/DurationDisplay";
 import { CyberList } from "../../2-Molecules/CyberList/CyberList";
 import { ProgressBar } from "../../1-Atoms/UI/ProgressBar/ProgressBar";
+import { SOF } from "../../3-Organisms/UI/SOF/SOF";
 
 // ページ用のアウトラインをインポート
 import { SharpOneAppOutline } from "../../../../Core/Outlines/DesktopOutlines/SharpOneAppOutline";
@@ -33,6 +34,12 @@ type WindowState =
   name: string;
   isLocal: boolean;
   isMasterClient: boolean;
+};
+
+type SOFState = {
+    visible: boolean;
+    result: "success" | "failed";
+    title?: string;
 };
 
 export type Props = {
@@ -112,6 +119,12 @@ export const PCDesktop = ({
     const [currentDevice, setCurrentDevice] = useState<"PC" | "Server">("PC");
     // アプリの設定
     const [currentApp, setCurrentApp] = useState<AppKey>("Browser");
+    // オーバーレイアプリの設定
+    const [overlayApp, setOverlayApp] = useState<AppKey | null>(null);
+    const [sofState, setSofState] = useState<SOFState>({
+        visible: false,
+        result: "success",
+    });
     // スコアの設定
     const [score, setScore] = useState(playerInfo.score);
     // システムログの表示
@@ -122,6 +135,7 @@ export const PCDesktop = ({
     const [aswState, setAswState] = useState<WindowState>("opening");
 
     const CurrentAppComponent = AppsRegistry[currentApp];
+    const OverlayComponent = overlayApp ? AppsRegistry[overlayApp] : null;
 
     /* =========================================
      初期：Photon接続
@@ -156,6 +170,29 @@ export const PCDesktop = ({
             setCustomProperties(internalUserId, JSON.stringify(playerInfo));
         },
     }))
+
+    /* =========================================
+    SOF生成
+    ========================================= */
+    const showSOF = (
+        result: "success" | "failed",
+        title = "SYSTEM ACCESS"
+    ) => {
+
+        setSofState({
+            visible: true,
+            result,
+            title,
+        });
+
+        // 数秒後に消す
+        setTimeout(() => {
+            setSofState(prev => ({
+                ...prev,
+                visible: false,
+            }));
+        }, 9000);
+    };
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -305,13 +342,25 @@ export const PCDesktop = ({
                             className={styles.MFW}
                             state={mfwState}
                         >
+                            {/* 通常アプリ */}
                             <CurrentAppComponent 
                                 // tools={currentApp === "Browser" ? [{toolName: "SNSServer", toolWebIp: "124.124.124.124"}] : []}
                                 currentDevice={currentDevice}
                                 mainColor={currentDevice === "PC" ? "var(--cyan)" : "var(--pink)"}
                                 subColor={currentDevice === "PC" ? "var(--pink)" : "var(--cyan)"}
                                 userId={playerInfo.userId}
+                                showSOF={showSOF}
                             />
+
+                            {/* Overlay */}
+                            {sofState.visible && (
+                                <div className={styles.overlayLayer}>
+                                    <SOF
+                                        result={sofState.result}
+                                        title={sofState.title}
+                                    />
+                                </div>
+                            )}
                         </ GlassWindow>
                     </div>
                     

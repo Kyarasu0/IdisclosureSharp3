@@ -173,13 +173,15 @@ Record<string, TerminalCommand> = {
     // sof
     // ===================================================
     sof: {
-
-        description: "SOF transition",
+        description: "Show Success Or Failed overlay",
 
         async execute(context, args) {
 
             const result = args[0];
 
+            // =========================
+            // 引数チェック
+            // =========================
             if (
                 result !== "success" &&
                 result !== "failed"
@@ -187,17 +189,27 @@ Record<string, TerminalCommand> = {
 
                 context.addLog(
                     "error",
-                    "usage: sof [success | failed]"
+                    "Usage: sof [success|failed]"
                 );
 
                 return;
             }
 
-            context.navigate("/sof", {
-                state: {
-                    result,
-                },
-            });
+            // =========================
+            // ログ
+            // =========================
+            context.addLog(
+                "info",
+                `Launching SOF overlay (${result})`
+            );
+
+            // =========================
+            // SOF表示
+            // =========================
+            context.showSOF(
+                result,
+                "TERMINAL OPERATION"
+            );
         },
     },
 };

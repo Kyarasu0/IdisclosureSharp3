@@ -68,6 +68,10 @@ import styles from "./SNSSite.module.css";
 type Props = {
   mainColor: string;
   subColor?: string;
+  showSOF: (
+      result: "success" | "failed",
+      title?: string
+  ) => void;
 };
 
 // =========================

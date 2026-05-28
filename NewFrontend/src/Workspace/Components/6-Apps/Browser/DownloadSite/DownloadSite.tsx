@@ -13,6 +13,10 @@ type Props = {
     toolDescription: string;
     mainColor: string;
     subColor: string;
+    showSOF: (
+        result: "success" | "failed",
+        title?: string
+    ) => void;
 };
 
 export const DownloadSite = ({
@@ -20,6 +24,7 @@ export const DownloadSite = ({
     toolDescription,
     mainColor,
     subColor,
+    showSOF
 }: Props) => {
 
   // ダウンロード
