@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { ValidatedInputField } from "../../../1-Atoms/Control/ValidatedInputField/ValidatedInputField";
 import { SubmitButton } from "../../../1-Atoms/Control/SubmitButton/SubmitButton";
 import { BrowserHome } from "./../BrowserHome/BrowserHome";
+import type { Post } from "../SNSSite/SNSSite";
 
 // Registry
 import { ToolsRegistry } from "../../../../../Core/Registries/DesktopRegistries/ToolsRegistry";
@@ -25,7 +26,7 @@ import { Search } from "lucide-react";
 // =========================
 // Types
 // =========================
-type Tool = {
+export type Tool = {
   toolName: string;
   toolWebIp: string;
 };
@@ -37,6 +38,8 @@ type Props = {
       result: "success" | "failed",
       title?: string
   ) => void;
+  activeWebList: Tool[];
+  snsPosts: Post[];
 };
 
 // ============================================================================
@@ -45,7 +48,9 @@ type Props = {
 export const Browser = ({
   mainColor = "var(--cyan)",
   subColor = "var(--pink)",
-  showSOF
+  showSOF,
+  activeWebList,
+  snsPosts
 }: Props) => {
 
   // 検索文字列
@@ -53,16 +58,6 @@ export const Browser = ({
 
   // 現在表示中Tool
   const [activeTool, setActiveTool] = useState("");
-
-  // 接続可能Web一覧
-  const [activeWebList, setActiveWebList] = useState<Tool[]>([]);
-
-  // =========================================================
-  // 初期ロード
-  // =========================================================
-  useEffect(() => {
-    setActiveWebList(JSON.parse(getCustomProperties("activeWebList") || "[]"));
-  }, []);
 
   // =========================================================
   // 検索
@@ -160,6 +155,7 @@ export const Browser = ({
             mainColor={mainColor}
             subColor={subColor}
             showSOF={showSOF}
+            snsPosts={snsPosts}
           />
 
         ) : (

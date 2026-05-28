@@ -25,6 +25,7 @@ type registrationData = {
 type ActiveWeb = {
   toolName: string;
   toolWebIp: string;
+  phishingOwner?: string;
 };
 
 // ================================
@@ -32,7 +33,7 @@ type ActiveWeb = {
 // ================================
 
 // ランダムIP生成
-const generateIP = (): string => {
+export const generateIP = (): string => {
   const rand = () => Math.floor(Math.random() * 254) + 1;
   return `${rand()}.${rand()}.${rand()}.${rand()}`;
 };

@@ -72,6 +72,7 @@ type Props = {
       result: "success" | "failed",
       title?: string
   ) => void;
+  snsPosts?: Post[];
 };
 
 // =========================
@@ -96,13 +97,14 @@ export type Post = {
 export const SNSSite = ({
   mainColor,
   subColor,
+  snsPosts = [],
 }: Props) => {
 
   // =========================================================
   // 投稿一覧
   // Photon化時はここを置き換える
   // =========================================================
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<Post[]>(snsPosts);
 
   // =========================================================
   // スクロール対象
@@ -115,12 +117,8 @@ export const SNSSite = ({
   // =========================================================
   useEffect(() => {
 
-    // 保存データ取得
-    // const savedPosts = JSON.parse(getCustomProperties("snsPosts") || "[]");
-    const savedPosts = mockPosts;
-
     // データが無い場合
-    if (savedPosts.length <= 0) {
+    if (posts.length <= 0) {
       setPosts([
         {
           id: 1,
@@ -133,7 +131,7 @@ export const SNSSite = ({
     }
 
     // 投稿セット
-    setPosts(savedPosts);
+    setPosts(posts);
 
   }, []);
 

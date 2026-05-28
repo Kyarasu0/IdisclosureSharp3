@@ -2,6 +2,9 @@
 // 基本的な関数をインポート
 import { useState, useEffect } from "react";
 
+import { createToolWeb } from "../../../Functions/5-Daemons/createToolWeb";
+import { snsLeak } from "../../../Functions/5-Daemons/snsLeak";
+
 // 他のコンポーネントをインポート
 import { Logo } from "./../../3-Organisms/UI/Logo/Logo";
 import { GlassWindow } from "../../2-Molecules/Windows/GlassWindow/GlassWindow";
@@ -98,7 +101,7 @@ export const PCDesktop = ({
         UI State
   　========================= */
     const [participants, setParticipants] = useState<Participant[]>([]);
-    const [duration, setDuration] = useState(0);
+    const [duration, setDuration] = useState<number>(Number(getCustomProperties("duration") || 5) * 60);
 
     const appearance = useAppearance();
     const appOutline = SharpOneAppOutline;
@@ -115,12 +118,12 @@ export const PCDesktop = ({
     const [activeWifi, setActiveWifi] = useState("WiFi_1");
     playerInfo.wifi = activeWifi;
     setCustomProperties(internalUserId, JSON.stringify(playerInfo));
+    // アクティブWebの設定
+    const [activeWebList, setActiveWebList] = useState(JSON.parse(getCustomProperties("activeWebList") || "[]"));
     // デバイスの設定
     const [currentDevice, setCurrentDevice] = useState<"PC" | "Server">("PC");
     // アプリの設定
     const [currentApp, setCurrentApp] = useState<AppKey>("Browser");
-    // オーバーレイアプリの設定
-    const [overlayApp, setOverlayApp] = useState<AppKey | null>(null);
     const [sofState, setSofState] = useState<SOFState>({
         visible: false,
         result: "success",
@@ -129,13 +132,17 @@ export const PCDesktop = ({
     const [score, setScore] = useState(playerInfo.score);
     // システムログの表示
     const [systemLog, setSystemLog] = useState(playerInfo.systemLog || ["Not found..."]);
+    // SNSの段階と内容保持
+    const [snsPosts, setSnsPosts] = useState(() => {
+        return JSON.parse(getCustomProperties("snsPosts") || "[]");
+    });
+    const [executedSNSSteps, setExecutedSNSSteps] = useState<number[]>([]);
 
     // Windowの状態遷移の管理
     const [mfwState, setMfwState] = useState<WindowState>("opening");
     const [aswState, setAswState] = useState<WindowState>("opening");
 
     const CurrentAppComponent = AppsRegistry[currentApp];
-    const OverlayComponent = overlayApp ? AppsRegistry[overlayApp] : null;
 
     /* =========================================
      初期：Photon接続
@@ -153,6 +160,88 @@ export const PCDesktop = ({
         if (saved) setDuration(Number(saved));
     }, []);
 
+    /* =========================================
+     daemon設定
+    ========================================= */
+    /* =========================================
+     🔥 自律分散型タイマー & SNS自動リークシミュレーション設定
+    ========================================= */
+    useEffect(() => {
+        // 全体の制限時間(秒)を取得
+        const totalDuration = Number(getCustomProperties("duration") || 5) * 60;
+        // initGameでマスターが刻んだゲーム開始時間(ミリ秒)を取得
+        const startTime = Number(getCustomProperties("startTime") || Date.now());
+        // 6等分の間隔を計算
+        const leakInterval = Math.floor(totalDuration / 6);
+
+        const interval = setInterval(() => {
+            const now = Date.now();
+            // 開始からの経過時間(秒)
+            const elapsedSeconds = Math.floor((now - startTime) / 1000);
+            // 残り時間を逆算
+            const remaining = totalDuration - elapsedSeconds;
+
+            if (remaining <= 0) {
+                setDuration(0);
+                clearInterval(interval);
+                console.log("[GAME OVER] Time up.");
+                return;
+            }
+
+            // ─── 1. 残り時間の画面反映 ───
+            setDuration(remaining);
+
+            // ─── 2. 等分タイミングでの自動リーク判定 ───
+            if (elapsedSeconds > 0 && elapsedSeconds % leakInterval === 0) {
+                const currentStep = Math.floor(elapsedSeconds / leakInterval);
+
+                // まだ未実行のステップであれば実行
+                if (currentStep <= 6 && !executedSNSSteps.includes(currentStep)) {
+                    setExecutedSNSSteps(prev => [...prev, currentStep]);
+
+                    // ルーム内の全プレイヤーに対してリークを実行
+                    const players: string[] = JSON.parse(getCustomProperties("playerList") || "[]");
+                    players.forEach((pId) => {
+                        // インポートしている「snsLeak」を呼び出す
+                        snsLeak(pId, currentStep, setCustomProperties);
+                    });
+
+                    // 部屋の全員（自分含む）にSNSとWebが更新されたことをシグナル通知
+                    sendData(appearance.eventMap.EVENT_ACTIVE_WEB_CHANGED, null, { receivers: 1 });
+                }
+            }
+
+            // ─── 3. 確率でのToolWeb立ち上げ ───
+            createToolWeb(appearance.eventMap.EVENT_ACTIVE_WEB_CHANGED, 0.01);
+
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [executedSNSSteps]); // 実行済みフラグが更新されたら最新のクロージャ環境を維持
+
+    /* =========================================
+     🔵 同期イベントシグナル受信レイヤー
+    ========================================= */
+    useEffect(() => {
+        const unsub = receiveData<any>(
+            appearance.eventMap.EVENT_ACTIVE_WEB_CHANGED,
+            () => {
+                // 誰かの環境でTool生成、もしくはリークが起きたらプロパティからデータを一斉再取得してStateに結合
+                setActiveWebList(JSON.parse(getCustomProperties("activeWebList") || "[]"));
+                
+                // ★ SNSの投稿一覧をプロパティから再取得して同期！
+                setSnsPosts(JSON.parse(getCustomProperties("snsPosts") || "[]"));
+
+                // 個人ログやステータスの同期
+                const latestPlayerInfo = JSON.parse(getCustomProperties(internalUserId) || "{}");
+                if (latestPlayerInfo.systemLog) setSystemLog(latestPlayerInfo.systemLog);
+                if (latestPlayerInfo.score !== undefined) setScore(latestPlayerInfo.score);
+                setPlayerInfo(latestPlayerInfo);
+            }
+        );
+
+        return () => unsub?.();
+    }, []);
     /* =========================================
      WiFiリスト生成
     ========================================= */
@@ -350,6 +439,8 @@ export const PCDesktop = ({
                                 subColor={currentDevice === "PC" ? "var(--pink)" : "var(--cyan)"}
                                 userId={playerInfo.userId}
                                 showSOF={showSOF}
+                                activeWebList={activeWebList}
+                                snsPosts={snsPosts}
                             />
 
                             {/* Overlay */}
@@ -425,7 +516,7 @@ export const PCDesktop = ({
                 {/* RIGHT_1: 残り時間の表示 */}
                 <div className={styles.row}>
                     <DurationDisplay
-                        duration={63}
+                        duration={duration}
                         className={styles.durationDisplay}
                     />
                 </div>

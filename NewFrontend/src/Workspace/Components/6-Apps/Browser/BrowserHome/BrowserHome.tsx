@@ -22,7 +22,7 @@ export const BrowserHome = ({
 
   return (
     <div
-      className={styles.browserMain}
+      className={styles.browserHome}
       style={{
         color: mainColor,
         textShadow: `0 0 10px ${mainColor}`
@@ -30,9 +30,9 @@ export const BrowserHome = ({
     >
 
       {activeWebList.map((tool) => (
-        <span key={tool.toolWebIp}>
+        <div key={tool.toolWebIp}>
           {tool.toolName}: {tool.toolWebIp}
-        </span>
+        </div>
       ))}
 
     </div>

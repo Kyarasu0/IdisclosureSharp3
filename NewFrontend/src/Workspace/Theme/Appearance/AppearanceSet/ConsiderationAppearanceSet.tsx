@@ -32,6 +32,7 @@ export const ConsiderationAppearanceSet = {
     // activeWebList: 現在有効になっているWebとそのIPのリスト
     // → 支払いはそのIPの人を探していたらその人に支払いと失敗通知、いなかったら成功通知で行くか
     // wifi_X: 各WiFiに保存されている通信履歴のオブジェクト{duration, IP:IP}
+    // snsPosts: SNSに投稿されている内容
 
     // 個人
     // internalUserId: {
