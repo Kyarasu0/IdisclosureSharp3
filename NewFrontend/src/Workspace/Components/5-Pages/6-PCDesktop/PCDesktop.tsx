@@ -167,18 +167,17 @@ export const PCDesktop = ({
      🔥 自律分散型タイマー & SNS自動リークシミュレーション設定
     ========================================= */
     useEffect(() => {
-        // 全体の制限時間(秒)を取得
         const totalDuration = Number(getCustomProperties("duration") || 5) * 60;
-        // initGameでマスターが刻んだゲーム開始時間(ミリ秒)を取得
         const startTime = Number(getCustomProperties("startTime") || Date.now());
-        // 6等分の間隔を計算
         const leakInterval = Math.floor(totalDuration / 6);
+
+        // 🌟 自分がマスタークライアント（ホスト）かどうかを判定
+        const client = (window as any).photonClient;
+        const isMaster = client ? client.myActor().isMasterClient : false;
 
         const interval = setInterval(() => {
             const now = Date.now();
-            // 開始からの経過時間(秒)
             const elapsedSeconds = Math.floor((now - startTime) / 1000);
-            // 残り時間を逆算
             const remaining = totalDuration - elapsedSeconds;
 
             if (remaining <= 0) {
@@ -195,44 +194,42 @@ export const PCDesktop = ({
             if (elapsedSeconds > 0 && elapsedSeconds % leakInterval === 0) {
                 const currentStep = Math.floor(elapsedSeconds / leakInterval);
 
-                // まだ未実行のステップであれば実行
-                if (currentStep <= 6 && !executedSNSSteps.includes(currentStep)) {
+                // まだ未実行のステップであり、かつ【自分がマスター】の場合のみ起点として実行
+                if (currentStep <= 6 && !executedSNSSteps.includes(currentStep) && isMaster) {
                     setExecutedSNSSteps(prev => [...prev, currentStep]);
 
-                    // ルーム内の全プレイヤーに対してリークを実行
-                    const players: string[] = JSON.parse(getCustomProperties("playerList") || "[]");
-                    players.forEach((pId) => {
-                        // インポートしている「snsLeak」を呼び出す
-                        snsLeak(pId, currentStep, setCustomProperties);
-                    });
-
-                    // 部屋の全員（自分含む）にSNSとWebが更新されたことをシグナル通知
-                    sendData(appearance.eventMap.EVENT_ACTIVE_WEB_CHANGED, null, { receivers: 1 });
+                    // 🌟 1人目として自分自身のリークを処理（ここからリレーがスタートします）
+                    snsLeak(
+                        internalUserId, 
+                        currentStep, 
+                        setCustomProperties, 
+                        participants, 
+                        appearance.eventMap
+                    );
                 }
             }
 
-            // ─── 3. 確率でのToolWeb立ち上げ ───
+            // ─── 3. 確率でのToolWeb立ち上げ（※これは各端末で独立して動かしてOKならそのまま）
+            // ※もしこれもホストだけに絞るなら if (isMaster) で囲んでください
             createToolWeb(appearance.eventMap.EVENT_ACTIVE_WEB_CHANGED, 0.01);
 
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [executedSNSSteps]); // 実行済みフラグが更新されたら最新のクロージャ環境を維持
+    // 🌟 依存配列に participants を追加して最新の配列を参照できるようにします
+    }, [executedSNSSteps, participants]);
 
     /* =========================================
      🔵 同期イベントシグナル受信レイヤー
     ========================================= */
     useEffect(() => {
-        const unsub = receiveData<any>(
+        // 既存の全体更新イベント
+        const unsubChanged = receiveData<any>(
             appearance.eventMap.EVENT_ACTIVE_WEB_CHANGED,
             () => {
-                // 誰かの環境でTool生成、もしくはリークが起きたらプロパティからデータを一斉再取得してStateに結合
                 setActiveWebList(JSON.parse(getCustomProperties("activeWebList") || "[]"));
-                
-                // ★ SNSの投稿一覧をプロパティから再取得して同期！
                 setSnsPosts(JSON.parse(getCustomProperties("snsPosts") || "[]"));
 
-                // 個人ログやステータスの同期
                 const latestPlayerInfo = JSON.parse(getCustomProperties(internalUserId) || "{}");
                 if (latestPlayerInfo.systemLog) setSystemLog(latestPlayerInfo.systemLog);
                 if (latestPlayerInfo.score !== undefined) setScore(latestPlayerInfo.score);
@@ -240,8 +237,35 @@ export const PCDesktop = ({
             }
         );
 
-        return () => unsub?.();
-    }, []);
+        // 🌟 追加: 次のプレイヤーからリレーバトンを受け取ったときの処理
+        const unsubRelay = receiveData<{ leakStep: number }>(
+            appearance.eventMap.EVENT_SNS_LEAK_RELAY,
+            (data) => {
+                if (!data || !data.leakStep) return;
+                
+                console.log(`[Relay] バトンが回ってきました。Step: ${data.leakStep} の処理を開始します。`);
+                
+                // 実行済みフラグに追記して重複を防ぐ
+                setExecutedSNSSteps(prev => [...prev, data.leakStep]);
+
+                // 🌟 自分の internalUserId で自分のリーク処理を実行（終われば自動で次の人へ飛ぶ）
+                snsLeak(
+                    internalUserId,
+                    data.leakStep,
+                    setCustomProperties,
+                    participants,
+                    appearance.eventMap
+                );
+            }
+        );
+
+        return () => {
+            unsubChanged?.();
+            unsubRelay?.(); // クリーンアップ
+        };
+    // 🌟 依存配列に participants と executedSNSSteps を追加
+    }, [participants, executedSNSSteps]);
+    
     /* =========================================
      WiFiリスト生成
     ========================================= */
