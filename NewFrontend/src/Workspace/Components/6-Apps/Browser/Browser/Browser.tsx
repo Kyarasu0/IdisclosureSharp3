@@ -1,37 +1,31 @@
-// ============================================================================
-// Browser.tsx
-// Browser Main Component
-// ============================================================================
+// ==========================================================================
+//  NewFrontend/src/Workspace/Components/6-Apps/Browser/Browser/Browser.tsx
+// ==========================================================================
 
-import { useEffect, useState } from "react";
-
+// Reactの標準モジュール
+import { useState } from "react";
 // Components
 import { ValidatedInputField } from "../../../1-Atoms/Control/ValidatedInputField/ValidatedInputField";
 import { SubmitButton } from "../../../1-Atoms/Control/SubmitButton/SubmitButton";
 import { BrowserHome } from "./../BrowserHome/BrowserHome";
 import type { Post } from "../SNSSite/SNSSite";
-
+// Styles
+import styles from "./Browser.module.css";
+// Icons
+import { Search } from "lucide-react";
 // Registry
 import { ToolsRegistry } from "../../../../../Core/Registries/DesktopRegistries/ToolsRegistry";
 
-// Functions
-import { getCustomProperties } from "../../../../Functions/3-Photon/getCustomProperties";
-
-// Styles
-import styles from "./Browser.module.css";
-
-// Icons
-import { Search } from "lucide-react";
-
 // =========================
-// Types
+//  Types
 // =========================
+// Tool検索用タイプ
 export type Tool = {
   toolName: string;
   toolWebIp: string;
 };
-
-type Props = {
+// ブラウザに必要な配列を引数受取
+export type BrowserProps = {
   mainColor?: string;
   subColor?: string;
   showSOF: (
@@ -42,74 +36,68 @@ type Props = {
   snsPosts: Post[];
 };
 
-// ============================================================================
-// Main Component
-// ============================================================================
+// =========================
+//  Main Component
+// =========================
 export const Browser = ({
   mainColor = "var(--cyan)",
   subColor = "var(--pink)",
   showSOF,
   activeWebList,
   snsPosts
-}: Props) => {
-
+}: BrowserProps) => {
+  // ==========================
+  //  Stateの準備
+  // ==========================
   // 検索文字列
   const [searchWord, setSearchWord] = useState("");
-
   // 現在表示中Tool
   const [activeTool, setActiveTool] = useState("");
 
-  // =========================================================
-  // 検索
-  // =========================================================
-  // =========================================================
-// 検索
-// =========================================================
+  // ==========================
+  //  検索
+  // ==========================
   const handleSearch = () => {
-
     // 検索文字列を正規化
     const normalizedSearch = searchWord.trim().toLowerCase();
-
     // 一致するWebが存在するか
     const exists = activeWebList.find((web) =>
       web.toolName.toLowerCase() === normalizedSearch ||
       web.toolWebIp.toLowerCase() === normalizedSearch
     );
-
-    // 無ければ戻る
+    // 無ければHome
     if (!exists) {
       setActiveTool("");
       return;
     }
-
     // Registryに存在するか
     const matchedToolKey = Object.keys(ToolsRegistry).find(
       (key) => key.toLowerCase() === exists.toolName.toLowerCase()
     );
-
-    if (matchedToolKey) {
-      setActiveTool(matchedToolKey);
-    }
+    // 存在したら画面遷移
+    if (matchedToolKey) setActiveTool(matchedToolKey);
   };
 
-  // =========================================================
-  // 現在表示Tool
-  // =========================================================
+  // ==========================
+  //  現在表示しているTool
+  // ==========================
   const CurrentTool = ToolsRegistry[activeTool as keyof typeof ToolsRegistry]?.Component;
 
+  // ==========================
+  //  Return
+  // ==========================
   return (
     <div className={styles.browserContainer}>
-
-      {/* ================================================= */}
       {/* Header */}
-      {/* ================================================= */}
       <form 
         className={styles.browserHeader} 
         onSubmit={(e) => {
           e.preventDefault();
           handleSearch();
-        }}>
+        }}
+      >
 
+        {/* 要素1: 検索欄 */}
         <ValidatedInputField
           label="SEARCH"
           value={searchWord}
@@ -121,8 +109,9 @@ export const Browser = ({
           mainColor={mainColor}
         />
 
+        {/* 要素2: HomeボタンとSearchボタン */}
         <div className={styles.browserController}>
-
+          {/* ボタン1: Homeボタン */}
           <SubmitButton
             type="button"
             className={styles.browserSubmitButton}
@@ -131,42 +120,34 @@ export const Browser = ({
           >
             Home
           </SubmitButton>
-
+          {/* ボタン2: Searchボタン */}
           <SubmitButton
             type="button"
             className={styles.browserSubmitButton}
             mainColor={mainColor}
             onClick={handleSearch}
           >
-            Confirm
+            Search
           </SubmitButton>
         </div>
       </form>
 
-      {/* ================================================= */}
       {/* Main */}
-      {/* ================================================= */}
       <div className={styles.browserContent}>
-
-        {/* Tool表示 */}
+        {/* Tool or Home画面の表示 */}
         {CurrentTool ? (
-
           <CurrentTool
             mainColor={mainColor}
             subColor={subColor}
             showSOF={showSOF}
             snsPosts={snsPosts}
           />
-
         ) : (
-
           <BrowserHome
             activeWebList={activeWebList}
             mainColor={mainColor}
           />
-
         )}
-
       </div>
     </div>
   );

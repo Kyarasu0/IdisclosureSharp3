@@ -1,14 +1,10 @@
-// ============================================================================
-// SNSServer.tsx
-// SNS Tool
-// - Browser Tool 用
-// - Photon置換しやすい構成
-// - 自分でデータ取得する構成
-// ============================================================================
+// ==========================================================================
+//  NewFrontend/src/Workspace/Components/6-Apps/Browser/SNSSite/SNSSite.tsx
+// ==========================================================================
 
-// =========================================================
-// Mock Data
-// =========================================================
+// =========================
+//  SNS Post用
+// =========================
 const mockPosts: Post[] = [
   {
     id: 1,
@@ -54,69 +50,68 @@ const mockPosts: Post[] = [
   },
 ];
 
+// Reactの標準モジュール
 import { useEffect, useRef, useState } from "react";
-
+// Styles
+import styles from "./SNSSite.module.css";
 // Functions
 import { getCustomProperties } from "../../../../Functions/3-Photon/getCustomProperties";
 
-// Styles
-import styles from "./SNSSite.module.css";
-
 // =========================
-// Browser 共通Props
+//  Types
 // =========================
-type Props = {
-  mainColor: string;
+type SNSProps = {
+  mainColor?: string;
   subColor?: string;
   showSOF: (
       result: "success" | "failed",
       title?: string
   ) => void;
-  snsPosts?: Post[];
+  snsPosts: Post[];
 };
 
 // =========================
-// 投稿型
+//  SNS Post用
 // =========================
 export type Post = {
+  // ID
   id: number;
-
   // 投稿タイプ
   type: "me" | "other" | "system";
-
   // 投稿者
   userId?: string;
-
   // 本文
   text: string;
 };
 
-// ============================================================================
-// Main Component
-// ============================================================================
+// =========================
+//  Main
+// =========================
 export const SNSSite = ({
   mainColor,
   subColor,
   snsPosts = [],
-}: Props) => {
-
-  // =========================================================
-  // 投稿一覧
-  // Photon化時はここを置き換える
-  // =========================================================
+}: SNSProps) => {
+  // =======================
+  //  Stateの準備
+  // =======================
   const [posts, setPosts] = useState<Post[]>(snsPosts);
 
-  // =========================================================
-  // スクロール対象
-  // =========================================================
+  // =======================
+  //  スクロール制御
+  // =======================
   const chatRef = useRef<HTMLDivElement>(null);
 
-  // =========================================================
-  // 初期ロード
-  // Window表示時
-  // =========================================================
-  useEffect(() => {
+  // =======================
+  //  ユーザー情報の取得
+  // =======================
+  const internalUserId = String(localStorage.getItem("internalUserId"));
+  const userId = internalUserId ? JSON.parse(getCustomProperties(internalUserId) || "{}").userId : "";
 
+  // =======================
+  //  初期ロード
+  // =======================
+  useEffect(() => {
     // データが無い場合
     if (posts.length <= 0) {
       setPosts([
@@ -129,38 +124,34 @@ export const SNSSite = ({
       ]);
       return;
     }
-
     // 投稿セット
     setPosts(posts);
-
   }, []);
 
-  // =========================================================
-  // 投稿更新時
-  // 最下部へスクロール
-  // =========================================================
+  // =======================
+  //  最下部への画面制御
+  // =======================
   useEffect(() => {
     if (!chatRef.current) return;
     chatRef.current.scrollTop = chatRef.current.scrollHeight;
   }, [posts]);
 
+  // ==========================
+  //  Return
+  // ==========================
   return (
     <div 
       className={styles.container}
       style={{ "--main-color": mainColor, "--sub-color": subColor} as React.CSSProperties }
     >
-
-      {/* ================================================= */}
-      {/* Chat Area */}
-      {/* ================================================= */}
       <div
         ref={chatRef}
         className={styles.chatBox}
       >
         {posts.map((post) => {
-          // =================================================
-          // System Message
-          // =================================================
+          // ==========================
+          //  System表示
+          // ==========================
           if (post.type === "system") {
             return (
               <div
@@ -172,30 +163,28 @@ export const SNSSite = ({
             );
           }
 
+          // ==========================
+          //  自分or他人メッセージ表示
+          // ==========================
           // 自分投稿か
-          const isMe = post.type === "me";
-
+          const isMe = post.type === userId;
           return (
             <div
               key={post.id}
               className={ isMe ? styles.right : styles.left }
             >
-
               {/* 投稿本体 */}
               <div className={ isMe ? `${styles.post} ${styles.me}` : `${styles.post} ${styles.other}` }>
-
                 {/* 投稿者 */}
                 {post.userId && (
                   <span className={styles.userId}>
                     {post.userId}
                   </span>
                 )}
-
                 {/* 本文 */}
                 <span className={styles.text}>
                   {post.text}
                 </span>
-
               </div>
             </div>
           );

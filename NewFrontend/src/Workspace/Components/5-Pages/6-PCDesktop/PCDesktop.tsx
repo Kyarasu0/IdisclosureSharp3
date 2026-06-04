@@ -1,11 +1,10 @@
 
-// 基本的な関数をインポート
+// Reactの標準モジュール
 import { useState, useEffect } from "react";
-
+// Functions
 import { createToolWeb } from "../../../Functions/5-Daemons/createToolWeb";
 import { snsLeak } from "../../../Functions/5-Daemons/snsLeak";
-
-// 他のコンポーネントをインポート
+// Components
 import { Logo } from "./../../3-Organisms/UI/Logo/Logo";
 import { GlassWindow } from "../../2-Molecules/Windows/GlassWindow/GlassWindow";
 import { ApplicationIcon } from "../../1-Atoms/Control/ApplicationIcon/ApplicationIcon";
@@ -14,29 +13,30 @@ import { DurationDisplay } from "../../1-Atoms/UI/DurationDisplay/DurationDispla
 import { CyberList } from "../../2-Molecules/CyberList/CyberList";
 import { ProgressBar } from "../../1-Atoms/UI/ProgressBar/ProgressBar";
 import { SOF } from "../../3-Organisms/UI/SOF/SOF";
-
-// ページ用のアウトラインをインポート
+// Outline, Registry
 import { SharpOneAppOutline } from "../../../../Core/Outlines/DesktopOutlines/SharpOneAppOutline";
 import { AppsRegistry } from "../../../../Core/Registries/DesktopRegistries/AppsRegistry";
 import type { AppKey } from "../../../../Core/Registries/DesktopRegistries/AppsRegistry";
-
+// 表示設定をインポート
 import { useAppearance } from "../../../../Core/Contexts/AppearanceContext";
-
-// デザインに関するファイルをインポート
+// Styles
 import styles from "./PCDesktop.module.css";
 import { Terminal, Router, UserRound, Globe, BatteryCharging, Wifi, AppWindow } from "lucide-react";
 
+// =========================
+//  Types
+// =========================
 type WindowState =
   | "closed"
   | "opening"
   | "opened"
   | "closing";
 
-  type Participant = {
-  actorNr: number;
-  name: string;
-  isLocal: boolean;
-  isMasterClient: boolean;
+type Participant = {
+    actorNr: number;
+    name: string;
+    isLocal: boolean;
+    isMasterClient: boolean;
 };
 
 type SOFState = {
@@ -45,35 +45,23 @@ type SOFState = {
     title?: string;
 };
 
-export type Props = {
-  // =========================
-  // State Access Layer
-  // =========================
-  getLocalStorage: (key: string) => Record<string, string>;
+export type PCDesktopProps = {
   // 情報の保存
   getCustomProperties: (key: string) => string;
   // 情報の取得
   setCustomProperties: ( key: string, value: string ) => void;
-
-  // =========================
-  // Photon Event Layer
-  // =========================
-
+  // Photon情報送信
   sendData: <T>(
     eventCode: number,
     data: T,
     options?: any
   ) => void;
-
+  // Photon情報受信
   receiveData: <T>(
     eventCode: number,
     cb: (data: T, actorNr: number) => void
   ) => () => void;
-
-  // =========================
-  // Player Sync Layer
-  // =========================
-
+  // 参加者定期受信
   subscribePhotonPlayers: (
     cb: (players: {
       actorNr: number;
@@ -84,22 +72,22 @@ export type Props = {
   ) => () => void;
 };
 
+// =========================
+//  Main
+// =========================
 export const PCDesktop = ({
-    getLocalStorage,
     getCustomProperties,
     setCustomProperties,
     sendData,
     receiveData,
     subscribePhotonPlayers,
-}: Props) => {
-    /* ==================================
-        Waitingで保存したデータの読み出し
-  　================================== */
+}: PCDesktopProps) => {
+    // ローカルストレージの情報取得
     const internalUserId = String(localStorage.getItem("internalUserId"));
     
-    /* =========================
-        UI State
-  　========================= */
+    // ==========================
+    //  Stateの準備
+    // ==========================
     const [participants, setParticipants] = useState<Participant[]>([]);
     const [duration, setDuration] = useState<number>(Number(getCustomProperties("duration") || 5) * 60);
 
@@ -144,9 +132,9 @@ export const PCDesktop = ({
 
     const CurrentAppComponent = AppsRegistry[currentApp];
 
-    /* =========================================
-     初期：Photon接続
-    ========================================= */
+    // ==========================
+    //  参加者定期取得
+    // ==========================
     useEffect(() => {
         const unsubscribe = subscribePhotonPlayers(setParticipants);
         return () => unsubscribe?.();
@@ -169,17 +157,21 @@ export const PCDesktop = ({
     useEffect(() => {
         const totalDuration = Number(getCustomProperties("duration") || 5) * 60;
         const startTime = Number(getCustomProperties("startTime") || Date.now());
+        // SNSSiteへの投稿をする間隔の設定
         const leakInterval = Math.floor(totalDuration / 6);
 
-        // 🌟 自分がマスタークライアント（ホスト）かどうかを判定
+        // 自分がマスタークライアント（ホスト）かどうかを判定
         const client = (window as any).photonClient;
         const isMaster = client ? client.myActor().isMasterClient : false;
 
         const interval = setInterval(() => {
             const now = Date.now();
+            // 経過時間
             const elapsedSeconds = Math.floor((now - startTime) / 1000);
+            // 残り時間
             const remaining = totalDuration - elapsedSeconds;
 
+            // 時間制限が来た際の発火関数
             if (remaining <= 0) {
                 setDuration(0);
                 clearInterval(interval);
