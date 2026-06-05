@@ -88,10 +88,14 @@ export const PCDesktop = ({
     // ==========================
     //  Stateの準備
     // ==========================
+    // 参加者一覧情報
     const [participants, setParticipants] = useState<Participant[]>([]);
+    // 残り時間情報
     const [duration, setDuration] = useState<number>(Number(getCustomProperties("duration") || 5) * 60);
 
+    // 表示設定
     const appearance = useAppearance();
+    // Appに関するOutlineの設定
     const appOutline = SharpOneAppOutline;
 
     // プレイヤー情報の取得
@@ -102,10 +106,12 @@ export const PCDesktop = ({
     // ServerのIPとその情報を取得
     const serverIp = playerInfo.serverIp || "123.123.123.123";
     const [serverIpInfo, setServerIpInfo] = useState(JSON.parse(getCustomProperties(serverIp)));
+
     // WiFiの初期化
     const [activeWifi, setActiveWifi] = useState("WiFi_1");
     playerInfo.wifi = activeWifi;
     setCustomProperties(internalUserId, JSON.stringify(playerInfo));
+
     // アクティブWebの設定
     const [activeWebList, setActiveWebList] = useState(JSON.parse(getCustomProperties("activeWebList") || "[]"));
     // デバイスの設定
@@ -126,10 +132,23 @@ export const PCDesktop = ({
     });
     const [executedSNSSteps, setExecutedSNSSteps] = useState<number[]>([]);
 
-    // Windowの状態遷移の管理
+    // 各Windowをオープンし始める
     const [mfwState, setMfwState] = useState<WindowState>("opening");
     const [aswState, setAswState] = useState<WindowState>("opening");
 
+    // ==========================
+    //  各Windowをオープンする
+    // ==========================
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setMfwState("opened");
+            setAswState("opened");
+        }, 700);
+
+        return () => clearTimeout(timer);
+    }, []);
+
+    // 現在表示中のAppのコンポーネント
     const CurrentAppComponent = AppsRegistry[currentApp];
 
     // ==========================
@@ -140,31 +159,37 @@ export const PCDesktop = ({
         return () => unsubscribe?.();
     }, []);
 
-    /* =========================================
-     初期：保存値ロード
-    ========================================= */
+    // ==========================
+    //  初期の残り時間取得
+    // ==========================
     useEffect(() => {
         const saved = getCustomProperties("duration");
         if (saved) setDuration(Number(saved));
     }, []);
 
-    /* =========================================
-     daemon設定
-    ========================================= */
-    /* =========================================
-     🔥 自律分散型タイマー & SNS自動リークシミュレーション設定
-    ========================================= */
+    // ==========================
+    //  Daemonに関する設定
+    // ==========================
     useEffect(() => {
+        // ==========================
+        //  初期設定
+        // ==========================
+        // ゲーム時間を秒数で取得
         const totalDuration = Number(getCustomProperties("duration") || 5) * 60;
+        // 開始時間を取得
         const startTime = Number(getCustomProperties("startTime") || Date.now());
-        // SNSSiteへの投稿をする間隔の設定
+        // SNSSiteへの投稿をする間隔の設定(ゲーム時間を等分する)
         const leakInterval = Math.floor(totalDuration / 6);
 
         // 自分がマスタークライアント（ホスト）かどうかを判定
         const client = (window as any).photonClient;
         const isMaster = client ? client.myActor().isMasterClient : false;
 
+        // ==========================
+        //  実際のDaemon設定
+        // ==========================
         const interval = setInterval(() => {
+            // 現在時間の取得
             const now = Date.now();
             // 経過時間
             const elapsedSeconds = Math.floor((now - startTime) / 1000);
@@ -179,10 +204,10 @@ export const PCDesktop = ({
                 return;
             }
 
-            // ─── 1. 残り時間の画面反映 ───
+            // 残り時間の更新
             setDuration(remaining);
 
-            // ─── 2. 等分タイミングでの自動リーク判定 ───
+            // リーク処理
             if (elapsedSeconds > 0 && elapsedSeconds % leakInterval === 0) {
                 const currentStep = Math.floor(elapsedSeconds / leakInterval);
 
@@ -258,9 +283,9 @@ export const PCDesktop = ({
     // 🌟 依存配列に participants と executedSNSSteps を追加
     }, [participants, executedSNSSteps]);
     
-    /* =========================================
-     WiFiリスト生成
-    ========================================= */
+    // ==========================
+    //  WiFiリスト設定
+    // ==========================
     const wifis = appearance.wifiSet.map(wifi => ({
         id: wifi,
         label: wifi,
@@ -276,9 +301,9 @@ export const PCDesktop = ({
         },
     }))
 
-    /* =========================================
-    SOF生成
-    ========================================= */
+    // ==========================
+    //  SOF生成
+    // ==========================
     const showSOF = (
         result: "success" | "failed",
         title = "SYSTEM ACCESS"
@@ -299,61 +324,52 @@ export const PCDesktop = ({
         }, 9000);
     };
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setMfwState("opened");
-            setAswState("opened");
-        }, 700);
-
-        return () => clearTimeout(timer);
-    }, []);
-
-    /* =========================================
-     アプリ切替
-    ========================================= */
+    // ==========================
+    //  アプリ切り替え
+    // ==========================
     const changeApp = (nextApp: AppKey) => {
+        // MultipleFunctionsWindowをクローズする
         setMfwState("closing");
-
         setTimeout(() => {
-
+            // Appを切り替える
             setCurrentApp(nextApp);
-
+            // MultipleFunctionsWindowをオープンし始める
             setMfwState("opening");
-
             setTimeout(() => {
+                // MultipleFunctionsWindowをオープンする
                 setMfwState("opened");
             }, 700);
-
         }, 400);
     };
 
-    /* =========================================
-     デバイス切替
-    ========================================= */
+    // ==========================
+    //  デバイス切り替え
+    // ==========================
     const changeDevice = (nextDevice: "PC" | "Server") => {
+        // windowのクローズ
         setMfwState("closing");
         setAswState("closing");
-
         setTimeout(() => {
-
+            // デバイスの切り替え
             setCurrentDevice(
                 nextDevice === "PC"
                     ? "Server"
                     : "PC"
             );
-
+            // AppをBrowserに変換
             setCurrentApp("Browser");
-
+            // AppSelectWindowをオープンし始める
             setAswState("opening");
-
             setTimeout(() => {
+                // AppSelectWindowをオープンする
                 setAswState("opened");
+                // MultipleFunctionsWindowをオープンし始める
                 setMfwState("opening");
                 setTimeout(() => {
+                    // MultipleFunctionsWindowをオープンする
                     setMfwState("opened");
                 }, 700);
             }, 700);
-
         }, 400);
     }
 

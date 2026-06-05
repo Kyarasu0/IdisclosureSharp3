@@ -20,7 +20,7 @@ Container
 
     /* 文字設定 */
     color: var(--main-color);
-    font-family: var(--secondary);
+    font-family: var(--secondary), var(--japanese);
 
     /* 装飾設定 */
     border-top: 1px solid var(--main-color);
@@ -49,5 +49,6 @@ Description
     line-height: 1.8;
     text-align: center;
     color: var(--lightGray);
-    font-family: var(--japanese);
+    font-family: var(--secondary), var(--japanese);
+    white-space: pre-wrap;
 }

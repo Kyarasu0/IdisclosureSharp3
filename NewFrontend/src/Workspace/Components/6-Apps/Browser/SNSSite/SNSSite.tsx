@@ -67,7 +67,7 @@ type SNSProps = {
       result: "success" | "failed",
       title?: string
   ) => void;
-  snsPosts: Post[];
+  snsPosts?: Post[];
 };
 
 // =========================

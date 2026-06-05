@@ -1,7 +1,7 @@
 // FONTの設定
 export const FONT = {
   primary: "'Anonymous Pro', monospace",
-  secondary: "'Share Tech Mono', sans-serif",
+  secondary: "'Share Tech Mono'",
   // 日本語用
   japanese: "'makinas4', sans-serif",
   // fontSize: "16px"
